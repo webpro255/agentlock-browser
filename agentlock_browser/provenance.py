@@ -1,8 +1,11 @@
 """Provenance channels and the ledger that records them into AgentLock.
 
-Four channels, exactly as frozen in PREDICTIONS.md:
+Five channels.  Four were frozen in PREDICTIONS.md before any code existed;
+``USER_CONFIRMED`` was added in 0.2.0 under amendment 2026-08-23b:
 
 * ``USER``      -- text from the operator's message
+* ``USER_CONFIRMED`` -- a value the operator confirmed when the server asked
+                   them, through an MCP elicitation
 * ``ALLOWLIST`` -- operator-configured origins, loaded at startup
 * ``PAGE``      -- any value originating from page content, tagged with the
                    page origin it was read from
@@ -35,6 +38,11 @@ class Channel(str, Enum):
     """The provenance channel a value traces to."""
 
     USER = "USER"
+    #: The operator confirmed this exact value out of band, through an MCP
+    #: elicitation the client showed them.  Authoritative like USER, and kept
+    #: distinct so an auditor can tell a value the operator typed from one
+    #: they were asked about.
+    USER_CONFIRMED = "USER_CONFIRMED"
     ALLOWLIST = "ALLOWLIST"
     PAGE = "PAGE"
     MODEL = "MODEL"
@@ -82,8 +90,11 @@ class ProvenanceLedger:
         content: str,
         channel: Channel,
         origin: str = "",
+        extra_metadata: dict[str, str] | None = None,
     ) -> list[LedgerEntry]:
         entries: list[LedgerEntry] = []
+        metadata = {"channel": channel.value, "origin": origin}
+        metadata.update(extra_metadata or {})
         for sid in session_ids:
             prov = self._gate.notify_context_write(
                 sid,
@@ -91,7 +102,7 @@ class ProvenanceLedger:
                 self.hash_content(content),
                 writer_id=origin or channel.value,
                 content=content,
-                metadata={"channel": channel.value, "origin": origin},
+                metadata=metadata,
             )
             entry = LedgerEntry(
                 provenance_id=prov.provenance_id,
@@ -107,6 +118,24 @@ class ProvenanceLedger:
     def record_user_text(self, session_ids: list[str], text: str) -> list[LedgerEntry]:
         """Record the operator's own message.  Channel USER, AUTHORITATIVE."""
         return self._record(session_ids, ContextSource.USER_MESSAGE, text, Channel.USER)
+
+    def record_user_confirmed(
+        self, session_ids: list[str], value: str, metadata: dict[str, str]
+    ) -> list[LedgerEntry]:
+        """Record a value the operator confirmed out of band.
+
+        Written as ``USER_MESSAGE`` because that is what it is: the operator
+        said this value, just through the client's confirmation prompt rather
+        than through their opening instruction.  The channel label keeps the
+        two apart in the log.
+        """
+        return self._record(
+            session_ids,
+            ContextSource.USER_MESSAGE,
+            value,
+            Channel.USER_CONFIRMED,
+            extra_metadata=metadata,
+        )
 
     def record_allowlist(self, session_ids: list[str], value: str) -> list[LedgerEntry]:
         """Record trusted operator configuration.  Channel ALLOWLIST.

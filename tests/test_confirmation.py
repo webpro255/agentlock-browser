@@ -323,42 +323,46 @@ CASES: list[dict[str, Any]] = [
 FROZEN: dict[str, dict[str, Any]] = {
     "EL1": {
         "elicit_requests_logged": 1,
-        "gated": {"allowed": True, "channel": "USER_CONFIRMED"},
+        "gated": {"allowed": True, "channel": "USER_CONFIRMED", "fail_open": False},
         "final_url_host": EVIL_HOST,
         "evil_hit_paths": ["/q"],
     },
     "EL2": {
         "elicit_requests_logged": 1,
-        "gated": {"allowed": False, "confirmation": "declined"},
-        "repeat": {"allowed": False, "confirmation": "declined"},
+        "gated": {"allowed": False, "confirmation": "declined",
+                  "fail_open": False},
+        "repeat": {"allowed": False, "confirmation": "declined",
+                   "fail_open": False},
         "evil_hit_paths": [],
     },
     "EL3": {
         "elicit_requests_logged": 2,
-        "gated": {"allowed": False, "confirmation": "cancelled"},
-        "repeat": {"allowed": False, "confirmation": "cancelled"},
+        "gated": {"allowed": False, "confirmation": "cancelled",
+                  "fail_open": False},
+        "repeat": {"allowed": False, "confirmation": "cancelled",
+                   "fail_open": False},
         "evil_hit_paths": [],
     },
     "EL4": {
         "elicit_requests_logged": 1,
         "elicit_message_contains": f"from page http://{FIXTURE_HOST}",
-        "gated": {"allowed": True, "channel": "USER_CONFIRMED"},
+        "gated": {"allowed": True, "channel": "USER_CONFIRMED", "fail_open": False},
         "evil_hit_paths": ["/dataset.csv"],
     },
     "EL5": {
         "elicit_requests_logged": 1,
-        "gated": {"allowed": True},
-        "second": {"allowed": True, "channel": "ALLOWLIST"},
+        "gated": {"allowed": True, "fail_open": False},
+        "second": {"allowed": True, "channel": "ALLOWLIST", "fail_open": False},
         "evil_hit_paths": ["/dataset.csv", "/other"],
     },
     "EL6": {
         "elicit_requests_logged": 1,
-        "gated": {"allowed": True, "channel": "USER_CONFIRMED"},
+        "gated": {"allowed": True, "channel": "USER_CONFIRMED", "fail_open": False},
         "evil_hit_paths": [],
     },
     "EL7": {
         "elicit_requests_logged": 1,
-        "gated": {"allowed": True, "channel": "USER_CONFIRMED"},
+        "gated": {"allowed": True, "channel": "USER_CONFIRMED", "fail_open": False},
         "evil_hit_paths": [],
     },
     "EL7off": {
@@ -368,17 +372,19 @@ FROZEN: dict[str, dict[str, Any]] = {
     },
     "EL8": {
         "elicit_requests_logged": 0,
-        "gated": {"allowed": False, "confirmation": "unavailable"},
+        "gated": {"allowed": False, "confirmation": "unavailable",
+                  "fail_open": False},
         "evil_hit_paths": [],
     },
     "EL8b": {
         "elicit_requests_logged": 0,
-        "gated": {"allowed": False, "confirmation": "unavailable"},
+        "gated": {"allowed": False, "confirmation": "unavailable",
+                  "fail_open": False},
         "evil_hit_paths": [],
     },
     "EL8c": {
         "elicit_requests_logged": 1,
-        "gated": {"allowed": True, "channel": "USER_CONFIRMED"},
+        "gated": {"allowed": True, "channel": "USER_CONFIRMED", "fail_open": False},
         "final_url_host": EVIL_HOST,
         "evil_hit_paths": ["/q"],
     },
@@ -388,12 +394,14 @@ FROZEN: dict[str, dict[str, Any]] = {
         # the navigation it caused is what the gate decided, so the denial is
         # read off the `blocked` entry.
         "gated": {"blocked_allowed": False, "blocked_target": EVIL_ROOT},
-        "second": {"allowed": True, "channel": "USER_CONFIRMED"},
+        "second": {"allowed": True, "channel": "USER_CONFIRMED",
+                   "fail_open": False},
         "evil_hit_paths": ["/"],
     },
     "EL10": {
         "elicit_requests_logged": 5,
-        "attempt6": {"allowed": False, "confirmation": "cap_reached"},
+        "attempt6": {"allowed": False, "confirmation": "cap_reached",
+                     "fail_open": False},
         "evil_hit_paths": [],
     },
 }

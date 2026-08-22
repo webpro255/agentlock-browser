@@ -35,13 +35,30 @@ class GateDecision(BaseModel):
     detail: str = ""
     channel: str = Field(
         default="",
-        description="Provenance channel of the gated value: USER, ALLOWLIST, "
-        "PAGE, MODEL, or UNCLASSIFIED.",
+        description="Provenance channel of the gated value: USER, "
+        "USER_CONFIRMED, ALLOWLIST, PAGE, MODEL, or UNCLASSIFIED.",
     )
     origin: str = Field(
         default="", description="For channel PAGE, the origin the value was read from."
     )
     decided_by: str = ""
+    confirmation: str = Field(
+        default="",
+        description="Set when a human was asked about this action: accepted, "
+        "declined, cancelled, unavailable, or cap_reached.",
+    )
+    fail_open: bool = Field(
+        default=False,
+        description="True when the gate allowed the call but no channel "
+        "accounts for the value: it carried no token distinctive enough to "
+        "classify. A grant, not a denial, and named as one.",
+    )
+    target: str = Field(
+        default="",
+        description="For a navigation the page caused, the URL it was trying "
+        "to reach. Ask for it with navigate(url=...) to have the operator "
+        "confirm it.",
+    )
     receipt_id: str = ""
     audit_id: str = ""
 

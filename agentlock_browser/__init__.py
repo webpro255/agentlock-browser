@@ -11,7 +11,7 @@ SPDX-License-Identifier: AGPL-3.0-or-later
 
 from __future__ import annotations
 
-__version__ = "0.1.0"
+__version__ = "0.2.0"
 
 from agentlock_browser.config import BrowserConfig
 from agentlock_browser.gate import BrowserGate, Decision

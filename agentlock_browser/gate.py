@@ -76,6 +76,9 @@ class Decision:
     origin: str = ""
     value: str = ""
     decided_by: str = "agentlock_gate"
+    #: Empty when no human was involved.  Otherwise accepted, declined,
+    #: cancelled, unavailable or cap_reached.
+    confirmation: str = ""
     audit_id: str = ""
     receipt: dict[str, Any] | None = None
     evidence: dict[str, Any] | None = None
@@ -88,6 +91,27 @@ class Decision:
         extra = d.pop("extra")
         d.update(extra)
         return d
+
+
+#: What the model is told when a human answered, or was not asked.
+_CONFIRM_DETAIL = {
+    "declined": (
+        "The operator was asked to confirm this and declined. The same "
+        "action will not be offered to them again this session."
+    ),
+    "cancelled": (
+        "The operator was asked to confirm this and dismissed the prompt "
+        "without answering."
+    ),
+    "unavailable": (
+        "This value does not trace to the operator's own instructions, and "
+        "this client cannot show them a confirmation prompt."
+    ),
+    "cap_reached": (
+        "The operator has declined or dismissed too many confirmations this "
+        "session, so no further prompts are sent."
+    ),
+}
 
 
 def _canon(url: str) -> str:
@@ -255,6 +279,7 @@ class BrowserGate:
         value: str,
         expected_channel: Channel | None = None,
         extra: dict[str, Any] | None = None,
+        confirmation: str = "",
     ) -> Decision:
         result = self.gate.authorize(
             tool,
@@ -285,6 +310,7 @@ class BrowserGate:
             detail=(result.denial or {}).get("detail", ""),
             origin=origin,
             value=value,
+            confirmation=confirmation,
             audit_id=result.audit_id,
             receipt=self._receipt_dict(result),
             evidence=evidence,
@@ -301,7 +327,13 @@ class BrowserGate:
     # -- the three gated actions ------------------------------------------
 
     def authorize_navigate_url(
-        self, url: str, *, cause: str = "tool", extra: dict[str, Any] | None = None
+        self,
+        url: str,
+        *,
+        cause: str = "tool",
+        extra: dict[str, Any] | None = None,
+        confirmed: bool = False,
+        elicitation_id: str = "",
     ) -> Decision:
         """Authorize ``navigate(url)``.
 
@@ -311,7 +343,12 @@ class BrowserGate:
         came off a page, not out of the operator's configuration.
         """
         expected: Channel | None = None
-        if cause == "tool":
+        if confirmed:
+            # The value was recorded on USER_CONFIRMED before this call, so
+            # say so rather than letting the advisory label fall back to
+            # whatever the operator's opening message happened to contain.
+            expected = Channel.USER_CONFIRMED
+        elif cause == "tool":
             if self._traces_to_user(url):
                 expected = Channel.USER
             elif self.config.is_allowlisted(url):
@@ -335,7 +372,13 @@ class BrowserGate:
             action="navigate_url" if cause == "tool" else "intercepted_navigation",
             value=url,
             expected_channel=expected,
-            extra={"cause": cause, "target_origin": origin_of(url), **(extra or {})},
+            confirmation="accepted" if confirmed else "",
+            extra={
+                "cause": cause,
+                "target_origin": origin_of(url),
+                **({"elicitation_id": elicitation_id} if elicitation_id else {}),
+                **(extra or {}),
+            },
         )
 
     def authorize_navigate_link(
@@ -381,7 +424,14 @@ class BrowserGate:
             extra={"href": href, "target_origin": origin_of(href)},
         )
 
-    def authorize_type(self, element_id: str, value: str) -> Decision:
+    def authorize_type(
+        self,
+        element_id: str,
+        value: str,
+        *,
+        confirmed: bool = False,
+        elicitation_id: str = "",
+    ) -> Decision:
         """Authorize ``type(value)``.  Only USER-traced values may be typed."""
         return self._authorize(
             TOOL_TYPE,
@@ -389,8 +439,78 @@ class BrowserGate:
             {"value": value},
             action="type",
             value=value,
-            extra={"element_id": element_id},
+            expected_channel=Channel.USER_CONFIRMED if confirmed else None,
+            confirmation="accepted" if confirmed else "",
+            extra={
+                "element_id": element_id,
+                **({"elicitation_id": elicitation_id} if elicitation_id else {}),
+            },
         )
+
+    # -- human confirmation ------------------------------------------------
+
+    def record_user_confirmed(self, value: str, metadata: dict[str, str]) -> None:
+        """Record a value the operator confirmed out of band, as provenance.
+
+        This is what makes the second authorization able to come out
+        differently: the value is now in the authoritative context, so
+        AgentLock's authoritative-first rule stops attributing it to the page
+        it was read from.  The gate is not told what to decide; it is told
+        something it did not know.
+        """
+        for entry in self.ledger.record_user_confirmed(
+            self._all_sessions, value, metadata
+        ):
+            self._log_provenance(entry, note="human confirmed")
+
+    def trust_origin_for_session(
+        self, origin: str, metadata: dict[str, str]
+    ) -> None:
+        """Add an origin to the session allowlist, on the human's say-so.
+
+        Session-scoped: the operator's configured allowlist on disk is not
+        touched, and this is gone when the process is.
+        """
+        if not origin or origin in self.config.allowlist:
+            return
+        self.config.allowlist.append(origin)
+        for entry in self.ledger.record_allowlist(
+            [self.nav_session.session_id], origin
+        ):
+            self._log_provenance(entry, note="human trusted origin for session")
+        self.log.write(
+            "origin_trusted",
+            origin=origin,
+            decided_by="server:confirm",
+            **metadata,
+        )
+
+    def log_confirmation(self, event: str, **fields: Any) -> None:
+        """Write one elicitation request, result, or short-circuit, verbatim."""
+        self.log.write(event, decided_by="server:confirm", **fields)
+
+    def refuse_after_confirmation(
+        self, base: Decision, status: str, *, elicitation_id: str = ""
+    ) -> Decision:
+        """The answer to the model once the human said no, or was not asked.
+
+        When the gate already denied, its verdict stands and this only
+        annotates it.  When the gate allowed on a value it could not classify
+        and the human declined, the server is the one turning that into a
+        denial, and says so in ``decided_by``.
+        """
+        decision = dataclasses.replace(
+            base,
+            allowed=False,
+            decision="deny",
+            confirmation=status,
+            reason=base.reason or f"confirmation_{status}",
+            detail=base.detail or _CONFIRM_DETAIL[status],
+            decided_by=base.decided_by if not base.allowed else "server:confirm",
+            extra={**base.extra, "elicitation_id": elicitation_id},
+        )
+        self.log.write("decision", **decision.as_log_fields())
+        return decision
 
     # -- receipts for decisions the gate did not make ----------------------
 

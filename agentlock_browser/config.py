@@ -53,6 +53,13 @@ class BrowserConfig:
         settle_ms: How long to let work a click triggered settle before
             reporting the result, so an intercepted navigation is decided
             before the caller reads the outcome.
+        confirm_unclassified: Ask the human before acting on a value the gate
+            allowed but could not classify (the tokenless fail-open, NEEDS.md
+            item 3).  Default True: an unclassified grant is the one case
+            where the gate has nothing to say and only a person does.
+        confirm_cap: How many declines or cancellations in one session before
+            the server stops asking.  Default 5.  A human who has said no five
+            times is not asked a sixth.
         role: The role presented to the AgentLock gate.
         signing_key: HMAC-SHA256 receipt signing key.  Generated per process
             when absent, which makes receipts verifiable only in-process.
@@ -67,6 +74,8 @@ class BrowserConfig:
     nav_timeout_ms: int = 30_000
     action_timeout_ms: int = 10_000
     settle_ms: int = 500
+    confirm_unclassified: bool = True
+    confirm_cap: int = 5
     role: str = "operator"
     signing_key: bytes | None = None
 
@@ -95,6 +104,9 @@ class BrowserConfig:
         * ``AGENTLOCK_BROWSER_OPERATOR_TEXT`` -- the operator's message text
         * ``AGENTLOCK_BROWSER_LOG``      -- JSONL decision log path
         * ``AGENTLOCK_BROWSER_HEADLESS`` -- "0"/"false" to run headed
+        * ``AGENTLOCK_BROWSER_CONFIRM_UNCLASSIFIED`` -- "0"/"false" to skip
+          asking about values the gate allowed but could not classify
+        * ``AGENTLOCK_BROWSER_CONFIRM_CAP`` -- declines before asking stops
         """
         data: dict[str, object] = {}
         cfg_path = path or os.environ.get("AGENTLOCK_BROWSER_CONFIG")
@@ -118,6 +130,16 @@ class BrowserConfig:
         headless_env = os.environ.get("AGENTLOCK_BROWSER_HEADLESS")
         if headless_env is not None:
             data["headless"] = headless_env.strip().lower() not in ("0", "false", "no")
+
+        confirm_env = os.environ.get("AGENTLOCK_BROWSER_CONFIRM_UNCLASSIFIED")
+        if confirm_env is not None:
+            data["confirm_unclassified"] = (
+                confirm_env.strip().lower() not in ("0", "false", "no")
+            )
+
+        cap_env = os.environ.get("AGENTLOCK_BROWSER_CONFIRM_CAP")
+        if cap_env is not None and cap_env.strip().isdigit():
+            data["confirm_cap"] = int(cap_env.strip())
 
         known = {f for f in cls.__dataclass_fields__ if f != "signing_key"}
         return cls(**{k: v for k, v in data.items() if k in known})  # type: ignore[arg-type]

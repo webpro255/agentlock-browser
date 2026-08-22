@@ -10,8 +10,20 @@ SPDX-License-Identifier: AGPL-3.0-or-later
 
 from __future__ import annotations
 
+import time
+
 from agentlock_browser.browser import BrowserSession
-from agentlock_browser.config import BrowserConfig
+from agentlock_browser.config import BrowserConfig, origin_of
+from agentlock_browser.confirm import (
+    ConfirmationBroker,
+    Elicitor,
+    build_request,
+    form_elicitation_available,
+    needs_confirmation,
+    new_elicitation_id,
+    provenance_line,
+    send_elicitation,
+)
 from agentlock_browser.gate import BrowserGate, Decision
 from agentlock_browser.models import (
     BackResult,
@@ -39,6 +51,19 @@ def _as_model(decision: Decision) -> GateDecision:
         channel=str(decision.channel),
         origin=decision.origin,
         decided_by=decision.decided_by,
+        confirmation=decision.confirmation,
+        # The same value the log line carries. NEEDS.md item 3 says a
+        # fail-open grant is returned to the caller in the words the log
+        # uses; until now it was only in the log.
+        fail_open=bool(decision.extra.get("fail_open", False)),
+        # A navigation the page caused names its target, so the model can ask
+        # for it by URL and have the operator confirm it. The click itself
+        # stays ungated and the interceptor's deny path is unchanged.
+        target=(
+            decision.value
+            if decision.action == "intercepted_navigation"
+            else ""
+        ),
         receipt_id=str(receipt.get("receipt_id", "")),
         audit_id=decision.audit_id,
     )
@@ -52,6 +77,7 @@ class BrowserService:
         self.gate = gate or BrowserGate(config)
         self.browser = BrowserSession(config)
         self._intercepted: list[Decision] = []
+        self.confirmations = ConfirmationBroker(cap=config.confirm_cap)
 
     async def start(self) -> None:
         await self.browser.start()
@@ -113,6 +139,83 @@ class BrowserService:
         """
         self.gate.log.write("blocked_page", url=url, decided_by="server:one_tab")
 
+    # -- human confirmation ------------------------------------------------
+
+    async def _confirm(
+        self,
+        decision: Decision,
+        elicitor: Elicitor | None,
+        *,
+        action: str,
+        value: str,
+    ) -> tuple[Decision | None, str]:
+        """Ask the human about a decision the gate could not settle for them.
+
+        Returns ``(None, elicitation_id)`` when the call should be authorized
+        again (the human accepted), or ``(denial, elicitation_id)`` to return
+        to the model.  Never returns an allow: an accepted confirmation is
+        provenance, and the gate decides again from the top with it in hand.
+        """
+        if elicitor is None or not form_elicitation_available(
+            elicitor.client_capabilities
+        ):
+            self.gate.log_confirmation(
+                "confirmation_skipped", action=action, value=value,
+                status="unavailable",
+            )
+            return self.gate.refuse_after_confirmation(decision, "unavailable"), ""
+
+        if self.confirmations.cached_decline(action, value):
+            self.gate.log_confirmation(
+                "confirmation_cached", action=action, value=value,
+                status="declined",
+            )
+            return self.gate.refuse_after_confirmation(decision, "declined"), ""
+
+        if self.confirmations.cap_reached():
+            self.gate.log_confirmation(
+                "confirmation_skipped", action=action, value=value,
+                status="cap_reached", refusals=self.confirmations.refusals,
+                cap=self.confirmations.cap,
+            )
+            return self.gate.refuse_after_confirmation(decision, "cap_reached"), ""
+
+        elicitation_id = new_elicitation_id()
+        line = provenance_line(decision)
+        request = build_request(action, value, line)
+        # Written before the request is sent, so an elicitation that never
+        # comes back is still on the record. Exactly one of these per ask.
+        self.gate.log_confirmation(
+            "elicit_request", elicitation_id=elicitation_id, action=action,
+            value=value, client=elicitor.client_name, **request,
+        )
+        status, choice, raw = await send_elicitation(
+            elicitor, request["message"]
+        )
+        self.gate.log_confirmation(
+            "elicit_result", elicitation_id=elicitation_id, action=action,
+            value=value, status=status, choice=choice, raw=raw,
+        )
+
+        if status != "accepted":
+            self.confirmations.record_refusal(action, value, status)
+            return (
+                self.gate.refuse_after_confirmation(
+                    decision, status, elicitation_id=elicitation_id
+                ),
+                elicitation_id,
+            )
+
+        metadata = {
+            "elicitation_id": elicitation_id,
+            "client": elicitor.client_name,
+            "received_at": str(time.time()),
+        }
+        if choice == "trust_origin_session":
+            self.gate.trust_origin_for_session(origin_of(value), metadata)
+        self.gate.record_user_confirmed(value, metadata)
+        return None, elicitation_id
+
     # -- page-content provenance ------------------------------------------
 
     def _record_elements(self, origin: str, elements: list[Element]) -> None:
@@ -131,7 +234,10 @@ class BrowserService:
     # -- tools -------------------------------------------------------------
 
     async def navigate(
-        self, url: str | None = None, link_id: str | None = None
+        self,
+        url: str | None = None,
+        link_id: str | None = None,
+        elicitor: Elicitor | None = None,
     ) -> NavigateResult:
         """Navigate by URL (gated on channel) or by link id (gated on freshness).
 
@@ -159,6 +265,23 @@ class BrowserService:
 
         if url is not None:
             decision = self.gate.authorize_navigate_url(url)
+            if needs_confirmation(decision, self.config.confirm_unclassified):
+                refusal, elicitation_id = await self._confirm(
+                    decision, elicitor, action="navigate", value=url
+                )
+                if refusal is not None:
+                    return NavigateResult(
+                        ok=False,
+                        gate=_as_model(refusal),
+                        origin=self.browser.origin,
+                        url=self.browser.url,
+                        title=await self._safe_title(),
+                    )
+                # The human confirmed. Their answer is provenance now, not a
+                # verdict: the gate decides again, with it recorded.
+                decision = self.gate.authorize_navigate_url(
+                    url, confirmed=True, elicitation_id=elicitation_id
+                )
             target = url
         else:
             href = self.browser.resolve_link(link_id or "")
@@ -234,9 +357,26 @@ class BrowserService:
             error=error,
         )
 
-    async def type(self, element_id: str, value: str) -> TypeResult:
+    async def type(
+        self, element_id: str, value: str, elicitor: Elicitor | None = None
+    ) -> TypeResult:
         """Type into an element.  The value must trace to the USER channel."""
         decision = self.gate.authorize_type(element_id, value)
+        if needs_confirmation(decision, self.config.confirm_unclassified):
+            refusal, elicitation_id = await self._confirm(
+                decision, elicitor, action="type", value=value
+            )
+            if refusal is not None:
+                return TypeResult(
+                    ok=False,
+                    element_id=element_id,
+                    gate=_as_model(refusal),
+                    origin=self.browser.origin,
+                    url=self.browser.url,
+                )
+            decision = self.gate.authorize_type(
+                element_id, value, confirmed=True, elicitation_id=elicitation_id
+            )
         if not decision.allowed:
             return TypeResult(
                 ok=False,

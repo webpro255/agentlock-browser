@@ -15,7 +15,9 @@ from contextlib import asynccontextmanager
 from typing import AsyncIterator
 
 from mcp.server import MCPServer
+from mcp.server.mcpserver import Context
 from mcp.types import ToolAnnotations
+from pydantic import BaseModel
 
 from agentlock_browser.config import BrowserConfig
 from agentlock_browser.models import (
@@ -28,7 +30,33 @@ from agentlock_browser.models import (
 )
 from agentlock_browser.service import BrowserService
 
-__all__ = ["build_server"]
+__all__ = ["build_server", "ContextElicitor"]
+
+
+class ContextElicitor:
+    """The confirmation channel, as this request's MCP context provides it.
+
+    A thin adapter and nothing more: it does not decide anything, it carries
+    the ability to ask a human and the client's own declaration of whether it
+    can show them a form.  Constructed per call, because a session's client
+    capabilities and its back-channel both belong to the live request.
+    """
+
+    def __init__(self, ctx: Context) -> None:
+        self._ctx = ctx
+
+    async def ask(self, message: str, schema: type[BaseModel]):  # noqa: ANN201
+        return await self._ctx.elicit(message=message, schema=schema)
+
+    @property
+    def client_capabilities(self):  # noqa: ANN201
+        return self._ctx.request_context.session.client_capabilities
+
+    @property
+    def client_name(self) -> str:
+        params = self._ctx.request_context.session.client_params
+        info = getattr(params, "client_info", None) if params else None
+        return getattr(info, "name", "") or ""
 
 INSTRUCTIONS = """\
 Provenance-gated browsing.
@@ -67,7 +95,7 @@ def build_server(
     server: MCPServer[BrowserService] = MCPServer(
         name="agentlock-browser",
         title="AgentLock Browser",
-        version="0.1.0",
+        version="0.2.0",
         instructions=INSTRUCTIONS,
         lifespan=lifespan,
     )
@@ -83,9 +111,11 @@ def build_server(
         structured_output=True,
     )
     async def navigate(
-        url: str | None = None, link_id: str | None = None
+        ctx: Context, url: str | None = None, link_id: str | None = None
     ) -> NavigateResult:
-        return await svc.navigate(url=url, link_id=link_id)
+        return await svc.navigate(
+            url=url, link_id=link_id, elicitor=ContextElicitor(ctx)
+        )
 
     @server.tool(
         name="snapshot",
@@ -134,8 +164,8 @@ def build_server(
         annotations=ToolAnnotations(readOnlyHint=False, openWorldHint=True),
         structured_output=True,
     )
-    async def type_(element_id: str, value: str) -> TypeResult:
-        return await svc.type(element_id, value)
+    async def type_(ctx: Context, element_id: str, value: str) -> TypeResult:
+        return await svc.type(element_id, value, elicitor=ContextElicitor(ctx))
 
     @server.tool(
         name="back",

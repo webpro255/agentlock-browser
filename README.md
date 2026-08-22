@@ -103,11 +103,11 @@ over the file. The browser runs headless unless
 
 | tool | arguments | gated on |
 |---|---|---|
-| `navigate` | `url` **or** `link_id` | channel of `url`; freshness of `link_id` |
+| `navigate` | `url` **or** `link_id` | channel of `url`, then human confirmation; freshness of `link_id` |
 | `snapshot` | (none) | ungated |
 | `read_text` | (none) | ungated |
 | `click` | `element_id` | ungated; the navigation it causes is not |
-| `type` | `element_id`, `value` | channel of `value` |
+| `type` | `element_id`, `value` | channel of `value`, then human confirmation |
 | `back` | (none) | ungated |
 
 Every tool returns `structuredContent` against a declared `outputSchema`.
@@ -135,9 +135,10 @@ after one. A denial is a structured result with a reason, not an error.
 
 ## Provenance rules
 
-Four channels:
+Five channels:
 
 - **USER**: text from the operator's message
+- **USER_CONFIRMED**: a value the operator confirmed when the server asked
 - **ALLOWLIST**: operator-configured origins, loaded at startup
 - **PAGE(origin)**: any value read from page content, tagged with the origin
 - **MODEL**: composed by the model, with no page or user lineage
@@ -152,9 +153,9 @@ What that buys, per action:
 
 | action | allowed | denied |
 |---|---|---|
-| `navigate(url)` | USER, ALLOWLIST | PAGE, MODEL |
+| `navigate(url)` | USER, USER_CONFIRMED, ALLOWLIST | PAGE, MODEL, unless the operator confirms |
 | `navigate(link_id)` | id from the most recent snapshot | stale or unknown id |
-| `type(value)` | USER | PAGE, MODEL |
+| `type(value)` | USER, USER_CONFIRMED | PAGE, MODEL, unless the operator confirms |
 | cross-origin navigation caused by the page (redirect hop, meta refresh, script, click) | (nothing) | always: treated as `navigate(url)` with PAGE provenance |
 
 Ungated in v0: `snapshot`, `read_text`, `back`, and same-origin clicks.
@@ -197,6 +198,67 @@ startup input (`operator_text` / `AGENTLOCK_BROWSER_OPERATOR_TEXT`), not
 something a tool argument can carry. A session whose operator text is empty or
 bland has a weaker USER baseline than one where the operator stated what they
 wanted (see the second limitation below).
+
+## Human confirmation
+
+Because the USER channel is a startup string, a URL the model composed or a
+value it read off a page can never trace to the operator, however reasonable
+it is. MCP elicitation is the one point in the protocol where a server can
+reach the person mid-call, so that is where the gap is closed.
+
+When `navigate(url)` or `type(value)` is denied on MODEL or PAGE, or allowed
+on a value the gate could not classify, the server asks the human. The prompt
+is three lines: the action, the exact value, and where the value came from
+(`from page http://example.com`, or `composed by the agent, not in your
+instructions`). Only the display is truncated, at 200 characters; the whole
+value is what gets recorded and authorized.
+
+Two choices:
+
+- **allow_once**: this one action.
+- **trust_origin_session**: this action, and anything else on the same origin
+  until the process exits. The operator's configured allowlist on disk is not
+  touched.
+
+Saying yes is not a verdict. The confirmed value is recorded as provenance on
+a channel of its own, `USER_CONFIRMED`, and the call is authorized again from
+the top. The gate decides both times. Only two decisions are the server's:
+whether to ask, and whether an earlier decline still stands. Both are logged
+with `decided_by: "server:confirm"` so neither can be read as a gate verdict,
+and every elicitation request and result is written to the JSONL log verbatim.
+
+**Decline and cancel are not the same answer.** A decline is the human saying
+no to this action: it is cached for the session, and the identical action is
+denied again without asking. A cancel is a dismissal, not an answer, so it is
+not cached and the same action asks again. `probe/elicit/REPORT.md` records
+that in Claude Code the decline button produces `decline` and the Escape key
+produces `cancel`.
+
+**There is a cap.** After 5 declines or dismissals in one session the server
+stops asking, and denials carry `confirmation: "cap_reached"`. Configurable
+with `confirm_cap`. Whether the unclassified fail-open case asks at all is
+`confirm_unclassified`, default on.
+
+**Not every client can ask.** Form elicitation counts as available when the
+client declares `elicitation` and either names `form` or names no mode at all;
+a client that declares only `url` mode cannot show a form and gets today's
+behaviour, with denials marked `confirmation: "unavailable"`. The
+modes-unspecified case is not a guess: `probe/elicit/REPORT.md` measured
+Claude Code advertising `{"elicitation": {}}` while rendering a form to a
+person, where the SDK's own client advertises both modes.
+
+Claude Desktop is **unmeasured**. No installation was available, so nothing is
+claimed about what it renders.
+
+A navigation the page itself caused (a click, a redirect, a meta refresh, a
+script) does not ask. It is denied as before, and the result now names the
+`target` it was trying to reach, so the model can call `navigate(url=target)`
+and have the operator confirm that instead.
+
+`tests/test_confirmation.py` is the regression, EL1 to EL10 plus EL8b and
+EL8c, driven through a real MCP client over stdio with a scripted callback
+standing in for the human. Every answer it gives is tagged `SCRIPTED_HUMAN` in
+the transcript.
 
 ## Tests
 

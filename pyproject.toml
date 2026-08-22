@@ -4,7 +4,7 @@ build-backend = "hatchling.build"
 
 [project]
 name = "agentlock-browser"
-version = "0.1.0"
+version = "0.2.0"
 description = "Provenance-gated browsing tools for AI agents, over MCP. AgentLock enforces which channel a value came from before the browser acts on it."
 readme = "README.md"
 requires-python = ">=3.11"
