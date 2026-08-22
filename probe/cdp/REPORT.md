@@ -134,3 +134,39 @@ HTTP redirect:
 C5  final page.url: 'chrome-error://chromewebdata/'
 C6  final page.url: 'chrome-error://chromewebdata/'
 ```
+
+## fulfillRequest 204
+
+Follow-up measurement. Same origins and patterns; the denied hop is answered
+with `Fetch.fulfillRequest` `responseCode` 204 and an empty body instead of
+`Fetch.failRequest`. Script: `scratchpad/probe_cdp_204.py`. Raw output is
+appended to `probe/cdp/raw.txt`.
+
+| case | shape | pre-call page.url | final page.url | final == pre-call | evil.test hits | error text |
+|---|---|---|---|---|---|---|
+| C3f | C3 shape: precommit article.html, then goto /redirect (302 to evil.test) | `'http://fixture.test/article.html'` | `'http://fixture.test/article.html'` | `True` | `[]` | `'Error: Page.goto: net::ERR_ABORTED at http://fixture.test/redirect'` |
+| C6f | C6 shape: click a link to evil.test | `'http://fixture.test/link.html'` | `'http://fixture.test/link.html'` | `True` | `[]` | `''` |
+
+Against the same shapes answered with `failRequest`, pasted from the cases
+above:
+
+```
+C3   final page.url: 'chrome-error://chromewebdata/'   evil.test hits: []
+C3f  final page.url: 'http://fixture.test/article.html'  evil.test hits: []
+C6   final page.url: 'chrome-error://chromewebdata/'   evil.test hits: []
+C6f  final page.url: 'http://fixture.test/link.html'   evil.test hits: []
+```
+
+The hop in C3f still carried its redirect reference:
+
+```
+"redirectedRequestId": "interception-job-2.0"  url http://evil.test/landed
+```
+
+and the C6f hop, which is not an HTTP redirect, still carried none.
+
+### Observed, not interpreted
+
+`final page.url == pre-call page.url` was recorded as `True` in C3f and in
+C6f. It was `False` in C3 and C6, where the same shapes were answered with
+`failRequest`. `evil.test hits` was `[]` in all four.
