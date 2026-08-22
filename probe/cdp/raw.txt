@@ -1,0 +1,130 @@
+==============================================================================
+CASE C1: goto fixture.test/redirect (302 to evil.test), continue everything
+==============================================================================
+Fetch.enable patterns: [{"urlPattern": "*", "resourceType": "Document", "requestStage": "Request"}]
+failRequest applied to hosts: ()
+page.route also enabled: False
+pre-call page.url: 'about:blank'
+final page.url:    'http://evil.test/landed'
+goto/action error: ''
+evil.test hits:    ['/landed']
+Fetch.requestPaused events: 2
+{"frameId": "681E76AB1F820701A51B126899AC105E", "networkId": "393622940CCC39FEB2202EAEA6955AD3", "request": {"headers": {"Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.7", "Upgrade-Insecure-Requests": "1", "User-Agent": "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/151.0.7922.34 Safari/537.36"}, "initialPriority": "VeryHigh", "method": "GET", "referrerPolicy": "unsafe-url", "url": "http://fixture.test/redirect"}, "requestId": "interception-job-1.0", "resourceType": "Document"}
+{"frameId": "681E76AB1F820701A51B126899AC105E", "networkId": "393622940CCC39FEB2202EAEA6955AD3", "redirectedRequestId": "interception-job-1.0", "request": {"headers": {"Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.7", "Upgrade-Insecure-Requests": "1", "User-Agent": "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/151.0.7922.34 Safari/537.36"}, "initialPriority": "VeryHigh", "method": "GET", "referrerPolicy": "unsafe-url", "url": "http://evil.test/landed"}, "requestId": "interception-job-1.1", "resourceType": "Document"}
+page.route calls: 0
+interception order:
+  Fetch.requestPaused http://fixture.test/redirect
+  Fetch.requestPaused http://evil.test/landed
+
+==============================================================================
+CASE C2: same as C1, failRequest on the evil.test hop
+==============================================================================
+Fetch.enable patterns: [{"urlPattern": "*", "resourceType": "Document", "requestStage": "Request"}]
+failRequest applied to hosts: ('evil.test',)
+page.route also enabled: False
+pre-call page.url: 'about:blank'
+final page.url:    'chrome-error://chromewebdata/'
+goto/action error: 'Error: Page.goto: net::ERR_BLOCKED_BY_CLIENT at http://fixture.test/redirect'
+evil.test hits:    []
+Fetch.requestPaused events: 2
+{"frameId": "CBED8523A7F93B602037AE2118979C7A", "networkId": "6E871A19B11954CE672C297DAB22D7AA", "request": {"headers": {"Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.7", "Upgrade-Insecure-Requests": "1", "User-Agent": "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/151.0.7922.34 Safari/537.36"}, "initialPriority": "VeryHigh", "method": "GET", "referrerPolicy": "unsafe-url", "url": "http://fixture.test/redirect"}, "requestId": "interception-job-1.0", "resourceType": "Document"}
+{"frameId": "CBED8523A7F93B602037AE2118979C7A", "networkId": "6E871A19B11954CE672C297DAB22D7AA", "redirectedRequestId": "interception-job-1.0", "request": {"headers": {"Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.7", "Upgrade-Insecure-Requests": "1", "User-Agent": "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/151.0.7922.34 Safari/537.36"}, "initialPriority": "VeryHigh", "method": "GET", "referrerPolicy": "unsafe-url", "url": "http://evil.test/landed"}, "requestId": "interception-job-1.1", "resourceType": "Document"}
+page.route calls: 0
+interception order:
+  Fetch.requestPaused http://fixture.test/redirect
+  Fetch.requestPaused http://evil.test/landed
+
+==============================================================================
+CASE C3: precommit article.html, then C2
+==============================================================================
+Fetch.enable patterns: [{"urlPattern": "*", "resourceType": "Document", "requestStage": "Request"}]
+failRequest applied to hosts: ('evil.test',)
+page.route also enabled: False
+pre-call page.url: 'http://fixture.test/article.html'
+final page.url:    'chrome-error://chromewebdata/'
+goto/action error: 'Error: Page.goto: net::ERR_BLOCKED_BY_CLIENT at http://fixture.test/redirect'
+evil.test hits:    []
+Fetch.requestPaused events: 3
+{"frameId": "ADB540F0A600065D2A9ABABEF18D3A71", "networkId": "4D8E23D6C867F09242B0325E2C21FA9B", "request": {"headers": {"Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.7", "Upgrade-Insecure-Requests": "1", "User-Agent": "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/151.0.7922.34 Safari/537.36"}, "initialPriority": "VeryHigh", "method": "GET", "referrerPolicy": "unsafe-url", "url": "http://fixture.test/article.html"}, "requestId": "interception-job-1.0", "resourceType": "Document"}
+{"frameId": "ADB540F0A600065D2A9ABABEF18D3A71", "networkId": "0EAD3A671F1BB4E71BDD7C154FCF8C8E", "request": {"headers": {"Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.7", "Upgrade-Insecure-Requests": "1", "User-Agent": "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/151.0.7922.34 Safari/537.36"}, "initialPriority": "VeryHigh", "method": "GET", "referrerPolicy": "unsafe-url", "url": "http://fixture.test/redirect"}, "requestId": "interception-job-2.0", "resourceType": "Document"}
+{"frameId": "ADB540F0A600065D2A9ABABEF18D3A71", "networkId": "0EAD3A671F1BB4E71BDD7C154FCF8C8E", "redirectedRequestId": "interception-job-2.0", "request": {"headers": {"Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.7", "Upgrade-Insecure-Requests": "1", "User-Agent": "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/151.0.7922.34 Safari/537.36"}, "initialPriority": "VeryHigh", "method": "GET", "referrerPolicy": "unsafe-url", "url": "http://evil.test/landed"}, "requestId": "interception-job-2.1", "resourceType": "Document"}
+page.route calls: 0
+interception order:
+  Fetch.requestPaused http://fixture.test/article.html
+  Fetch.requestPaused http://fixture.test/redirect
+  Fetch.requestPaused http://evil.test/landed
+
+==============================================================================
+CASE C4: same-origin 302 redirect2 to other, continue everything
+==============================================================================
+Fetch.enable patterns: [{"urlPattern": "*", "resourceType": "Document", "requestStage": "Request"}]
+failRequest applied to hosts: ()
+page.route also enabled: False
+pre-call page.url: 'about:blank'
+final page.url:    'http://fixture.test/other'
+goto/action error: ''
+evil.test hits:    []
+Fetch.requestPaused events: 2
+{"frameId": "F1CFDA622758B8A89E4A705E59401BE8", "networkId": "CDFE6701BB0AC9F8C0B8CF18647FE459", "request": {"headers": {"Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.7", "Upgrade-Insecure-Requests": "1", "User-Agent": "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/151.0.7922.34 Safari/537.36"}, "initialPriority": "VeryHigh", "method": "GET", "referrerPolicy": "unsafe-url", "url": "http://fixture.test/redirect2"}, "requestId": "interception-job-1.0", "resourceType": "Document"}
+{"frameId": "F1CFDA622758B8A89E4A705E59401BE8", "networkId": "CDFE6701BB0AC9F8C0B8CF18647FE459", "redirectedRequestId": "interception-job-1.0", "request": {"headers": {"Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.7", "Upgrade-Insecure-Requests": "1", "User-Agent": "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/151.0.7922.34 Safari/537.36"}, "initialPriority": "VeryHigh", "method": "GET", "referrerPolicy": "unsafe-url", "url": "http://fixture.test/other"}, "requestId": "interception-job-1.1", "resourceType": "Document"}
+page.route calls: 0
+interception order:
+  Fetch.requestPaused http://fixture.test/redirect2
+  Fetch.requestPaused http://fixture.test/other
+
+==============================================================================
+CASE C5: meta refresh to evil.test, failRequest on the hop
+==============================================================================
+Fetch.enable patterns: [{"urlPattern": "*", "resourceType": "Document", "requestStage": "Request"}]
+failRequest applied to hosts: ('evil.test',)
+page.route also enabled: False
+pre-call page.url: 'about:blank'
+final page.url:    'chrome-error://chromewebdata/'
+goto/action error: ''
+evil.test hits:    []
+Fetch.requestPaused events: 2
+{"frameId": "F761E71E4FB83637B7966D03802525D8", "networkId": "F256D3AFB8EFB0A7E8390F20B9592DE1", "request": {"headers": {"Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.7", "Upgrade-Insecure-Requests": "1", "User-Agent": "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/151.0.7922.34 Safari/537.36"}, "initialPriority": "VeryHigh", "method": "GET", "referrerPolicy": "unsafe-url", "url": "http://fixture.test/meta"}, "requestId": "interception-job-1.0", "resourceType": "Document"}
+{"frameId": "F761E71E4FB83637B7966D03802525D8", "networkId": "293B1FAB5F9E4E39751591CCA59315D5", "request": {"headers": {"Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.7", "Referer": "http://fixture.test/", "Upgrade-Insecure-Requests": "1", "User-Agent": "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/151.0.7922.34 Safari/537.36"}, "initialPriority": "VeryHigh", "method": "GET", "referrerPolicy": "strict-origin-when-cross-origin", "url": "http://evil.test/landed"}, "requestId": "interception-job-2.0", "resourceType": "Document"}
+page.route calls: 0
+interception order:
+  Fetch.requestPaused http://fixture.test/meta
+  Fetch.requestPaused http://evil.test/landed
+
+==============================================================================
+CASE C6: click a link to evil.test, failRequest on the hop
+==============================================================================
+Fetch.enable patterns: [{"urlPattern": "*", "resourceType": "Document", "requestStage": "Request"}]
+failRequest applied to hosts: ('evil.test',)
+page.route also enabled: False
+pre-call page.url: 'about:blank'
+final page.url:    'chrome-error://chromewebdata/'
+goto/action error: ''
+evil.test hits:    []
+Fetch.requestPaused events: 2
+{"frameId": "C9A649771F729E58F638F9B28CB8654F", "networkId": "E37147D0688C91CDE19FE1B67FDDE158", "request": {"headers": {"Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.7", "Upgrade-Insecure-Requests": "1", "User-Agent": "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/151.0.7922.34 Safari/537.36"}, "initialPriority": "VeryHigh", "method": "GET", "referrerPolicy": "unsafe-url", "url": "http://fixture.test/link.html"}, "requestId": "interception-job-1.0", "resourceType": "Document"}
+{"frameId": "C9A649771F729E58F638F9B28CB8654F", "networkId": "7889BCC56C13515122C0EF9DC112D433", "request": {"headers": {"Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.7", "Referer": "http://fixture.test/", "Upgrade-Insecure-Requests": "1", "User-Agent": "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/151.0.7922.34 Safari/537.36"}, "initialPriority": "VeryHigh", "method": "GET", "referrerPolicy": "strict-origin-when-cross-origin", "url": "http://evil.test/landed"}, "requestId": "interception-job-2.0", "resourceType": "Document"}
+page.route calls: 0
+interception order:
+  Fetch.requestPaused http://fixture.test/link.html
+  Fetch.requestPaused http://evil.test/landed
+
+==============================================================================
+CASE C7: page.route and CDP Fetch both enabled, continue everything
+==============================================================================
+Fetch.enable patterns: [{"urlPattern": "*", "resourceType": "Document", "requestStage": "Request"}]
+failRequest applied to hosts: ()
+page.route also enabled: True
+pre-call page.url: 'about:blank'
+final page.url:    'http://evil.test/landed'
+goto/action error: ''
+evil.test hits:    ['/landed']
+Fetch.requestPaused events: 2
+{"frameId": "6EC19EEF81691BD507285AFE484EB2D2", "networkId": "F2F0969FD4845F7D16B6BB3C513ED196", "request": {"headers": {"Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.7", "Upgrade-Insecure-Requests": "1", "User-Agent": "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/151.0.7922.34 Safari/537.36"}, "initialPriority": "VeryHigh", "method": "GET", "referrerPolicy": "unsafe-url", "url": "http://fixture.test/redirect"}, "requestId": "interception-job-1.0", "resourceType": "Document"}
+{"frameId": "6EC19EEF81691BD507285AFE484EB2D2", "networkId": "F2F0969FD4845F7D16B6BB3C513ED196", "redirectedRequestId": "interception-job-1.0", "request": {"headers": {"Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.7", "Upgrade-Insecure-Requests": "1", "User-Agent": "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/151.0.7922.34 Safari/537.36"}, "initialPriority": "VeryHigh", "method": "GET", "referrerPolicy": "unsafe-url", "url": "http://evil.test/landed"}, "requestId": "interception-job-1.1", "resourceType": "Document"}
+page.route calls: 1
+{"is_navigation_request": true, "redirected_from": null, "resource_type": "document", "url": "http://fixture.test/redirect"}
+interception order:
+  Fetch.requestPaused http://fixture.test/redirect
+  page.route http://fixture.test/redirect
+  Fetch.requestPaused http://evil.test/landed
+
