@@ -316,3 +316,67 @@ replay; T5, test_redirects, test_new_pages unchanged. Baseline note:
 the Step 2 expectation that EL8 and EL8b would pass vacuously was
 wrong; the confirmation field did not exist pre-fix. Recorded, not
 reconciled.
+
+## Amendment 2026-08-23e (append-only): confirmation on link_id and intercepted navigation
+
+Basis: probe/manual/REPORT.md. (b) navigate(link_id) to an origin
+neither current nor allowlisted was allowed on freshness with no
+elicitation. (c), (e) intercepted cross-origin hops were denied with
+no elicitation and the model did not call navigate(url=target).
+Item 8 of 2026-08-23b is replaced by the following.
+
+Mechanism:
+1. navigate(link_id): the href is resolved server-side as today. If
+   its origin is the current page origin or on the session allowlist,
+   behavior unchanged. Otherwise the server elicits (message: Confirm
+   navigate, the href, "link on page <origin>") before navigating.
+   allow_once: USER_CONFIRMED write of the href, navigation proceeds,
+   decision logged with elicitation_id. trust_origin_session: origin
+   added, then as allow_once. decline/cancel: deny with confirmation
+   field, page unchanged, cache and cap as in 2026-08-23b.
+2. Intercepted cross-origin navigation that occurs while a tool call
+   (navigate, click) is in flight: the pause is answered 204 and the
+   deny logged exactly as today. Then, before the tool returns, the
+   server elicits for the target (message: Confirm navigate, the
+   target, "redirect from <origin>" or "link on page <origin>" by
+   cause). allow_once: USER_CONFIRMED write of the target, the server
+   issues a new gated navigation to it with cause post_confirm, which
+   the gate decides; the tool result reports the final page. A chain
+   that redirects cross-origin again elicits again, one prompt per
+   hop. decline/cancel: tool returns the deny as today.
+3. Intercepted navigation with no tool call in flight (delayed meta
+   refresh, script timer): deny and log as today, no elicitation.
+   Named limitation.
+4. Clients without form elicitation: all of the above reduces to
+   today's behavior.
+
+Pre-registered tests (scripted callback, SCRIPTED_HUMAN), three local
+origins: fixture.test (allowlisted), evil.test, third.test:
+- EM1 link_id whose href is http://evil.test/next, allow_once:
+  elicit 1, message contains "link on page http://fixture.test",
+  allow USER_CONFIRMED, final url evil.test/next, hits ['/next'].
+- EM2 same, decline: elicit 1, deny, confirmation declined, final url
+  on fixture, hits [].
+- EM3 link_id same-origin href: elicit 0, allow as today.
+- EM4 (restates EL9) T4 fixture, click offsite link, allow_once:
+  intercepted deny logged, elicit 1, navigate decision cause
+  post_confirm allow USER_CONFIRMED, click result ok true with final
+  url http://evil.test/, hits ['/'].
+- EM5 same, decline: intercepted deny logged, elicit 1, click result
+  ok false, final url on fixture, hits [].
+- EM6 navigate(url=http://fixture.test/redirect) 302 to
+  evil.test/landed, allow_once: hop deny logged, elicit 1, message
+  contains "redirect from http://fixture.test", post_confirm allow,
+  final url evil.test/landed, hits ['/landed'].
+- EM7 two-hop chain fixture -> evil.test/a (302) -> third.test/b,
+  allow_once both: elicit 2, final url third.test/b, evil hits ['/a'],
+  third hits ['/b'].
+- EM8 same-origin 302 (R1b): elicit 0, allow.
+- EM9 navigate to a page with meta refresh delayed 3s to evil.test;
+  tool returns first; then wait 5s: deny logged, elicit 0, final url
+  on fixture, hits [].
+- EM10 cap: after 5 declines, EM4's click elicits 0 and returns
+  confirmation cap_reached.
+- test_redirects and test_new_pages run without an elicitation
+  callback and are unchanged. T5 unchanged. EL1 to EL8c unchanged;
+  EL9 is superseded by EM4 and its test is replaced.
