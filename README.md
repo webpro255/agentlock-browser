@@ -84,6 +84,15 @@ Navigation is intercepted through the CDP `Fetch` domain, because Playwright's
 was followed before anything could gate it (`probe/origin/REPORT.md`,
 `probe/cdp/REPORT.md`). That makes this server chromium-only.
 
+Every main-frame document request goes through that one interceptor: HTTP
+redirect hops, meta refresh, script assigning `location`, and clicks alike. A
+target on a different origin than the one the navigation was authorized for is
+recorded as PAGE(current origin) provenance and then gated as `navigate(url)`,
+so the gate is deciding on provenance that exists rather than on a target it
+cannot account for. A denied navigation is answered with 204, which leaves the
+page at the URL it was at before the call and sends nothing to the other
+origin. `tests/test_redirects.py` is the regression for all four kinds.
+
 Element ids are stable for the current page load and regenerate on navigation:
 an id is `<page-load>-e<n>`, and an id minted before a navigation cannot resolve
 after one. A denial is a structured result with a reason, not an error.
@@ -110,7 +119,7 @@ What that buys, per action:
 | `navigate(url)` | USER, ALLOWLIST | PAGE, MODEL |
 | `navigate(link_id)` | id from the most recent snapshot | stale or unknown id |
 | `type(value)` | USER | PAGE, MODEL |
-| cross-origin navigation caused by a click | (nothing) | always: treated as `navigate(url)` with PAGE provenance |
+| cross-origin navigation caused by the page (redirect hop, meta refresh, script, click) | (nothing) | always: treated as `navigate(url)` with PAGE provenance |
 
 Ungated in v0: `snapshot`, `read_text`, `back`, and same-origin clicks.
 
@@ -119,9 +128,10 @@ Ungated in v0: `snapshot`, `read_text`, `back`, and same-origin clicks.
 link the operator asked for stays possible while pasting a URL a page supplied
 does not.
 
-A click that would leave the current origin is answered with a 204, so the
-navigation is dropped and the page stays exactly where it was: no error page,
-no request to the other origin.
+Any page-initiated navigation that would leave the current origin is answered
+with a 204, so the navigation is dropped and the page stays exactly where it
+was: no error page, no request to the other origin. That covers a redirect
+served by the authorized origin as well as a click, a meta refresh or a script.
 
 **The AgentLock gate decides.** This package records provenance, calls
 `gate.authorize()`, and reports the verdict; it never overrides one. The single
@@ -186,17 +196,30 @@ Found while building v0, and not yet closed:
   caught; one that says *type `abc123`* is. Such a grant is recorded as
   `"channel": "UNCLASSIFIED", "fail_open": true` rather than being closed by a
   local check, because closing it here would move the decision out of the gate.
-  `NEEDS.md` item 3.
+  This still applies to `type(value)`. `NEEDS.md` item 3.
 - **A bland operator message weakens the MODEL check.** Novel-lineage needs a
   distinctive token in the authoritative context to have a baseline at all;
-  without one, MODEL-composed values are allowed. `NEEDS.md` item 3(b).
+  without one, a URL the model composed is allowed. `NEEDS.md` item 3(b).
+- **Neither of the two above applies to page-initiated navigation any more.**
+  Since commit 94a6d82 the interceptor asserts the target as PAGE at the source
+  before authorizing it, so a cross-origin redirect, meta refresh, script
+  navigation or click is denied on parameter lineage rather than on novel
+  lineage, and the denial no longer depends on the operator's message carrying
+  a distinctive token. `tests/test_redirects.py` cases R2b and R3b are the
+  bland-message regression.
 - **`read_text` and `snapshot` report a curated set of elements.** Text in an
   element neither selector matches is not returned, and therefore never
   recorded as PAGE. That stays consistent (what the model cannot see, it cannot
   echo) only for as long as these tools are the only way page content enters the
   conversation.
-- **A redirect from an authorized navigation is followed without a second
-  check.** v0 grants the redirect chain of a URL it allowed.
+- **Chromium only.** Interception uses the CDP `Fetch` domain, which Firefox
+  and WebKit do not provide. There is no fallback.
+- **Subframes and subresources are not gated.** Only main-frame document
+  requests pass through the interceptor. An iframe, an image, a script tag or a
+  page's own `fetch` goes out unexamined, so a hostile page can still talk to
+  whatever it likes on its own behalf. What is defended is the agent being
+  driven to act at the top-level document, not the page being prevented from
+  using the network.
 - **One tab.** `target="_blank"` and popups are not handled in v0.
 
 ## License
