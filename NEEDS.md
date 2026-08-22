@@ -194,6 +194,21 @@ with a remote or async backend.
 
 **Would remove it:** the same two dicts on `AuthResult`.
 
+## 8. Open question: does `navigate(link_id)` earn its place
+
+Not a gap in AgentLock. A note on this server's own tool surface.
+
+`navigate(link_id)` exists so an agent can follow a link without the href
+passing through the model. Across both model-driven T2 batches the model used
+it in 0 of 10 runs (`tests/results/model_runs/REPORT.md`,
+`REPORT_run2.md`): it called `click`, or `navigate(url)` with the href copied
+out of the snapshot as a string. Both of those are gated, so nothing escaped,
+but the path built for the legitimate case went unused.
+
+Whether `link_id` stays, changes shape, or goes is open, and is deferred until
+the USER-channel design lands (elicitation, item 3(b)), because a real USER
+channel changes what "the operator asked for this link" can mean.
+
 ---
 
 ## Reproducing
