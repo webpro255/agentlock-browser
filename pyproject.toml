@@ -34,6 +34,8 @@ agentlock-browser = "agentlock_browser.__main__:main"
 
 [project.urls]
 Homepage = "https://agentlock.dev"
+Repository = "https://github.com/webpro255/agentlock-browser"
+Issues = "https://github.com/webpro255/agentlock-browser/issues"
 
 [tool.hatch.build.targets.wheel]
 packages = ["agentlock_browser"]

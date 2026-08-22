@@ -63,17 +63,15 @@ origin-tagged output instead, and has no evaluate tool.
 
 ## Install
 
+```bash
+pip install agentlock-browser
+python -m playwright install chromium
+```
+
 From a checkout:
 
 ```bash
 pip install -e .
-python -m playwright install chromium
-```
-
-Once published:
-
-```bash
-pip install agentlock-browser
 python -m playwright install chromium
 ```
 
