@@ -9,3 +9,4 @@ probe/results/
 probe/output/
 probe/output_control/
 scratchpad/
+.env
