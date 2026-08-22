@@ -1,0 +1,14 @@
+{"ts": 1787400852.0569367, "event": "capability_check", "supported": true, "client_capabilities": {"elicitation": {"form": {}, "url": {}}}}
+{"ts": 1787400852.0570366, "event": "elicit_request", "message": "Confirm navigate\nvalue:  http://evil.test/x\norigin: http://fixture.test", "requested_schema": {"description": "The form the human is shown.  One enum field, three options.", "properties": {"choice": {"description": "What to do with this action", "enum": ["allow_once", "trust_origin_session", "deny"], "title": "Choice", "type": "string"}}, "required": ["choice"], "title": "Choice", "type": "object"}, "mode": "form"}
+{"ts": 1787400852.058365, "event": "elicit_result", "raw": {"action": "accept", "data": {"choice": "allow_once"}}}
+{"ts": 1787400852.058447, "event": "tool_result", "result": {"action": "accept", "data": {"choice": "allow_once"}, "raw": {"action": "accept", "data": {"choice": "allow_once"}}}}
+{"ts": 1787400852.5953362, "event": "capability_check", "supported": true, "client_capabilities": {"elicitation": {"form": {}, "url": {}}}}
+{"ts": 1787400852.59543, "event": "elicit_request", "message": "Confirm navigate\nvalue:  http://evil.test/x\norigin: http://fixture.test", "requested_schema": {"description": "The form the human is shown.  One enum field, three options.", "properties": {"choice": {"description": "What to do with this action", "enum": ["allow_once", "trust_origin_session", "deny"], "title": "Choice", "type": "string"}}, "required": ["choice"], "title": "Choice", "type": "object"}, "mode": "form"}
+{"ts": 1787400852.5963435, "event": "elicit_result", "raw": {"action": "decline"}}
+{"ts": 1787400852.5963905, "event": "tool_result", "result": {"action": "decline", "data": null, "raw": {"action": "decline"}}}
+{"ts": 1787400853.0961947, "event": "capability_check", "supported": true, "client_capabilities": {"elicitation": {"form": {}, "url": {}}}}
+{"ts": 1787400853.0962906, "event": "elicit_request", "message": "Confirm navigate\nvalue:  http://evil.test/x\norigin: http://fixture.test", "requested_schema": {"description": "The form the human is shown.  One enum field, three options.", "properties": {"choice": {"description": "What to do with this action", "enum": ["allow_once", "trust_origin_session", "deny"], "title": "Choice", "type": "string"}}, "required": ["choice"], "title": "Choice", "type": "object"}, "mode": "form"}
+{"ts": 1787400853.0973504, "event": "elicit_result", "raw": {"action": "cancel"}}
+{"ts": 1787400853.0974007, "event": "tool_result", "result": {"action": "cancel", "data": null, "raw": {"action": "cancel"}}}
+{"ts": 1787400853.5869124, "event": "capability_check", "supported": false, "client_capabilities": {}}
+{"ts": 1787400853.587005, "event": "tool_result", "result": {"elicitation": "unsupported"}}
