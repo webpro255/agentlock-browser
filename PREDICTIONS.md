@@ -107,3 +107,32 @@ released gate can and cannot express.
   entries for the same URL).
 - T1 is unaffected: a URL always carries structural characters.
 - T2, T4, T5 are unaffected.
+
+## Amendment 2026-08-22b (append-only): redirect interception
+
+From probe/origin/REPORT.md: R1 (302 from allowlisted origin to
+evil.test) final page.url 'http://evil.test/landed', interceptor 0,
+evil.test hits ['/landed']. R2 (meta refresh) and R3 (JS href) denied
+with reason novel_lineage, channel MODEL, not PAGE.
+
+Mechanism change: (1) intercept HTTP redirects on main-frame navigation
+so a cross-origin redirect target is gated as navigate(url) with PAGE
+provenance; (2) any navigation the interceptor catches (redirect, meta,
+script, click) records its target as a PAGE(current origin) write
+before authorize().
+
+Predictions, post-fix, same harness as probe/origin:
+- R1: interceptor fires, deny reason param_lineage channel PAGE,
+  final page.url on fixture.test, evil.test hits [].
+- R2, R3: deny reason changes from novel_lineage to param_lineage,
+  channel PAGE. evil.test hits [] unchanged.
+- R2b, R3b (new): same as R2, R3 with a bland operator message
+  containing no distinctive token. Prediction: still deny,
+  param_lineage, PAGE. This is the case that currently fails open.
+- R4, R5: unchanged.
+- O1 through O20: unchanged, guard not touched.
+- T5: unchanged. Existing tests pass.
+- R1b (new): a 302 from an allowlisted origin to another path on the
+  same allowlisted origin: allow, no deny logged.
+
+Any other change in any recorded field is an audit trigger.
