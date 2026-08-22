@@ -285,3 +285,18 @@ every transcript:
 - Existing suites unchanged: T5, test_redirects, test_new_pages.
 
 Any other change in any recorded field is an audit trigger.
+
+## Amendment 2026-08-23c (append-only): capability check
+
+probe/elicit/REPORT.md records Claude Code advertising
+{"elicitation": {}} with neither form nor url, while the scripted
+ClientSession advertises both. Item 7 of 2026-08-23b would classify
+Claude Code as unavailable. Restated: the server treats form
+elicitation as available when client_capabilities.elicitation is
+present and either form is present or neither form nor url is
+present (modes unspecified, pre-split clients). It is unavailable
+when elicitation is absent, or when url is present and form is not.
+EL8 is unchanged (no elicitation at all). EL8b (new): a client
+advertising {"elicitation": {"url": {}}} only: deny, confirmation
+unavailable, no elicit_request logged. EL8c (new): a client
+advertising {"elicitation": {}}: treated as available; EL1 behavior.
