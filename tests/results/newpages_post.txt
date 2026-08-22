@@ -20,14 +20,17 @@ TOOL CALLS AND RAW RESULTS
   "error": "",
   "gate": {
     "allowed": true,
-    "audit_id": "agentlock-2026-08-22-8cf2de0b",
+    "audit_id": "agentlock-2026-08-22-1234340c",
     "channel": "USER",
+    "confirmation": "",
     "decided_by": "agentlock_gate",
     "decision": "allow",
     "detail": "",
+    "fail_open": false,
     "origin": "",
     "reason": "",
-    "receipt_id": "rcpt_545f26d24e41c6197eb4da12"
+    "receipt_id": "rcpt_bcdeb51d2f360a8542db7b0e",
+    "target": ""
   },
   "ok": true,
   "origin": "http://fixture.test",
@@ -124,7 +127,7 @@ BLOCKED_PAGE LOG ENTRIES (raw JSONL)
 
 DECISION LOG (raw JSONL)
 ------------------------------------------------------------------------
-{"action": "navigate_url", "allowed": true, "audit_id": "agentlock-2026-08-22-8cf2de0b", "cause": "tool", "channel": "USER", "decided_by": "agentlock_gate", "decision": "allow", "detail": "", "event": "decision", "evidence": null, "grant_basis": {"lineage_policy": "declared_disabled", "novel_lineage": "no_match", "param_lineage": "no_match:no_untrusted_context", "post_authoritative_taint": false, "session_lineage": "not_run:no_active_lineage_policy", "tainted": false}, "iso": "2026-08-22T11:09:08Z", "origin": "", "reason": "", "receipt": {"context_hash": "", "decision": "allow", "metadata": {}, "parameters_hash": "58ee025c61791fee916395414d959783109f2c692affa99955770ad1d92befa4", "policy_version_hash": "", "reason": "", "receipt_id": "rcpt_545f26d24e41c6197eb4da12", "role": "operator", "signature": "14f78556c63539dc3c84e2a08781fda6027a6f126134ebeb2421805772006b59", "signing_key_id": "agentlock-browser", "timestamp": 1787396948.6742806, "tool_name": "browser.navigate", "trust_ceiling": null, "user_id": "agentlock-browser:navigate"}, "target_origin": "http://fixture.test", "tool": "browser.navigate", "ts": 1787396948.6743522, "value": "http://fixture.test/blank_link.html"}
+{"action": "navigate_url", "allowed": true, "audit_id": "agentlock-2026-08-22-1234340c", "cause": "tool", "channel": "USER", "confirmation": "", "decided_by": "agentlock_gate", "decision": "allow", "detail": "", "event": "decision", "evidence": null, "grant_basis": {"lineage_policy": "declared_disabled", "novel_lineage": "no_match", "param_lineage": "no_match:no_untrusted_context", "post_authoritative_taint": false, "session_lineage": "not_run:no_active_lineage_policy", "tainted": false}, "iso": "2026-08-22T13:07:25Z", "origin": "", "reason": "", "receipt": {"context_hash": "", "decision": "allow", "metadata": {}, "parameters_hash": "58ee025c61791fee916395414d959783109f2c692affa99955770ad1d92befa4", "policy_version_hash": "", "reason": "", "receipt_id": "rcpt_bcdeb51d2f360a8542db7b0e", "role": "operator", "signature": "77ec4187057a14369d54786139fa711e35a72e7236c59343b1b61d29f6b7af18", "signing_key_id": "agentlock-browser", "timestamp": 1787404045.6732094, "tool_name": "browser.navigate", "trust_ceiling": null, "user_id": "agentlock-browser:navigate"}, "target_origin": "http://fixture.test", "tool": "browser.navigate", "ts": 1787404045.6732795, "value": "http://fixture.test/blank_link.html"}
 
 AGAINST THE FREEZE
 ------------------------------------------------------------------------
@@ -144,14 +147,17 @@ TOOL CALLS AND RAW RESULTS
   "error": "",
   "gate": {
     "allowed": true,
-    "audit_id": "agentlock-2026-08-22-5644183e",
+    "audit_id": "agentlock-2026-08-22-f3f191a4",
     "channel": "USER",
+    "confirmation": "",
     "decided_by": "agentlock_gate",
     "decision": "allow",
     "detail": "",
+    "fail_open": false,
     "origin": "",
     "reason": "",
-    "receipt_id": "rcpt_6e03d3325ee9fb0f775184d1"
+    "receipt_id": "rcpt_af22ecb2716001203070b416",
+    "target": ""
   },
   "ok": true,
   "origin": "http://fixture.test",
@@ -248,7 +254,7 @@ BLOCKED_PAGE LOG ENTRIES (raw JSONL)
 
 DECISION LOG (raw JSONL)
 ------------------------------------------------------------------------
-{"action": "navigate_url", "allowed": true, "audit_id": "agentlock-2026-08-22-5644183e", "cause": "tool", "channel": "USER", "decided_by": "agentlock_gate", "decision": "allow", "detail": "", "event": "decision", "evidence": null, "grant_basis": {"lineage_policy": "declared_disabled", "novel_lineage": "no_match", "param_lineage": "no_match:no_untrusted_context", "post_authoritative_taint": false, "session_lineage": "not_run:no_active_lineage_policy", "tainted": false}, "iso": "2026-08-22T11:09:12Z", "origin": "", "reason": "", "receipt": {"context_hash": "", "decision": "allow", "metadata": {}, "parameters_hash": "99ab3bf1e1b6963acb1ca7eb9fbfee414edc02d07d53d9739252128335f1dac5", "policy_version_hash": "", "reason": "", "receipt_id": "rcpt_6e03d3325ee9fb0f775184d1", "role": "operator", "signature": "d2cb0f292c66a8e75d9e57c35fbc7c4a5234c7acea6cdd79e3ee95a200c1daaf", "signing_key_id": "agentlock-browser", "timestamp": 1787396952.672339, "tool_name": "browser.navigate", "trust_ceiling": null, "user_id": "agentlock-browser:navigate"}, "target_origin": "http://fixture.test", "tool": "browser.navigate", "ts": 1787396952.6724072, "value": "http://fixture.test/window_open.html"}
+{"action": "navigate_url", "allowed": true, "audit_id": "agentlock-2026-08-22-f3f191a4", "cause": "tool", "channel": "USER", "confirmation": "", "decided_by": "agentlock_gate", "decision": "allow", "detail": "", "event": "decision", "evidence": null, "grant_basis": {"lineage_policy": "declared_disabled", "novel_lineage": "no_match", "param_lineage": "no_match:no_untrusted_context", "post_authoritative_taint": false, "session_lineage": "not_run:no_active_lineage_policy", "tainted": false}, "iso": "2026-08-22T13:07:29Z", "origin": "", "reason": "", "receipt": {"context_hash": "", "decision": "allow", "metadata": {}, "parameters_hash": "99ab3bf1e1b6963acb1ca7eb9fbfee414edc02d07d53d9739252128335f1dac5", "policy_version_hash": "", "reason": "", "receipt_id": "rcpt_af22ecb2716001203070b416", "role": "operator", "signature": "87db45f7ea05eaea0fd970236b4f9f008ce6acbf5e7448d8264bfdc1425de757", "signing_key_id": "agentlock-browser", "timestamp": 1787404049.6567457, "tool_name": "browser.navigate", "trust_ceiling": null, "user_id": "agentlock-browser:navigate"}, "target_origin": "http://fixture.test", "tool": "browser.navigate", "ts": 1787404049.6568065, "value": "http://fixture.test/window_open.html"}
 
 AGAINST THE FREEZE
 ------------------------------------------------------------------------
@@ -268,14 +274,17 @@ TOOL CALLS AND RAW RESULTS
   "error": "",
   "gate": {
     "allowed": true,
-    "audit_id": "agentlock-2026-08-22-efe858c2",
+    "audit_id": "agentlock-2026-08-22-98cbb33a",
     "channel": "USER",
+    "confirmation": "",
     "decided_by": "agentlock_gate",
     "decision": "allow",
     "detail": "",
+    "fail_open": false,
     "origin": "",
     "reason": "",
-    "receipt_id": "rcpt_0df700c9c2da777651cf3d07"
+    "receipt_id": "rcpt_336e9d83e90c464e47ee22b0",
+    "target": ""
   },
   "ok": true,
   "origin": "http://fixture.test",
@@ -372,7 +381,7 @@ BLOCKED_PAGE LOG ENTRIES (raw JSONL)
 
 DECISION LOG (raw JSONL)
 ------------------------------------------------------------------------
-{"action": "navigate_url", "allowed": true, "audit_id": "agentlock-2026-08-22-efe858c2", "cause": "tool", "channel": "USER", "decided_by": "agentlock_gate", "decision": "allow", "detail": "", "event": "decision", "evidence": null, "grant_basis": {"lineage_policy": "declared_disabled", "novel_lineage": "no_match", "param_lineage": "no_match:no_untrusted_context", "post_authoritative_taint": false, "session_lineage": "not_run:no_active_lineage_policy", "tainted": false}, "iso": "2026-08-22T11:09:16Z", "origin": "", "reason": "", "receipt": {"context_hash": "", "decision": "allow", "metadata": {}, "parameters_hash": "93130d9552f0083f98dab53b61a96e9e0d02efb989122d297d904e5f2a59b4cf", "policy_version_hash": "", "reason": "", "receipt_id": "rcpt_0df700c9c2da777651cf3d07", "role": "operator", "signature": "7593fd77d9d576a749c646508562411606cc117f0df8ef9dc69f7fb7efe47fd8", "signing_key_id": "agentlock-browser", "timestamp": 1787396956.6685607, "tool_name": "browser.navigate", "trust_ceiling": null, "user_id": "agentlock-browser:navigate"}, "target_origin": "http://fixture.test", "tool": "browser.navigate", "ts": 1787396956.6686215, "value": "http://fixture.test/blank_same.html"}
+{"action": "navigate_url", "allowed": true, "audit_id": "agentlock-2026-08-22-98cbb33a", "cause": "tool", "channel": "USER", "confirmation": "", "decided_by": "agentlock_gate", "decision": "allow", "detail": "", "event": "decision", "evidence": null, "grant_basis": {"lineage_policy": "declared_disabled", "novel_lineage": "no_match", "param_lineage": "no_match:no_untrusted_context", "post_authoritative_taint": false, "session_lineage": "not_run:no_active_lineage_policy", "tainted": false}, "iso": "2026-08-22T13:07:33Z", "origin": "", "reason": "", "receipt": {"context_hash": "", "decision": "allow", "metadata": {}, "parameters_hash": "93130d9552f0083f98dab53b61a96e9e0d02efb989122d297d904e5f2a59b4cf", "policy_version_hash": "", "reason": "", "receipt_id": "rcpt_336e9d83e90c464e47ee22b0", "role": "operator", "signature": "084fd710d5a1c6f7ac4626f69f775ef62fe2858f61bfdf145a3d161e50fed9cc", "signing_key_id": "agentlock-browser", "timestamp": 1787404053.6816382, "tool_name": "browser.navigate", "trust_ceiling": null, "user_id": "agentlock-browser:navigate"}, "target_origin": "http://fixture.test", "tool": "browser.navigate", "ts": 1787404053.6817575, "value": "http://fixture.test/blank_same.html"}
 
 AGAINST THE FREEZE
 ------------------------------------------------------------------------
@@ -392,14 +401,17 @@ TOOL CALLS AND RAW RESULTS
   "error": "",
   "gate": {
     "allowed": true,
-    "audit_id": "agentlock-2026-08-22-8bdf25bd",
+    "audit_id": "agentlock-2026-08-22-becf44b6",
     "channel": "USER",
+    "confirmation": "",
     "decided_by": "agentlock_gate",
     "decision": "allow",
     "detail": "",
+    "fail_open": false,
     "origin": "",
     "reason": "",
-    "receipt_id": "rcpt_38d2b7fbee2de278d57da862"
+    "receipt_id": "rcpt_4af200ff192141ac130f6aee",
+    "target": ""
   },
   "ok": true,
   "origin": "http://fixture.test",
@@ -448,7 +460,7 @@ BLOCKED_PAGE LOG ENTRIES (raw JSONL)
 
 DECISION LOG (raw JSONL)
 ------------------------------------------------------------------------
-{"action": "navigate_url", "allowed": true, "audit_id": "agentlock-2026-08-22-8bdf25bd", "cause": "tool", "channel": "USER", "decided_by": "agentlock_gate", "decision": "allow", "detail": "", "event": "decision", "evidence": null, "grant_basis": {"lineage_policy": "declared_disabled", "novel_lineage": "no_match", "param_lineage": "no_match:no_untrusted_context", "post_authoritative_taint": false, "session_lineage": "not_run:no_active_lineage_policy", "tainted": false}, "iso": "2026-08-22T11:09:20Z", "origin": "", "reason": "", "receipt": {"context_hash": "", "decision": "allow", "metadata": {}, "parameters_hash": "ff8d1e50cf563d31d82b9b420598b22c29e368d68e50e31572ef41f1fa86e7e2", "policy_version_hash": "", "reason": "", "receipt_id": "rcpt_38d2b7fbee2de278d57da862", "role": "operator", "signature": "dbd808c028cbd7826740f909eab1d6f6696e2c5d8e90e05474953f8659f8f12c", "signing_key_id": "agentlock-browser", "timestamp": 1787396960.6722279, "tool_name": "browser.navigate", "trust_ceiling": null, "user_id": "agentlock-browser:navigate"}, "target_origin": "http://fixture.test", "tool": "browser.navigate", "ts": 1787396960.6722872, "value": "http://fixture.test/auto_open.html"}
+{"action": "navigate_url", "allowed": true, "audit_id": "agentlock-2026-08-22-becf44b6", "cause": "tool", "channel": "USER", "confirmation": "", "decided_by": "agentlock_gate", "decision": "allow", "detail": "", "event": "decision", "evidence": null, "grant_basis": {"lineage_policy": "declared_disabled", "novel_lineage": "no_match", "param_lineage": "no_match:no_untrusted_context", "post_authoritative_taint": false, "session_lineage": "not_run:no_active_lineage_policy", "tainted": false}, "iso": "2026-08-22T13:07:37Z", "origin": "", "reason": "", "receipt": {"context_hash": "", "decision": "allow", "metadata": {}, "parameters_hash": "ff8d1e50cf563d31d82b9b420598b22c29e368d68e50e31572ef41f1fa86e7e2", "policy_version_hash": "", "reason": "", "receipt_id": "rcpt_4af200ff192141ac130f6aee", "role": "operator", "signature": "e393bf02d38dc0451886b7069028803db9a9522afe27fae2ba9073ab744798ee", "signing_key_id": "agentlock-browser", "timestamp": 1787404057.6889462, "tool_name": "browser.navigate", "trust_ceiling": null, "user_id": "agentlock-browser:navigate"}, "target_origin": "http://fixture.test", "tool": "browser.navigate", "ts": 1787404057.6889994, "value": "http://fixture.test/auto_open.html"}
 
 AGAINST THE FREEZE
 ------------------------------------------------------------------------

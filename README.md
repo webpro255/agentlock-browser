@@ -75,9 +75,21 @@ pip install -e .
 python -m playwright install chromium
 ```
 
-## Add to Claude Desktop
+## Add to an MCP client
 
-`claude_desktop_config.json`:
+This is a plain MCP stdio server. Any MCP client can use the browsing tools,
+and the provenance gate works the same in all of them: it runs inside this
+server and does not depend on anything the client does.
+
+```bash
+claude mcp add agentlock-browser \
+  --env AGENTLOCK_BROWSER_ALLOWLIST=https://example.com,https://docs.python.org \
+  --env "AGENTLOCK_BROWSER_OPERATOR_TEXT=research the docs and summarize them" \
+  --env AGENTLOCK_BROWSER_LOG=/home/you/agentlock-browser.jsonl \
+  -- agentlock-browser
+```
+
+For a client configured by file, the same thing as JSON:
 
 ```json
 {
@@ -98,6 +110,24 @@ python -m playwright install chromium
 (`allowlist`, `operator_text`, `log_path`, `headless`, …); the environment wins
 over the file. The browser runs headless unless
 `AGENTLOCK_BROWSER_HEADLESS=0`.
+
+### What your client needs for human confirmation
+
+Human confirmation is the one feature that depends on the client. It rides on
+MCP elicitation, so the client has to implement form elicitation **and** put
+the form in front of a person rather than answering it itself.
+
+That has been measured on exactly one client, Claude Code
+(`probe/elicit/REPORT.md`): it rendered the prompt to a human, the accept
+button produced `accept` with the chosen option, and the Escape key produced
+`cancel`. Claude Desktop, Cursor, VS Code and every other client are
+**unmeasured**. Nothing here claims what they do.
+
+A client that does not offer form elicitation loses nothing else. Browsing
+works, and every channel rule still holds: a URL or value on USER or ALLOWLIST
+is allowed, one on PAGE or MODEL is denied, and the denial carries
+`confirmation: "unavailable"` so the model can say why rather than retrying.
+That is the 0.1.0 behaviour, unchanged.
 
 ## Tools
 
@@ -247,8 +277,9 @@ modes-unspecified case is not a guess: `probe/elicit/REPORT.md` measured
 Claude Code advertising `{"elicitation": {}}` while rendering a form to a
 person, where the SDK's own client advertises both modes.
 
-Claude Desktop is **unmeasured**. No installation was available, so nothing is
-claimed about what it renders.
+Every other client is **unmeasured**, Claude Desktop, Cursor and VS Code
+included. No other installation was available to test against, so nothing is
+claimed about what they render.
 
 A navigation the page itself caused (a click, a redirect, a meta refresh, a
 script) does not ask. It is denied as before, and the result now names the
