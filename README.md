@@ -268,7 +268,16 @@ Found while building v0, and not yet closed:
   whatever it likes on its own behalf. What is defended is the agent being
   driven to act at the top-level document, not the page being prevented from
   using the network.
-- **One tab.** `target="_blank"` and popups are not handled in v0.
+- **One tab, enforced.** New top-level pages are blocked at the browser level:
+  chromium is launched with `--block-new-web-contents`, so a `target="_blank"`
+  link or a `window.open` call creates nothing. Any page that appears anyway is
+  closed by a context listener and recorded in the log as
+  `{"event": "blocked_page", "url": ...}`, never handed to a tool. This is not
+  a filter on where the popup was going: same-origin popups are blocked too, so
+  a legitimate `target="_blank"` link on the operator's own site does not open
+  either. Before this, such a page was outside the Fetch interceptor entirely
+  and loaded whatever it liked (`probe/popup/REPORT.md`).
+  `tests/test_new_pages.py` is the regression.
 
 ## License
 

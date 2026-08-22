@@ -56,6 +56,7 @@ class BrowserService:
     async def start(self) -> None:
         await self.browser.start()
         self.browser.on_cross_origin = self._authorize_intercepted
+        self.browser.on_new_page = self._record_blocked_page
 
     async def close(self) -> None:
         await self.browser.close()
@@ -101,6 +102,16 @@ class BrowserService:
         )
         self._intercepted.append(decision)
         return decision.allowed
+
+    def _record_blocked_page(self, url: str) -> None:
+        """A new top-level page appeared and was closed.
+
+        Not a gate decision: nothing was authorized or denied, so this is
+        logged under its own event rather than as a decision the gate made.
+        Chromium is launched with the new-page flag, so reaching this at all
+        means the flag let something through.
+        """
+        self.gate.log.write("blocked_page", url=url, decided_by="server:one_tab")
 
     # -- page-content provenance ------------------------------------------
 

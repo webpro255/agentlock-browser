@@ -117,6 +117,14 @@ _FETCH_PATTERNS = [
     {"urlPattern": "*", "resourceType": "Document", "requestStage": "Request"}
 ]
 
+#: One tab, enforced at launch.  The Fetch interceptor is attached to one
+#: page, so a second top-level page is not gated by it at all: probe/popup
+#: recorded a ``target="_blank"`` link, a ``window.open`` on click, and a
+#: ``window.open`` on load each loading evil.test with the interceptor never
+#: firing and no decision reaching the log.  This flag makes the renderer
+#: refuse to create such a page in the first place.
+_BLOCK_NEW_PAGES_ARG = "--block-new-web-contents"
+
 #: A denied navigation is answered with 204, not failed.  Measured in
 #: probe/cdp/REPORT.md: ``Fetch.failRequest`` leaves the page on
 #: ``chrome-error://chromewebdata/`` even when a document was committed
@@ -169,6 +177,12 @@ class BrowserSession:
         self.on_cross_origin: Any = None
         #: Intercepted-and-refused targets since the last read, for reporting.
         self.blocked: list[str] = []
+        #: Called with the url of a new top-level page that appeared anyway.
+        #: Installed by the server, which logs it.  The page is closed either
+        #: way; this only decides whether the closure is recorded.
+        self.on_new_page: Any = None
+        #: Urls of pages closed by that listener, for reporting.
+        self.blocked_pages: list[str] = []
         #: Anything the interceptor itself failed on.  Recorded rather than
         #: swallowed: the handler fails closed, so a bug here stops browsing
         #: rather than quietly letting a navigation through.
@@ -184,9 +198,12 @@ class BrowserSession:
 
     async def start(self) -> None:
         self._pw = await async_playwright().start()
+        args = list(self.config.chromium_args)
+        if _BLOCK_NEW_PAGES_ARG not in args:
+            args.append(_BLOCK_NEW_PAGES_ARG)
         self._browser = await self._pw.chromium.launch(
             headless=self.config.headless,
-            args=list(self.config.chromium_args),
+            args=args,
         )
         self._context = await self._browser.new_context(
             user_agent=self.config.user_agent,
@@ -197,6 +214,9 @@ class BrowserSession:
         self.page.on("framenavigated", self._on_frame_navigated)
 
         self._loop = asyncio.get_running_loop()
+        # Registered after self.page exists, so the listener never sees the
+        # page this session owns.
+        self._context.on("page", self._on_new_page)
         self._cdp = await self._context.new_cdp_session(self.page)
         frame_tree = await self._cdp.send("Page.getFrameTree")
         self._main_frame_id = frame_tree["frameTree"]["frame"]["id"]
@@ -224,6 +244,39 @@ class BrowserSession:
         if self.page is not None and frame == self.page.main_frame:
             self.epoch += 1
             self.snapshot_ids = {}
+
+    def _on_new_page(self, page: Any) -> None:
+        """A second top-level page appeared.  Close it.
+
+        ``--block-new-web-contents`` should mean this never fires.  It is here
+        because a launch flag is an assumption about chromium, and the one-tab
+        rule should not rest on one: anything the flag misses is closed here
+        and recorded.  The page is never handed to a tool, never snapshotted,
+        and never becomes ``self.page``.
+        """
+        if page is self.page:
+            return
+        if self._loop is not None:
+            self._loop.create_task(self._close_new_page(page))
+
+    async def _close_new_page(self, page: Any) -> None:
+        """Close a page that appeared anyway, and record that it was closed.
+
+        Fails closed: an exception here is appended to ``interceptor_errors``
+        rather than swallowed, because a page this session cannot close is a
+        page outside everything the gate decides.
+        """
+        url = ""
+        try:
+            url = page.url
+            self.blocked_pages.append(url)
+            if self.on_new_page is not None:
+                self.on_new_page(url)
+            await page.close()
+        except Exception as exc:  # noqa: BLE001 - recorded, never swallowed
+            self.interceptor_errors.append(
+                f"{type(exc).__name__}: {exc} (closing new page {url!r})"
+            )
 
     def _on_request_paused(self, event: dict[str, Any]) -> None:
         """CDP hands this to us synchronously; the decision runs as a task.
