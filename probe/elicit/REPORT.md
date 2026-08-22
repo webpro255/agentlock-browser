@@ -314,23 +314,41 @@ E4's log has two lines only, `capability_check` and `tool_result`. No
 
 Negotiated protocol version in all four cases: `2025-11-25`.
 
-## 3. Real clients (manual, to be filled in)
+## 3. Real clients (manual)
 
-Steps: `probe/elicit/MANUAL.md`. Not yet run.
+Steps: `probe/elicit/MANUAL.md`. Run by the operator, not by the probe.
 
 ### Claude Desktop
 
-- What appeared on screen:
-- What was clicked:
-- What happened on dismissal rather than an answer:
-- `log_desktop.jsonl` lines:
+Not measured, no installation available.
 
 ### Claude Code
 
-- What appeared on screen:
-- What was clicked:
-- What happened on dismissal rather than an answer:
-- `log_code.jsonl` lines:
+Two runs against the same toy server, one server process, log
+`scratchpad/elicit/log_code.jsonl`.
+
+- What appeared on screen: a prompt showing `Confirm navigate`, the value, the
+  origin, a `choice: not set` field, and accept and decline buttons.
+- Run 1: the human set `choice` to `allow_once` and accepted. Result
+  `{"action": "accept", "data": {"choice": "allow_once"}}`.
+- Run 2: the human pressed Escape. Result
+  `{"action": "cancel", "data": null}`.
+
+Time from `elicit_request` to `elicit_result`, computed from the timestamps
+in the lines below: run 1 **145.82 s**, run 2 **3.67 s**.
+
+`log_code.jsonl`, verbatim:
+
+```
+{"ts": 1787401622.557482, "event": "capability_check", "supported": true, "client_capabilities": {"elicitation": {}, "roots": {"listChanged": true}}}
+{"ts": 1787401622.5576684, "event": "elicit_request", "message": "Confirm navigate\nvalue:  http://evil.test/x\norigin: http://fixture.test", "requested_schema": {"description": "The form the human is shown.  One enum field, three options.", "properties": {"choice": {"description": "What to do with this action", "enum": ["allow_once", "trust_origin_session", "deny"], "title": "Choice", "type": "string"}}, "required": ["choice"], "title": "Choice", "type": "object"}, "mode": "form"}
+{"ts": 1787401768.3810427, "event": "elicit_result", "raw": {"action": "accept", "data": {"choice": "allow_once"}}}
+{"ts": 1787401768.381246, "event": "tool_result", "result": {"action": "accept", "data": {"choice": "allow_once"}, "raw": {"action": "accept", "data": {"choice": "allow_once"}}}}
+{"ts": 1787401840.0171673, "event": "capability_check", "supported": true, "client_capabilities": {"elicitation": {}, "roots": {"listChanged": true}}}
+{"ts": 1787401840.0198264, "event": "elicit_request", "message": "Confirm navigate\nvalue:  http://evil.test/x\norigin: http://fixture.test", "requested_schema": {"description": "The form the human is shown.  One enum field, three options.", "properties": {"choice": {"description": "What to do with this action", "enum": ["allow_once", "trust_origin_session", "deny"], "title": "Choice", "type": "string"}}, "required": ["choice"], "title": "Choice", "type": "object"}, "mode": "form"}
+{"ts": 1787401843.686245, "event": "elicit_result", "raw": {"action": "cancel"}}
+{"ts": 1787401843.6863801, "event": "tool_result", "result": {"action": "cancel", "data": null, "raw": {"action": "cancel"}}}
+```
 
 ## Observed, not interpreted
 
@@ -374,6 +392,48 @@ Two details in that path, both pasted above rather than inferred:
   `elicitation_callback` was supplied, and then always advertises both form
   and url (`mcp/client/session.py:596-600`). E4 advertised `{}` because no
   callback was passed.
+
+### Escape produced cancel, not decline
+
+Claude Code run 2: the human pressed Escape and the client returned
+`{"action": "cancel"}`, not `{"action": "decline"}`. The prompt carried an
+explicit decline button, which was not the button pressed. So on this client
+the two are reachable by different gestures, and dismissal is the one that
+maps to `cancel`.
+
+### The deny option inside the enum produces an accept-shaped result
+
+The toy form put `deny` in the enum alongside `allow_once` and
+`trust_origin_session`. Choosing it and submitting is a submission: the client
+returns `action` `"accept"` with `data.choice` `"deny"`, which is shaped
+exactly like a grant and is distinguishable only by reading the payload. That
+path was not exercised in either run, and it follows from the schema rather
+than from a measurement. The option is dropped from the design; the client's
+own decline is the no.
+
+### The elicitation blocked the tool call for the full human response time
+
+`confirm_action` did not return until the human answered. Run 1 held the tool
+call for 145.82 s, run 2 for 3.67 s, measured from `elicit_request` to
+`elicit_result` in the log lines above. Nothing in the SDK path timed out or
+intervened.
+
+### Claude Code advertised elicitation with no mode sub-flag
+
+Both `capability_check` lines from Claude Code recorded:
+
+```
+"client_capabilities": {"elicitation": {}, "roots": {"listChanged": true}}
+```
+
+`elicitation` is an empty object. The scripted `ClientSession` in E1 to E3
+advertised `{"elicitation": {"form": {}, "url": {}}}` instead. Both clients
+rendered form mode, and Claude Code did so with `form` absent from what it
+declared. A check written against `client_capabilities.elicitation.form`
+would read `None` for Claude Code; the coarse
+`check_client_capability(ClientCapabilities(elicitation=ElicitationCapability()))`
+returned `supported: true` for it, which is the value pasted in those same
+two lines.
 
 ### Harness note
 
