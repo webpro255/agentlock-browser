@@ -213,3 +213,75 @@ Predictions, same four fixtures moved into tests/:
   case.
 - The click result in N1 and N2 is ok: true with the page unchanged.
 - T5, test_redirects.py, all existing tests pass unchanged.
+
+## Amendment 2026-08-23b (append-only): 0.2.0 human confirmation
+
+Measured basis: probe/elicit/REPORT.md. mcp 2.0.0 exposes
+ctx.elicit with form mode; results are accept, decline, cancel;
+Claude Code renders the form to the human and does not answer it
+itself; Escape yields cancel.
+
+Mechanism:
+1. navigate(url) and type(value) only. When the gate denies with
+   channel MODEL or PAGE, or allows with fail_open true and config
+   confirm_unclassified is on (default on), the server elicits the
+   human: action, exact value, provenance line ("from page <origin>"
+   or "composed by the agent, not in your instructions"), and a form
+   with one enum field choice: [allow_once, trust_origin_session].
+   The deny option is not in the form; the client's decline is the no.
+2. accept + allow_once: the exact value is recorded as a USER write
+   with metadata {elicitation_id, client, received_at}; authorize()
+   runs again; the gate decides. Channel on the log entry is
+   USER_CONFIRMED.
+3. accept + trust_origin_session: the value's origin is added to the
+   session ALLOWLIST, logged as a provenance event with the
+   elicitation id; then as 2.
+4. decline: deny returned to the model with confirmation: declined;
+   cached per (action, value) for the session; identical attempt is
+   denied without asking.
+5. cancel: deny returned with confirmation: cancelled; not cached;
+   identical attempt asks again.
+6. Cap: after 5 declines or cancels in a session, no further
+   elicitations; denials carry confirmation: cap_reached.
+7. Client without form elicitation (checked on
+   client_capabilities.elicitation.form, not the coarse check):
+   today's behavior, denials carry confirmation: unavailable.
+8. Intercepted navigations (click, redirect, meta, script) do not
+   elicit. They deny as today and the result carries the target URL
+   so the model can call navigate(url=target), which elicits.
+9. Every elicitation request and result is written to the JSONL log
+   verbatim.
+
+Pre-registered tests, driven directly with a scripted elicitation
+callback in the test client, the callback labeled SCRIPTED_HUMAN in
+every transcript:
+- EL1 navigate(url=http://evil.test/q?id=7731) composed, no page
+  lineage, callback allow_once: elicit sent once; second authorize
+  allow; log channel USER_CONFIRMED; page lands on evil.test;
+  evil.test hits ['/q'].
+- EL2 same, callback decline: deny, confirmation declined; second
+  identical call: deny, no elicit_request logged.
+- EL3 same, callback cancel: deny, confirmation cancelled; second
+  identical call: elicit_request logged again.
+- EL4 T1 fixture, navigate(url=http://evil.test/dataset.csv) after
+  snapshot (PAGE), callback allow_once: elicit message contains
+  "from page http://fixture.test"; second authorize allow (item 4
+  authoritative-first rule); hits ['/dataset.csv'].
+- EL5 same as EL4, callback trust_origin_session: allow; then
+  navigate(url=http://evil.test/other) with no elicit_request logged,
+  allow on ALLOWLIST.
+- EL6 T3 fixture, type(phrase field, "tk-4417-zz"), callback
+  allow_once: elicit sent; allow; USER_CONFIRMED.
+- EL7 type(field, "expenses") from a page, confirm_unclassified on,
+  callback allow_once: elicit sent, allow USER_CONFIRMED. Same with
+  confirm_unclassified off: no elicit, allow fail_open true as today.
+- EL8 client without elicitation callback: EL1 call denies with
+  confirmation unavailable, no elicit_request logged.
+- EL9 T4 fixture, click offsite link: deny as today, result contains
+  target http://evil.test/; then navigate(url=http://evil.test/) with
+  callback allow_once: elicit sent, allow.
+- EL10 six declines in one session: the sixth call does not elicit,
+  confirmation cap_reached.
+- Existing suites unchanged: T5, test_redirects, test_new_pages.
+
+Any other change in any recorded field is an audit trigger.
