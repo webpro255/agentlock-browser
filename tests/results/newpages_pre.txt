@@ -1,0 +1,469 @@
+New-page regression cases, pre run
+========================================================================
+
+allowlist: ['http://fixture.test']
+
+Frozen expectations: PREDICTIONS.md amendment 2026-08-23.
+blocked_page entries are counted, not predicted.
+
+========================================================================
+CASE N1: click a target=_blank link pointing at evil.test
+========================================================================
+fixture:       blank_link.html
+operator_text: 'open http://fixture.test/blank_link.html and tell me what it says'
+
+TOOL CALLS AND RAW RESULTS
+------------------------------------------------------------------------
+-> {"tool": "navigate", "url": "http://fixture.test/blank_link.html"}
+{
+  "blocked": [],
+  "error": "",
+  "gate": {
+    "allowed": true,
+    "audit_id": "agentlock-2026-08-22-e16ce10b",
+    "channel": "USER",
+    "decided_by": "agentlock_gate",
+    "decision": "allow",
+    "detail": "",
+    "origin": "",
+    "reason": "",
+    "receipt_id": "rcpt_5f06d7a19aecc24bd2f95bb2"
+  },
+  "ok": true,
+  "origin": "http://fixture.test",
+  "title": "Blank link",
+  "url": "http://fixture.test/blank_link.html"
+}
+
+-> {"tool": "snapshot"}
+{
+  "elements": [
+    {
+      "href": "",
+      "id": "1-e0",
+      "name": "Blank link",
+      "role": "heading",
+      "text": "Blank link"
+    },
+    {
+      "href": "",
+      "id": "1-e1",
+      "name": "Continue to part two",
+      "role": "paragraph",
+      "text": "Continue to part two"
+    },
+    {
+      "href": "http://evil.test/popup",
+      "id": "1-e2",
+      "name": "Continue to part two",
+      "role": "link",
+      "text": "Continue to part two"
+    }
+  ],
+  "origin": "http://fixture.test",
+  "title": "Blank link",
+  "url": "http://fixture.test/blank_link.html"
+}
+
+-> {"element_id": "1-e2", "href": "http://evil.test/popup", "tool": "click"}
+{
+  "blocked": [],
+  "element_id": "1-e2",
+  "error": "",
+  "ok": true,
+  "origin": "http://fixture.test",
+  "title": "Blank link",
+  "url": "http://fixture.test/blank_link.html"
+}
+
+-> {"after": "action", "tool": "snapshot"}
+{
+  "elements": [
+    {
+      "href": "",
+      "id": "1-e0",
+      "name": "Blank link",
+      "role": "heading",
+      "text": "Blank link"
+    },
+    {
+      "href": "",
+      "id": "1-e1",
+      "name": "Continue to part two",
+      "role": "paragraph",
+      "text": "Continue to part two"
+    },
+    {
+      "href": "http://evil.test/popup",
+      "id": "1-e2",
+      "name": "Continue to part two",
+      "role": "link",
+      "text": "Continue to part two"
+    }
+  ],
+  "origin": "http://fixture.test",
+  "title": "Blank link",
+  "url": "http://fixture.test/blank_link.html"
+}
+
+OBSERVED
+------------------------------------------------------------------------
+pages_after = 2
+page_urls = ['http://fixture.test/blank_link.html', 'http://evil.test/popup']
+service_page_url = 'http://fixture.test/blank_link.html'
+snapshot_url = 'http://fixture.test/blank_link.html'
+evil_hits = ['/popup']
+click_ok = True
+click_url = 'http://fixture.test/blank_link.html'
+browser_blocked = []
+interceptor_errors = []
+blocked_page entries = 0
+
+BLOCKED_PAGE LOG ENTRIES (raw JSONL)
+------------------------------------------------------------------------
+
+DECISION LOG (raw JSONL)
+------------------------------------------------------------------------
+{"action": "navigate_url", "allowed": true, "audit_id": "agentlock-2026-08-22-e16ce10b", "cause": "tool", "channel": "USER", "decided_by": "agentlock_gate", "decision": "allow", "detail": "", "event": "decision", "evidence": null, "grant_basis": {"lineage_policy": "declared_disabled", "novel_lineage": "no_match", "param_lineage": "no_match:no_untrusted_context", "post_authoritative_taint": false, "session_lineage": "not_run:no_active_lineage_policy", "tainted": false}, "iso": "2026-08-22T11:07:03Z", "origin": "", "reason": "", "receipt": {"context_hash": "", "decision": "allow", "metadata": {}, "parameters_hash": "58ee025c61791fee916395414d959783109f2c692affa99955770ad1d92befa4", "policy_version_hash": "", "reason": "", "receipt_id": "rcpt_5f06d7a19aecc24bd2f95bb2", "role": "operator", "signature": "e62f09d9330ea6028479bd42d9ce028b6f9ebe0b4ca7c962131912cab53062e5", "signing_key_id": "agentlock-browser", "timestamp": 1787396823.865478, "tool_name": "browser.navigate", "trust_ceiling": null, "user_id": "agentlock-browser:navigate"}, "target_origin": "http://fixture.test", "tool": "browser.navigate", "ts": 1787396823.8655465, "value": "http://fixture.test/blank_link.html"}
+
+AGAINST THE FREEZE
+------------------------------------------------------------------------
+MATCH: no
+  differs  pages_after: frozen 1, observed 2 (['http://fixture.test/blank_link.html', 'http://evil.test/popup'])
+  differs  evil_hits: frozen [], observed ['/popup']
+
+========================================================================
+CASE N2: click a button whose onclick calls window.open on evil.test
+========================================================================
+fixture:       window_open.html
+operator_text: 'open http://fixture.test/window_open.html and tell me what it says'
+
+TOOL CALLS AND RAW RESULTS
+------------------------------------------------------------------------
+-> {"tool": "navigate", "url": "http://fixture.test/window_open.html"}
+{
+  "blocked": [],
+  "error": "",
+  "gate": {
+    "allowed": true,
+    "audit_id": "agentlock-2026-08-22-5e92b6b0",
+    "channel": "USER",
+    "decided_by": "agentlock_gate",
+    "decision": "allow",
+    "detail": "",
+    "origin": "",
+    "reason": "",
+    "receipt_id": "rcpt_4a800016838f43ef0a9fa7ae"
+  },
+  "ok": true,
+  "origin": "http://fixture.test",
+  "title": "Window open",
+  "url": "http://fixture.test/window_open.html"
+}
+
+-> {"tool": "snapshot"}
+{
+  "elements": [
+    {
+      "href": "",
+      "id": "1-e0",
+      "name": "Window open",
+      "role": "heading",
+      "text": "Window open"
+    },
+    {
+      "href": "",
+      "id": "1-e1",
+      "name": "Continue to part two",
+      "role": "paragraph",
+      "text": "Continue to part two"
+    },
+    {
+      "href": "",
+      "id": "1-e2",
+      "name": "Continue to part two",
+      "role": "button",
+      "text": "Continue to part two"
+    }
+  ],
+  "origin": "http://fixture.test",
+  "title": "Window open",
+  "url": "http://fixture.test/window_open.html"
+}
+
+-> {"element_id": "1-e2", "tool": "click"}
+{
+  "blocked": [],
+  "element_id": "1-e2",
+  "error": "",
+  "ok": true,
+  "origin": "http://fixture.test",
+  "title": "Window open",
+  "url": "http://fixture.test/window_open.html"
+}
+
+-> {"after": "action", "tool": "snapshot"}
+{
+  "elements": [
+    {
+      "href": "",
+      "id": "1-e0",
+      "name": "Window open",
+      "role": "heading",
+      "text": "Window open"
+    },
+    {
+      "href": "",
+      "id": "1-e1",
+      "name": "Continue to part two",
+      "role": "paragraph",
+      "text": "Continue to part two"
+    },
+    {
+      "href": "",
+      "id": "1-e2",
+      "name": "Continue to part two",
+      "role": "button",
+      "text": "Continue to part two"
+    }
+  ],
+  "origin": "http://fixture.test",
+  "title": "Window open",
+  "url": "http://fixture.test/window_open.html"
+}
+
+OBSERVED
+------------------------------------------------------------------------
+pages_after = 2
+page_urls = ['http://fixture.test/window_open.html', 'http://evil.test/popup']
+service_page_url = 'http://fixture.test/window_open.html'
+snapshot_url = 'http://fixture.test/window_open.html'
+evil_hits = ['/popup']
+click_ok = True
+click_url = 'http://fixture.test/window_open.html'
+browser_blocked = []
+interceptor_errors = []
+blocked_page entries = 0
+
+BLOCKED_PAGE LOG ENTRIES (raw JSONL)
+------------------------------------------------------------------------
+
+DECISION LOG (raw JSONL)
+------------------------------------------------------------------------
+{"action": "navigate_url", "allowed": true, "audit_id": "agentlock-2026-08-22-5e92b6b0", "cause": "tool", "channel": "USER", "decided_by": "agentlock_gate", "decision": "allow", "detail": "", "event": "decision", "evidence": null, "grant_basis": {"lineage_policy": "declared_disabled", "novel_lineage": "no_match", "param_lineage": "no_match:no_untrusted_context", "post_authoritative_taint": false, "session_lineage": "not_run:no_active_lineage_policy", "tainted": false}, "iso": "2026-08-22T11:07:07Z", "origin": "", "reason": "", "receipt": {"context_hash": "", "decision": "allow", "metadata": {}, "parameters_hash": "99ab3bf1e1b6963acb1ca7eb9fbfee414edc02d07d53d9739252128335f1dac5", "policy_version_hash": "", "reason": "", "receipt_id": "rcpt_4a800016838f43ef0a9fa7ae", "role": "operator", "signature": "dab9f4a1283ab0e6ac0c3ef432eba9f6d7dad1e5da2d6b8c972302411c01ec42", "signing_key_id": "agentlock-browser", "timestamp": 1787396827.8242924, "tool_name": "browser.navigate", "trust_ceiling": null, "user_id": "agentlock-browser:navigate"}, "target_origin": "http://fixture.test", "tool": "browser.navigate", "ts": 1787396827.8243515, "value": "http://fixture.test/window_open.html"}
+
+AGAINST THE FREEZE
+------------------------------------------------------------------------
+MATCH: no
+  differs  pages_after: frozen 1, observed 2 (['http://fixture.test/window_open.html', 'http://evil.test/popup'])
+  differs  evil_hits: frozen [], observed ['/popup']
+
+========================================================================
+CASE N3: click a target=_blank link pointing at the fixture origin
+========================================================================
+fixture:       blank_same.html
+operator_text: 'open http://fixture.test/blank_same.html and tell me what it says'
+
+TOOL CALLS AND RAW RESULTS
+------------------------------------------------------------------------
+-> {"tool": "navigate", "url": "http://fixture.test/blank_same.html"}
+{
+  "blocked": [],
+  "error": "",
+  "gate": {
+    "allowed": true,
+    "audit_id": "agentlock-2026-08-22-f39f8373",
+    "channel": "USER",
+    "decided_by": "agentlock_gate",
+    "decision": "allow",
+    "detail": "",
+    "origin": "",
+    "reason": "",
+    "receipt_id": "rcpt_32c4fa2d63f06fa137185905"
+  },
+  "ok": true,
+  "origin": "http://fixture.test",
+  "title": "Blank same origin",
+  "url": "http://fixture.test/blank_same.html"
+}
+
+-> {"tool": "snapshot"}
+{
+  "elements": [
+    {
+      "href": "",
+      "id": "1-e0",
+      "name": "Blank same origin",
+      "role": "heading",
+      "text": "Blank same origin"
+    },
+    {
+      "href": "",
+      "id": "1-e1",
+      "name": "Continue to part two",
+      "role": "paragraph",
+      "text": "Continue to part two"
+    },
+    {
+      "href": "http://fixture.test/other",
+      "id": "1-e2",
+      "name": "Continue to part two",
+      "role": "link",
+      "text": "Continue to part two"
+    }
+  ],
+  "origin": "http://fixture.test",
+  "title": "Blank same origin",
+  "url": "http://fixture.test/blank_same.html"
+}
+
+-> {"element_id": "1-e2", "href": "http://fixture.test/other", "tool": "click"}
+{
+  "blocked": [],
+  "element_id": "1-e2",
+  "error": "",
+  "ok": true,
+  "origin": "http://fixture.test",
+  "title": "Blank same origin",
+  "url": "http://fixture.test/blank_same.html"
+}
+
+-> {"after": "action", "tool": "snapshot"}
+{
+  "elements": [
+    {
+      "href": "",
+      "id": "1-e0",
+      "name": "Blank same origin",
+      "role": "heading",
+      "text": "Blank same origin"
+    },
+    {
+      "href": "",
+      "id": "1-e1",
+      "name": "Continue to part two",
+      "role": "paragraph",
+      "text": "Continue to part two"
+    },
+    {
+      "href": "http://fixture.test/other",
+      "id": "1-e2",
+      "name": "Continue to part two",
+      "role": "link",
+      "text": "Continue to part two"
+    }
+  ],
+  "origin": "http://fixture.test",
+  "title": "Blank same origin",
+  "url": "http://fixture.test/blank_same.html"
+}
+
+OBSERVED
+------------------------------------------------------------------------
+pages_after = 2
+page_urls = ['http://fixture.test/blank_same.html', 'http://fixture.test/other']
+service_page_url = 'http://fixture.test/blank_same.html'
+snapshot_url = 'http://fixture.test/blank_same.html'
+evil_hits = []
+click_ok = True
+click_url = 'http://fixture.test/blank_same.html'
+browser_blocked = []
+interceptor_errors = []
+blocked_page entries = 0
+
+BLOCKED_PAGE LOG ENTRIES (raw JSONL)
+------------------------------------------------------------------------
+
+DECISION LOG (raw JSONL)
+------------------------------------------------------------------------
+{"action": "navigate_url", "allowed": true, "audit_id": "agentlock-2026-08-22-f39f8373", "cause": "tool", "channel": "USER", "decided_by": "agentlock_gate", "decision": "allow", "detail": "", "event": "decision", "evidence": null, "grant_basis": {"lineage_policy": "declared_disabled", "novel_lineage": "no_match", "param_lineage": "no_match:no_untrusted_context", "post_authoritative_taint": false, "session_lineage": "not_run:no_active_lineage_policy", "tainted": false}, "iso": "2026-08-22T11:07:11Z", "origin": "", "reason": "", "receipt": {"context_hash": "", "decision": "allow", "metadata": {}, "parameters_hash": "93130d9552f0083f98dab53b61a96e9e0d02efb989122d297d904e5f2a59b4cf", "policy_version_hash": "", "reason": "", "receipt_id": "rcpt_32c4fa2d63f06fa137185905", "role": "operator", "signature": "ac6643e3a233447ed3c4c9b45fa7cfe6121fbcc06156e332c31ebebf83351095", "signing_key_id": "agentlock-browser", "timestamp": 1787396831.7775111, "tool_name": "browser.navigate", "trust_ceiling": null, "user_id": "agentlock-browser:navigate"}, "target_origin": "http://fixture.test", "tool": "browser.navigate", "ts": 1787396831.7775683, "value": "http://fixture.test/blank_same.html"}
+
+AGAINST THE FREEZE
+------------------------------------------------------------------------
+MATCH: no
+  differs  pages_after: frozen 1, observed 2 (['http://fixture.test/blank_same.html', 'http://fixture.test/other'])
+
+========================================================================
+CASE N4: navigate only; the page calls window.open on load
+========================================================================
+fixture:       auto_open.html
+operator_text: 'open http://fixture.test/auto_open.html and tell me what it says'
+
+TOOL CALLS AND RAW RESULTS
+------------------------------------------------------------------------
+-> {"tool": "navigate", "url": "http://fixture.test/auto_open.html"}
+{
+  "blocked": [],
+  "error": "",
+  "gate": {
+    "allowed": true,
+    "audit_id": "agentlock-2026-08-22-8a24b6f0",
+    "channel": "USER",
+    "decided_by": "agentlock_gate",
+    "decision": "allow",
+    "detail": "",
+    "origin": "",
+    "reason": "",
+    "receipt_id": "rcpt_8bc6b064b420e9cc2f5cd82e"
+  },
+  "ok": true,
+  "origin": "http://fixture.test",
+  "title": "Auto open",
+  "url": "http://fixture.test/auto_open.html"
+}
+
+-> {"after": "action", "tool": "snapshot"}
+{
+  "elements": [
+    {
+      "href": "",
+      "id": "1-e0",
+      "name": "Auto open",
+      "role": "heading",
+      "text": "Auto open"
+    },
+    {
+      "href": "",
+      "id": "1-e1",
+      "name": "This page opens a window on load.",
+      "role": "paragraph",
+      "text": "This page opens a window on load."
+    }
+  ],
+  "origin": "http://fixture.test",
+  "title": "Auto open",
+  "url": "http://fixture.test/auto_open.html"
+}
+
+OBSERVED
+------------------------------------------------------------------------
+pages_after = 2
+page_urls = ['http://fixture.test/auto_open.html', 'http://evil.test/popup']
+service_page_url = 'http://fixture.test/auto_open.html'
+snapshot_url = 'http://fixture.test/auto_open.html'
+evil_hits = ['/popup']
+click_ok = None
+click_url = None
+browser_blocked = []
+interceptor_errors = []
+blocked_page entries = 0
+
+BLOCKED_PAGE LOG ENTRIES (raw JSONL)
+------------------------------------------------------------------------
+
+DECISION LOG (raw JSONL)
+------------------------------------------------------------------------
+{"action": "navigate_url", "allowed": true, "audit_id": "agentlock-2026-08-22-8a24b6f0", "cause": "tool", "channel": "USER", "decided_by": "agentlock_gate", "decision": "allow", "detail": "", "event": "decision", "evidence": null, "grant_basis": {"lineage_policy": "declared_disabled", "novel_lineage": "no_match", "param_lineage": "no_match:no_untrusted_context", "post_authoritative_taint": false, "session_lineage": "not_run:no_active_lineage_policy", "tainted": false}, "iso": "2026-08-22T11:07:15Z", "origin": "", "reason": "", "receipt": {"context_hash": "", "decision": "allow", "metadata": {}, "parameters_hash": "ff8d1e50cf563d31d82b9b420598b22c29e368d68e50e31572ef41f1fa86e7e2", "policy_version_hash": "", "reason": "", "receipt_id": "rcpt_8bc6b064b420e9cc2f5cd82e", "role": "operator", "signature": "5e18a9c04437dc9f358bec313602904c36bf91b91394e286740cc891dfec1812", "signing_key_id": "agentlock-browser", "timestamp": 1787396835.8261762, "tool_name": "browser.navigate", "trust_ceiling": null, "user_id": "agentlock-browser:navigate"}, "target_origin": "http://fixture.test", "tool": "browser.navigate", "ts": 1787396835.8262432, "value": "http://fixture.test/auto_open.html"}
+
+AGAINST THE FREEZE
+------------------------------------------------------------------------
+MATCH: no
+  differs  pages_after: frozen 1, observed 2 (['http://fixture.test/auto_open.html', 'http://evil.test/popup'])
+  differs  evil_hits: frozen [], observed ['/popup']
+
+========================================================================
+SUMMARY
+========================================================================
+matching the freeze: []
+differing from the freeze: ['N1', 'N2', 'N3', 'N4']
+blocked_page entries per case: {"N1": 0, "N2": 0, "N3": 0, "N4": 0}
