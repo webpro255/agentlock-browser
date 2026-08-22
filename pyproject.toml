@@ -27,7 +27,7 @@ dependencies = [
 ]
 
 [project.optional-dependencies]
-dev = ["pytest"]
+dev = ["pytest", "python-dotenv", "openai"]
 
 [project.scripts]
 agentlock-browser = "agentlock_browser.__main__:main"
