@@ -1,0 +1,103 @@
+allowlist as configured:   ['https://example.com']
+allowlist after normalize: ['https://example.com']
+
+O1  (baseline)
+  input           = 'https://example.com/foo/bar'
+  origin_of()     = 'https://example.com'
+  is_allowlisted  = True
+
+O2  (userinfo)
+  input           = 'https://example.com@evil.test/'
+  origin_of()     = 'https://example.com@evil.test'
+  is_allowlisted  = False
+
+O3  (userinfo, same host)
+  input           = 'https://user:pass@example.com/'
+  origin_of()     = 'https://user:pass@example.com'
+  is_allowlisted  = False
+
+O4  (explicit default port)
+  input           = 'https://example.com:443/'
+  origin_of()     = 'https://example.com:443'
+  is_allowlisted  = False
+
+O5  (other port)
+  input           = 'https://example.com:8443/'
+  origin_of()     = 'https://example.com:8443'
+  is_allowlisted  = False
+
+O6  (trailing dot)
+  input           = 'https://example.com./'
+  origin_of()     = 'https://example.com.'
+  is_allowlisted  = False
+
+O7  (case)
+  input           = 'https://EXAMPLE.COM/'
+  origin_of()     = 'https://example.com'
+  is_allowlisted  = True
+
+O8  (suffix host)
+  input           = 'https://example.com.evil.test/'
+  origin_of()     = 'https://example.com.evil.test'
+  is_allowlisted  = False
+
+O9  (path lookalike)
+  input           = 'https://evil.test/https://example.com/'
+  origin_of()     = 'https://evil.test'
+  is_allowlisted  = False
+
+O10  (scheme downgrade)
+  input           = 'http://example.com/'
+  origin_of()     = 'http://example.com'
+  is_allowlisted  = False
+
+O11  (punycode lookalike)
+  input           = 'https://xn--exmple-cua.com/'
+  origin_of()     = 'https://xn--exmple-cua.com'
+  is_allowlisted  = False
+
+O12  (IDN raw)
+  input           = 'https://exämple.com/'
+  origin_of()     = 'https://exämple.com'
+  is_allowlisted  = False
+
+O13  (leading space)
+  input           = ' https://example.com/'
+  origin_of()     = 'https://example.com'
+  is_allowlisted  = True
+
+O14  (trailing newline)
+  input           = 'https://example.com/\n'
+  origin_of()     = 'https://example.com'
+  is_allowlisted  = True
+
+O15  (embedded tab)
+  input           = 'https://example.com\t/'
+  origin_of()     = 'https://example.com'
+  is_allowlisted  = True
+
+O16  (scheme-relative)
+  input           = '//example.com/'
+  origin_of()     = ''
+  is_allowlisted  = False
+
+O17  (triple slash)
+  input           = 'https:///example.com/'
+  origin_of()     = ''
+  is_allowlisted  = False
+
+O18  (encoded dot)
+  input           = 'https://example%2Ecom/'
+  origin_of()     = 'https://example%2ecom'
+  is_allowlisted  = False
+
+O19  (loopback, sanity)
+  input           = 'https://127.0.0.1/'
+  origin_of()     = 'https://127.0.0.1'
+  is_allowlisted  = False
+
+O20  (non-http scheme)
+  input           = 'javascript:alert(1)'
+  origin_of()     = ''
+  is_allowlisted  = False
+
