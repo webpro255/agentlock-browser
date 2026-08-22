@@ -1,0 +1,83 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+permissions:
+  contents: read
+
+jobs:
+  tests:
+    name: tests (python ${{ matrix.python-version }})
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        python-version: ["3.11", "3.12", "3.13"]
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Python ${{ matrix.python-version }}
+        uses: actions/setup-python@v5
+        with:
+          python-version: ${{ matrix.python-version }}
+          cache: pip
+          cache-dependency-path: pyproject.toml
+
+      - name: Install
+        run: pip install -e ".[dev]"
+
+      - name: Resolve playwright version
+        id: pw
+        run: |
+          version=$(python -c "import importlib.metadata as m; print(m.version('playwright'))")
+          echo "version=$version" >> "$GITHUB_OUTPUT"
+
+      - name: Cache playwright browsers
+        uses: actions/cache@v4
+        with:
+          path: ~/.cache/ms-playwright
+          key: ${{ runner.os }}-playwright-${{ steps.pw.outputs.version }}
+          restore-keys: |
+            ${{ runner.os }}-playwright-
+
+      - name: Install chromium
+        run: python -m playwright install --with-deps chromium
+
+      # T5, the redirect regressions and the new-page regressions run here.
+      # T1 to T4 are model-driven and stay skipped: they need a model and an
+      # API key, and neither belongs in CI.
+      - name: Test
+        run: pytest -q
+
+  hygiene:
+    name: hygiene
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      # The dash is built with printf rather than written literally, so this
+      # file does not fail its own check.
+      - name: No em dashes
+        run: |
+          dash=$(printf '\xe2\x80\x94')
+          if grep -rn "$dash" . \
+              --exclude-dir=.git \
+              --exclude-dir=node_modules \
+              --exclude-dir=.venv; then
+            echo "::error::em dash found; replace with a comma, colon, period or parentheses"
+            exit 1
+          fi
+          echo "no em dashes"
+
+      - name: No tracked .env
+        run: |
+          if git ls-files | grep -E '(^|/)\.env$'; then
+            echo "::error::a .env file is tracked; it must stay untracked and gitignored"
+            exit 1
+          fi
+          echo "no tracked .env"

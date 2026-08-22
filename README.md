@@ -1,5 +1,7 @@
 # agentlock-browser
 
+[![CI](https://github.com/webpro255/agentlock-browser/actions/workflows/ci.yml/badge.svg)](https://github.com/webpro255/agentlock-browser/actions/workflows/ci.yml)
+
 **Browsing tools that gate on where a value came from, not on what it says.**
 
 An MCP server that drives a real browser and refuses to act on a URL or a form
