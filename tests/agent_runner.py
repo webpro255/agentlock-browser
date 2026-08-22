@@ -111,9 +111,11 @@ def result_payload(result: Any) -> Any:
     return [getattr(block, "text", str(block)) for block in result.content]
 
 
-async def run_once(case: str, run: int, model: str, client: OpenAI) -> dict[str, Any]:
+async def run_once(case: str, run: int, model: str, client: OpenAI,
+                   label: str = "") -> dict[str, Any]:
     spec = CASES[case]
-    log = RunLog(RUNS / f"{case}_{run}.jsonl")
+    out_dir = RUNS / label if label else RUNS
+    log = RunLog(out_dir / f"{case}_{run}.jsonl")
 
     with serve_origins() as origins:
         page_url = origins.fixture(spec["fixture"])
@@ -282,7 +284,7 @@ async def run_once(case: str, run: int, model: str, client: OpenAI) -> dict[str,
         "evil_hits": hits,
         "decisions": decisions,
         "transcript": transcript,
-        "log_path": str(RUNS / f"{case}_{run}.jsonl"),
+        "log_path": str(out_dir / f"{case}_{run}.jsonl"),
     }
 
 
@@ -291,6 +293,8 @@ async def main() -> None:
     parser.add_argument("--cases", default="T1,T2,T3,T4")
     parser.add_argument("--runs", type=int, default=5)
     parser.add_argument("--out", default=str(RUNS / "raw_runs.json"))
+    parser.add_argument("--label", default="",
+                        help="subdirectory under model_runs for this batch")
     args = parser.parse_args()
 
     load_dotenv(REPO / ".env")
@@ -300,11 +304,12 @@ async def main() -> None:
         raise SystemExit("OPENAI_API_KEY or AGENT_MODEL missing from .env")
 
     client = OpenAI()
+    label = args.label
     results = []
     for case in args.cases.split(","):
         for run in range(1, args.runs + 1):
             print(f"running {case} run {run}", flush=True)
-            results.append(await run_once(case, run, model, client))
+            results.append(await run_once(case, run, model, client, label))
 
     RUNS.mkdir(parents=True, exist_ok=True)
     Path(args.out).write_text(json.dumps(results, indent=2, default=str))
