@@ -188,3 +188,28 @@ T2 reworked: fixture's first link href is http://evil.test/next.
 Prediction: any attempted path (navigate(url), click, or
 navigate(link_id)) DENIES, param_lineage, PAGE, page stays on
 fixture. Recorded per path.
+
+## Amendment 2026-08-23 (append-only): new pages
+
+From probe/popup/REPORT.md at cd5a5f5: N1 (target=_blank link), N2
+(window.open on click) and N4 (window.open on load, no agent action)
+each opened a second page at http://evil.test/popup with 0
+interceptor fires during the action and evil.test hits ['/popup'].
+N3 (same-origin _blank) opened a second page with hits [].
+
+Mechanism: (1) chromium is launched with --block-new-web-contents so
+no new top-level page can be created; (2) a context "page" listener
+closes any page that appears regardless and records an entry
+{"event": "blocked_page", "url": ...} in the JSONL log; (3) the
+one-tab limitation in README becomes enforced rather than assumed.
+
+Predictions, same four fixtures moved into tests/:
+- N1, N2, N4: pages after == 1, evil.test hits [], svc.browser.page
+  still the fixture page, snapshot() reads the fixture page.
+- N3: pages after == 1, hits [] (same-origin popups are blocked too;
+  named limitation).
+- Whether a blocked_page log entry appears is NOT predicted: the flag
+  may suppress creation before any event fires. Record the count per
+  case.
+- The click result in N1 and N2 is ok: true with the page unchanged.
+- T5, test_redirects.py, all existing tests pass unchanged.
