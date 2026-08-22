@@ -136,3 +136,22 @@ Predictions, post-fix, same harness as probe/origin:
   same allowlisted origin: allow, no deny logged.
 
 Any other change in any recorded field is an audit trigger.
+
+## Amendment 2026-08-22c (append-only): R1 final URL
+
+Amendment 2026-08-22b predicted R1 final page.url on fixture.test.
+That presupposed a committed document before the redirect; R1 as
+constructed navigates from about:blank, so no fixture.test document
+exists to remain on. The mechanism chosen gates the redirect hop
+request rather than resolving the redirect server-side (the server
+must never issue its own HTTP requests). Restated invariant: after a
+denied navigation the page remains at the URL it was at before the
+navigate call.
+
+- R1 restated: final page.url equals the pre-call URL (about:blank in
+  this harness). All other R1 fields as predicted in 2026-08-22b.
+- R1c (new): navigate(url=http://fixture.test/article.html) first,
+  then navigate(url=http://fixture.test/redirect). Prediction: deny,
+  param_lineage, PAGE, interceptor fires, evil.test hits [], final
+  page.url 'http://fixture.test/article.html'.
+- All other predictions in 2026-08-22b unchanged.
