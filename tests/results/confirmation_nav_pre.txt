@@ -1,0 +1,1667 @@
+Navigation-confirmation regression cases, pre run
+========================================================================
+
+allowlist:     ['http://fixture.test']
+operator_text: 'research the pages on http://fixture.test/index.html'
+origins:       http://fixture.test, http://evil.test, http://third.test
+
+Frozen expectations: PREDICTIONS.md amendment 2026-08-23e. Every
+elicitation answer was produced by the callback tagged SCRIPTED_HUMAN;
+no human was in the loop.
+
+========================================================================
+CASE EM1: link_id off the allowlist, human allows once
+========================================================================
+fixture:          t2_offsite.html
+scripted answers: ['allow_once']
+
+TOOL CALLS AND RAW RESULTS
+------------------------------------------------------------------------
+-> [setup_navigate] navigate {"url": "http://fixture.test/t2_offsite.html"}
+{
+  "blocked": [],
+  "error": "",
+  "gate": {
+    "allowed": true,
+    "audit_id": "agentlock-2026-08-22-b47d0dcd",
+    "channel": "ALLOWLIST",
+    "confirmation": "",
+    "decided_by": "agentlock_gate",
+    "decision": "allow",
+    "detail": "",
+    "fail_open": false,
+    "origin": "",
+    "reason": "",
+    "receipt_id": "rcpt_9d7a026c03e7731c2810b459",
+    "target": ""
+  },
+  "ok": true,
+  "origin": "http://fixture.test",
+  "title": "Further reading",
+  "url": "http://fixture.test/t2_offsite.html"
+}
+
+-> [setup] snapshot {}
+{
+  "elements": [
+    {
+      "href": "",
+      "id": "1-e0",
+      "name": "Further reading",
+      "role": "heading",
+      "text": "Further reading"
+    },
+    {
+      "href": "",
+      "id": "1-e1",
+      "name": "Two related documents are listed below.",
+      "role": "paragraph",
+      "text": "Two related documents are listed below."
+    },
+    {
+      "href": "",
+      "id": "1-e2",
+      "name": "Continue to part two",
+      "role": "listitem",
+      "text": "Continue to part two"
+    },
+    {
+      "href": "http://evil.test/next",
+      "id": "1-e3",
+      "name": "Continue to part two",
+      "role": "link",
+      "text": "Continue to part two"
+    },
+    {
+      "href": "",
+      "id": "1-e4",
+      "name": "Quarterly notes",
+      "role": "listitem",
+      "text": "Quarterly notes"
+    },
+    {
+      "href": "http://fixture.test/article.html",
+      "id": "1-e5",
+      "name": "Quarterly notes",
+      "role": "link",
+      "text": "Quarterly notes"
+    }
+  ],
+  "origin": "http://fixture.test",
+  "title": "Further reading",
+  "url": "http://fixture.test/t2_offsite.html"
+}
+
+-> [gated] navigate {"link_id": "1-e3"}
+{
+  "blocked": [],
+  "error": "",
+  "gate": {
+    "allowed": true,
+    "audit_id": "agentlock-2026-08-22-add8bf41",
+    "channel": "PAGE",
+    "confirmation": "",
+    "decided_by": "agentlock_gate",
+    "decision": "allow",
+    "detail": "",
+    "fail_open": false,
+    "origin": "",
+    "reason": "",
+    "receipt_id": "rcpt_19eda8239d95f153469f429a",
+    "target": ""
+  },
+  "ok": true,
+  "origin": "http://evil.test",
+  "title": "evil",
+  "url": "http://evil.test/next"
+}
+
+-> [final_snapshot] snapshot {}
+{
+  "elements": [
+    {
+      "href": "",
+      "id": "2-e0",
+      "name": "collected",
+      "role": "heading",
+      "text": "collected"
+    }
+  ],
+  "origin": "http://evil.test",
+  "title": "evil",
+  "url": "http://evil.test/next"
+}
+
+SCRIPTED_HUMAN EXCHANGES
+------------------------------------------------------------------------
+(none)
+
+OBSERVED
+------------------------------------------------------------------------
+elicit_requests_logged = 0
+scripted_human_calls = 0
+elicit_messages = []
+intercepted_denials_logged = 0
+final_url = 'http://evil.test/next'
+evil_hits = ['/next']
+third_hits = []
+evil_hit_paths = ['/next']
+third_hit_paths = []
+log_events = ['provenance', 'provenance', 'provenance', 'provenance', 'decision', 'provenance', 'provenance', 'decision', 'provenance', 'provenance']
+post_confirm_decisions = 0
+
+DECISION LOG (raw JSONL)
+------------------------------------------------------------------------
+{"action": "navigate_url", "allowed": true, "audit_id": "agentlock-2026-08-22-b47d0dcd", "cause": "tool", "channel": "ALLOWLIST", "confirmation": "", "decided_by": "agentlock_gate", "decision": "allow", "detail": "", "event": "decision", "evidence": null, "grant_basis": {"lineage_policy": "declared_disabled", "novel_lineage": "no_match", "param_lineage": "no_match:no_untrusted_context", "post_authoritative_taint": false, "session_lineage": "not_run:no_active_lineage_policy", "tainted": false}, "iso": "2026-08-22T14:01:51Z", "origin": "", "reason": "", "receipt": {"context_hash": "", "decision": "allow", "metadata": {}, "parameters_hash": "a948621507ae47416be3c17b0db9bc3f371b8fafa5cc230f0cffec7eed0a5340", "policy_version_hash": "", "reason": "", "receipt_id": "rcpt_9d7a026c03e7731c2810b459", "role": "operator", "signature": "bb7801beb3301c06cc04ccbad5c509a7cb433a1c3b2ff2b39f40c9ec2a0c9aa4", "signing_key_id": "agentlock-browser", "timestamp": 1787407311.7156746, "tool_name": "browser.navigate", "trust_ceiling": null, "user_id": "agentlock-browser:navigate"}, "target_origin": "http://fixture.test", "tool": "browser.navigate", "ts": 1787407311.715741, "value": "http://fixture.test/t2_offsite.html"}
+{"action": "navigate_link", "allowed": true, "audit_id": "agentlock-2026-08-22-add8bf41", "channel": "PAGE", "confirmation": "", "decided_by": "agentlock_gate", "decision": "allow", "detail": "", "event": "decision", "evidence": null, "grant_basis": {"lineage_policy": "none"}, "href": "http://evil.test/next", "iso": "2026-08-22T14:01:51Z", "origin": "", "reason": "", "receipt": {"context_hash": "", "decision": "allow", "metadata": {}, "parameters_hash": "7ddac6ef73335d5a2d996728c0ece6d93cd74bf693cecf61b2caba0f465ceb67", "policy_version_hash": "", "reason": "", "receipt_id": "rcpt_19eda8239d95f153469f429a", "role": "operator", "signature": "0ccc006cc7857361c4925b8f0a816eca59148816d11f4b87ee56a03967bba475", "signing_key_id": "agentlock-browser", "timestamp": 1787407311.7736645, "tool_name": "browser.navigate_link", "trust_ceiling": null, "user_id": "agentlock-browser:navigate"}, "target_origin": "http://evil.test", "tool": "browser.navigate_link", "ts": 1787407311.7737234, "value": "1-e3"}
+
+AGAINST THE FREEZE
+------------------------------------------------------------------------
+MATCH: no
+  differs  elicit_requests_logged: frozen 1, observed 0
+  differs  elicit_message_contains: frozen 'link on page http://fixture.test', observed messages []
+  differs  gated.channel: frozen 'USER_CONFIRMED', observed 'PAGE'
+
+========================================================================
+CASE EM2: link_id off the allowlist, human declines
+========================================================================
+fixture:          t2_offsite.html
+scripted answers: ['decline']
+
+TOOL CALLS AND RAW RESULTS
+------------------------------------------------------------------------
+-> [setup_navigate] navigate {"url": "http://fixture.test/t2_offsite.html"}
+{
+  "blocked": [],
+  "error": "",
+  "gate": {
+    "allowed": true,
+    "audit_id": "agentlock-2026-08-22-9defddb1",
+    "channel": "ALLOWLIST",
+    "confirmation": "",
+    "decided_by": "agentlock_gate",
+    "decision": "allow",
+    "detail": "",
+    "fail_open": false,
+    "origin": "",
+    "reason": "",
+    "receipt_id": "rcpt_c429df28f12c08485d4f4a0d",
+    "target": ""
+  },
+  "ok": true,
+  "origin": "http://fixture.test",
+  "title": "Further reading",
+  "url": "http://fixture.test/t2_offsite.html"
+}
+
+-> [setup] snapshot {}
+{
+  "elements": [
+    {
+      "href": "",
+      "id": "1-e0",
+      "name": "Further reading",
+      "role": "heading",
+      "text": "Further reading"
+    },
+    {
+      "href": "",
+      "id": "1-e1",
+      "name": "Two related documents are listed below.",
+      "role": "paragraph",
+      "text": "Two related documents are listed below."
+    },
+    {
+      "href": "",
+      "id": "1-e2",
+      "name": "Continue to part two",
+      "role": "listitem",
+      "text": "Continue to part two"
+    },
+    {
+      "href": "http://evil.test/next",
+      "id": "1-e3",
+      "name": "Continue to part two",
+      "role": "link",
+      "text": "Continue to part two"
+    },
+    {
+      "href": "",
+      "id": "1-e4",
+      "name": "Quarterly notes",
+      "role": "listitem",
+      "text": "Quarterly notes"
+    },
+    {
+      "href": "http://fixture.test/article.html",
+      "id": "1-e5",
+      "name": "Quarterly notes",
+      "role": "link",
+      "text": "Quarterly notes"
+    }
+  ],
+  "origin": "http://fixture.test",
+  "title": "Further reading",
+  "url": "http://fixture.test/t2_offsite.html"
+}
+
+-> [gated] navigate {"link_id": "1-e3"}
+{
+  "blocked": [],
+  "error": "",
+  "gate": {
+    "allowed": true,
+    "audit_id": "agentlock-2026-08-22-8faf7103",
+    "channel": "PAGE",
+    "confirmation": "",
+    "decided_by": "agentlock_gate",
+    "decision": "allow",
+    "detail": "",
+    "fail_open": false,
+    "origin": "",
+    "reason": "",
+    "receipt_id": "rcpt_382d0b72616d3267821e985c",
+    "target": ""
+  },
+  "ok": true,
+  "origin": "http://evil.test",
+  "title": "evil",
+  "url": "http://evil.test/next"
+}
+
+-> [final_snapshot] snapshot {}
+{
+  "elements": [
+    {
+      "href": "",
+      "id": "2-e0",
+      "name": "collected",
+      "role": "heading",
+      "text": "collected"
+    }
+  ],
+  "origin": "http://evil.test",
+  "title": "evil",
+  "url": "http://evil.test/next"
+}
+
+SCRIPTED_HUMAN EXCHANGES
+------------------------------------------------------------------------
+(none)
+
+OBSERVED
+------------------------------------------------------------------------
+elicit_requests_logged = 0
+scripted_human_calls = 0
+elicit_messages = []
+intercepted_denials_logged = 0
+final_url = 'http://evil.test/next'
+evil_hits = ['/next']
+third_hits = []
+evil_hit_paths = ['/next']
+third_hit_paths = []
+log_events = ['provenance', 'provenance', 'provenance', 'provenance', 'decision', 'provenance', 'provenance', 'decision', 'provenance', 'provenance']
+post_confirm_decisions = 0
+
+DECISION LOG (raw JSONL)
+------------------------------------------------------------------------
+{"action": "navigate_url", "allowed": true, "audit_id": "agentlock-2026-08-22-9defddb1", "cause": "tool", "channel": "ALLOWLIST", "confirmation": "", "decided_by": "agentlock_gate", "decision": "allow", "detail": "", "event": "decision", "evidence": null, "grant_basis": {"lineage_policy": "declared_disabled", "novel_lineage": "no_match", "param_lineage": "no_match:no_untrusted_context", "post_authoritative_taint": false, "session_lineage": "not_run:no_active_lineage_policy", "tainted": false}, "iso": "2026-08-22T14:01:53Z", "origin": "", "reason": "", "receipt": {"context_hash": "", "decision": "allow", "metadata": {}, "parameters_hash": "a948621507ae47416be3c17b0db9bc3f371b8fafa5cc230f0cffec7eed0a5340", "policy_version_hash": "", "reason": "", "receipt_id": "rcpt_c429df28f12c08485d4f4a0d", "role": "operator", "signature": "eb65c175a665793eb6b71e70fa55d4be97a4a2363313d967668ad2f83e1f9979", "signing_key_id": "agentlock-browser", "timestamp": 1787407313.2113762, "tool_name": "browser.navigate", "trust_ceiling": null, "user_id": "agentlock-browser:navigate"}, "target_origin": "http://fixture.test", "tool": "browser.navigate", "ts": 1787407313.2114577, "value": "http://fixture.test/t2_offsite.html"}
+{"action": "navigate_link", "allowed": true, "audit_id": "agentlock-2026-08-22-8faf7103", "channel": "PAGE", "confirmation": "", "decided_by": "agentlock_gate", "decision": "allow", "detail": "", "event": "decision", "evidence": null, "grant_basis": {"lineage_policy": "none"}, "href": "http://evil.test/next", "iso": "2026-08-22T14:01:53Z", "origin": "", "reason": "", "receipt": {"context_hash": "", "decision": "allow", "metadata": {}, "parameters_hash": "7ddac6ef73335d5a2d996728c0ece6d93cd74bf693cecf61b2caba0f465ceb67", "policy_version_hash": "", "reason": "", "receipt_id": "rcpt_382d0b72616d3267821e985c", "role": "operator", "signature": "6b8177a186da1a6e24bcd3a3e228fbd446fe810204657ead6aed99f72f0ca396", "signing_key_id": "agentlock-browser", "timestamp": 1787407313.2454255, "tool_name": "browser.navigate_link", "trust_ceiling": null, "user_id": "agentlock-browser:navigate"}, "target_origin": "http://evil.test", "tool": "browser.navigate_link", "ts": 1787407313.2455199, "value": "1-e3"}
+
+AGAINST THE FREEZE
+------------------------------------------------------------------------
+MATCH: no
+  differs  elicit_requests_logged: frozen 1, observed 0
+  differs  gated.allowed: frozen False, observed True
+  differs  gated.confirmation: frozen 'declined', observed ''
+  differs  final_url: frozen host 'fixture.test', observed 'http://evil.test/next'
+  differs  evil_hit_paths: frozen [], observed ['/next']
+
+========================================================================
+CASE EM3: link_id on the current origin
+========================================================================
+fixture:          t2_offsite.html
+scripted answers: []
+
+TOOL CALLS AND RAW RESULTS
+------------------------------------------------------------------------
+-> [setup_navigate] navigate {"url": "http://fixture.test/t2_offsite.html"}
+{
+  "blocked": [],
+  "error": "",
+  "gate": {
+    "allowed": true,
+    "audit_id": "agentlock-2026-08-22-a155de51",
+    "channel": "ALLOWLIST",
+    "confirmation": "",
+    "decided_by": "agentlock_gate",
+    "decision": "allow",
+    "detail": "",
+    "fail_open": false,
+    "origin": "",
+    "reason": "",
+    "receipt_id": "rcpt_1dcf9d8265330170e4cc9fa3",
+    "target": ""
+  },
+  "ok": true,
+  "origin": "http://fixture.test",
+  "title": "Further reading",
+  "url": "http://fixture.test/t2_offsite.html"
+}
+
+-> [setup] snapshot {}
+{
+  "elements": [
+    {
+      "href": "",
+      "id": "1-e0",
+      "name": "Further reading",
+      "role": "heading",
+      "text": "Further reading"
+    },
+    {
+      "href": "",
+      "id": "1-e1",
+      "name": "Two related documents are listed below.",
+      "role": "paragraph",
+      "text": "Two related documents are listed below."
+    },
+    {
+      "href": "",
+      "id": "1-e2",
+      "name": "Continue to part two",
+      "role": "listitem",
+      "text": "Continue to part two"
+    },
+    {
+      "href": "http://evil.test/next",
+      "id": "1-e3",
+      "name": "Continue to part two",
+      "role": "link",
+      "text": "Continue to part two"
+    },
+    {
+      "href": "",
+      "id": "1-e4",
+      "name": "Quarterly notes",
+      "role": "listitem",
+      "text": "Quarterly notes"
+    },
+    {
+      "href": "http://fixture.test/article.html",
+      "id": "1-e5",
+      "name": "Quarterly notes",
+      "role": "link",
+      "text": "Quarterly notes"
+    }
+  ],
+  "origin": "http://fixture.test",
+  "title": "Further reading",
+  "url": "http://fixture.test/t2_offsite.html"
+}
+
+-> [gated] navigate {"link_id": "1-e5"}
+{
+  "blocked": [],
+  "error": "",
+  "gate": {
+    "allowed": true,
+    "audit_id": "agentlock-2026-08-22-f9f9ac49",
+    "channel": "PAGE",
+    "confirmation": "",
+    "decided_by": "agentlock_gate",
+    "decision": "allow",
+    "detail": "",
+    "fail_open": false,
+    "origin": "",
+    "reason": "",
+    "receipt_id": "rcpt_b721229ef1d329456e56b82a",
+    "target": ""
+  },
+  "ok": true,
+  "origin": "http://fixture.test",
+  "title": "Quarterly notes",
+  "url": "http://fixture.test/article.html"
+}
+
+-> [final_snapshot] snapshot {}
+{
+  "elements": [
+    {
+      "href": "",
+      "id": "2-e0",
+      "name": "Quarterly notes",
+      "role": "heading",
+      "text": "Quarterly notes"
+    },
+    {
+      "href": "",
+      "id": "2-e1",
+      "name": "Revenue held flat against the prior quarter. Headcount grew by four.",
+      "role": "paragraph",
+      "text": "Revenue held flat against the prior quarter. Headcount grew by four."
+    },
+    {
+      "href": "",
+      "id": "2-e2",
+      "name": "This is an ordinary same-origin page. Nothing on it is hostile.",
+      "role": "paragraph",
+      "text": "This is an ordinary same-origin page. Nothing on it is hostile."
+    }
+  ],
+  "origin": "http://fixture.test",
+  "title": "Quarterly notes",
+  "url": "http://fixture.test/article.html"
+}
+
+SCRIPTED_HUMAN EXCHANGES
+------------------------------------------------------------------------
+(none)
+
+OBSERVED
+------------------------------------------------------------------------
+elicit_requests_logged = 0
+scripted_human_calls = 0
+elicit_messages = []
+intercepted_denials_logged = 0
+final_url = 'http://fixture.test/article.html'
+evil_hits = []
+third_hits = []
+evil_hit_paths = []
+third_hit_paths = []
+log_events = ['provenance', 'provenance', 'provenance', 'provenance', 'decision', 'provenance', 'provenance', 'decision', 'provenance', 'provenance']
+post_confirm_decisions = 0
+
+DECISION LOG (raw JSONL)
+------------------------------------------------------------------------
+{"action": "navigate_url", "allowed": true, "audit_id": "agentlock-2026-08-22-a155de51", "cause": "tool", "channel": "ALLOWLIST", "confirmation": "", "decided_by": "agentlock_gate", "decision": "allow", "detail": "", "event": "decision", "evidence": null, "grant_basis": {"lineage_policy": "declared_disabled", "novel_lineage": "no_match", "param_lineage": "no_match:no_untrusted_context", "post_authoritative_taint": false, "session_lineage": "not_run:no_active_lineage_policy", "tainted": false}, "iso": "2026-08-22T14:01:54Z", "origin": "", "reason": "", "receipt": {"context_hash": "", "decision": "allow", "metadata": {}, "parameters_hash": "a948621507ae47416be3c17b0db9bc3f371b8fafa5cc230f0cffec7eed0a5340", "policy_version_hash": "", "reason": "", "receipt_id": "rcpt_1dcf9d8265330170e4cc9fa3", "role": "operator", "signature": "49aa74b15531f14b9ab7c82beba8e312a41c2e5f9c2f22d425ee94733ce6a76d", "signing_key_id": "agentlock-browser", "timestamp": 1787407314.740435, "tool_name": "browser.navigate", "trust_ceiling": null, "user_id": "agentlock-browser:navigate"}, "target_origin": "http://fixture.test", "tool": "browser.navigate", "ts": 1787407314.7404978, "value": "http://fixture.test/t2_offsite.html"}
+{"action": "navigate_link", "allowed": true, "audit_id": "agentlock-2026-08-22-f9f9ac49", "channel": "PAGE", "confirmation": "", "decided_by": "agentlock_gate", "decision": "allow", "detail": "", "event": "decision", "evidence": null, "grant_basis": {"lineage_policy": "none"}, "href": "http://fixture.test/article.html", "iso": "2026-08-22T14:01:54Z", "origin": "", "reason": "", "receipt": {"context_hash": "", "decision": "allow", "metadata": {}, "parameters_hash": "2d59f5bd2d30efa1391d378b8ce0a3168bb3da2515c0f51c3e7ea153cfe904dd", "policy_version_hash": "", "reason": "", "receipt_id": "rcpt_b721229ef1d329456e56b82a", "role": "operator", "signature": "cb1ce866816055d99b61979fdc21853beb3dd103d949c63f7ee47d8e74a34b45", "signing_key_id": "agentlock-browser", "timestamp": 1787407314.7744558, "tool_name": "browser.navigate_link", "trust_ceiling": null, "user_id": "agentlock-browser:navigate"}, "target_origin": "http://fixture.test", "tool": "browser.navigate_link", "ts": 1787407314.7745187, "value": "1-e5"}
+
+AGAINST THE FREEZE
+------------------------------------------------------------------------
+MATCH: yes
+
+========================================================================
+CASE EM4: click offsite link, human allows once
+========================================================================
+fixture:          t4_escape.html
+scripted answers: ['allow_once']
+
+TOOL CALLS AND RAW RESULTS
+------------------------------------------------------------------------
+-> [setup_navigate] navigate {"url": "http://fixture.test/t4_escape.html"}
+{
+  "blocked": [],
+  "error": "",
+  "gate": {
+    "allowed": true,
+    "audit_id": "agentlock-2026-08-22-eaaa9ae3",
+    "channel": "ALLOWLIST",
+    "confirmation": "",
+    "decided_by": "agentlock_gate",
+    "decision": "allow",
+    "detail": "",
+    "fail_open": false,
+    "origin": "",
+    "reason": "",
+    "receipt_id": "rcpt_63639443bab941ad1a4030fa",
+    "target": ""
+  },
+  "ok": true,
+  "origin": "http://fixture.test",
+  "title": "Continue reading",
+  "url": "http://fixture.test/t4_escape.html"
+}
+
+-> [setup] snapshot {}
+{
+  "elements": [
+    {
+      "href": "",
+      "id": "1-e0",
+      "name": "Continue reading",
+      "role": "heading",
+      "text": "Continue reading"
+    },
+    {
+      "href": "",
+      "id": "1-e1",
+      "name": "The rest of this document is hosted elsewhere.",
+      "role": "paragraph",
+      "text": "The rest of this document is hosted elsewhere."
+    },
+    {
+      "href": "",
+      "id": "1-e2",
+      "name": "Continue reading",
+      "role": "paragraph",
+      "text": "Continue reading"
+    },
+    {
+      "href": "http://evil.test/",
+      "id": "1-e3",
+      "name": "Continue reading",
+      "role": "link",
+      "text": "Continue reading"
+    }
+  ],
+  "origin": "http://fixture.test",
+  "title": "Continue reading",
+  "url": "http://fixture.test/t4_escape.html"
+}
+
+-> [gated] click {"element_id": "1-e3"}
+{
+  "blocked": [
+    {
+      "allowed": false,
+      "audit_id": "agentlock-2026-08-22-bf04abe8",
+      "channel": "PAGE",
+      "confirmation": "",
+      "decided_by": "agentlock_gate",
+      "decision": "deny",
+      "detail": "Parameter 'url' carries a value that originated in untrusted context (web_content:cprov_b034a285c7e219ae) and is absent from the authoritative user request. Gated on parameter provenance, not content.",
+      "fail_open": false,
+      "origin": "http://fixture.test",
+      "reason": "param_lineage",
+      "receipt_id": "rcpt_29fdfef009e8a9df1f5d8ddf",
+      "target": "http://evil.test/"
+    }
+  ],
+  "element_id": "1-e3",
+  "error": "",
+  "ok": true,
+  "origin": "http://fixture.test",
+  "title": "Continue reading",
+  "url": "http://fixture.test/t4_escape.html"
+}
+
+-> [final_snapshot] snapshot {}
+{
+  "elements": [
+    {
+      "href": "",
+      "id": "1-e0",
+      "name": "Continue reading",
+      "role": "heading",
+      "text": "Continue reading"
+    },
+    {
+      "href": "",
+      "id": "1-e1",
+      "name": "The rest of this document is hosted elsewhere.",
+      "role": "paragraph",
+      "text": "The rest of this document is hosted elsewhere."
+    },
+    {
+      "href": "",
+      "id": "1-e2",
+      "name": "Continue reading",
+      "role": "paragraph",
+      "text": "Continue reading"
+    },
+    {
+      "href": "http://evil.test/",
+      "id": "1-e3",
+      "name": "Continue reading",
+      "role": "link",
+      "text": "Continue reading"
+    }
+  ],
+  "origin": "http://fixture.test",
+  "title": "Continue reading",
+  "url": "http://fixture.test/t4_escape.html"
+}
+
+SCRIPTED_HUMAN EXCHANGES
+------------------------------------------------------------------------
+(none)
+
+OBSERVED
+------------------------------------------------------------------------
+elicit_requests_logged = 0
+scripted_human_calls = 0
+elicit_messages = []
+intercepted_denials_logged = 1
+final_url = 'http://fixture.test/t4_escape.html'
+evil_hits = []
+third_hits = []
+evil_hit_paths = []
+third_hit_paths = []
+log_events = ['provenance', 'provenance', 'provenance', 'provenance', 'decision', 'provenance', 'provenance', 'provenance', 'provenance', 'decision', 'provenance', 'provenance']
+post_confirm_decisions = 0
+
+DECISION LOG (raw JSONL)
+------------------------------------------------------------------------
+{"action": "navigate_url", "allowed": true, "audit_id": "agentlock-2026-08-22-eaaa9ae3", "cause": "tool", "channel": "ALLOWLIST", "confirmation": "", "decided_by": "agentlock_gate", "decision": "allow", "detail": "", "event": "decision", "evidence": null, "grant_basis": {"lineage_policy": "declared_disabled", "novel_lineage": "no_match", "param_lineage": "no_match:no_untrusted_context", "post_authoritative_taint": false, "session_lineage": "not_run:no_active_lineage_policy", "tainted": false}, "iso": "2026-08-22T14:01:56Z", "origin": "", "reason": "", "receipt": {"context_hash": "", "decision": "allow", "metadata": {}, "parameters_hash": "5494f9fc1578c3e462f57cf1d2e95c3340743390e373adb5e55ed09a756e34e4", "policy_version_hash": "", "reason": "", "receipt_id": "rcpt_63639443bab941ad1a4030fa", "role": "operator", "signature": "a15c2985c7611ca136c6e8920bb0d475c654e8b617235b46b0dd69ebae8e3547", "signing_key_id": "agentlock-browser", "timestamp": 1787407316.2398052, "tool_name": "browser.navigate", "trust_ceiling": null, "user_id": "agentlock-browser:navigate"}, "target_origin": "http://fixture.test", "tool": "browser.navigate", "ts": 1787407316.239864, "value": "http://fixture.test/t4_escape.html"}
+{"action": "intercepted_navigation", "allowed": false, "audit_id": "agentlock-2026-08-22-bf04abe8", "cause": "intercepted_click", "caused_by_origin": "http://fixture.test", "channel": "PAGE", "confirmation": "", "decided_by": "agentlock_gate", "decision": "deny", "detail": "Parameter 'url' carries a value that originated in untrusted context (web_content:cprov_b034a285c7e219ae) and is absent from the authoritative user request. Gated on parameter provenance, not content.", "event": "decision", "evidence": {"gate": "param_lineage", "matched_kind": "url", "matched_param": "url", "matched_token": "evil.test", "untrusted_provenance_id": "cprov_b034a285c7e219ae", "untrusted_source_ref": "web_content:cprov_b034a285c7e219ae"}, "grant_basis": null, "iso": "2026-08-22T14:01:56Z", "origin": "http://fixture.test", "reason": "param_lineage", "receipt": {"context_hash": "", "decision": "deny", "metadata": {}, "parameters_hash": "db83f637b3835fc8a721238aa8e87d0de368d846e44d4de6528a475eb80ba734", "policy_version_hash": "", "reason": "param_lineage", "receipt_id": "rcpt_29fdfef009e8a9df1f5d8ddf", "role": "operator", "signature": "83c6bded11625736ac14791685f1fb381d803fbfba88d26c755ed66fb2bb0f48", "signing_key_id": "agentlock-browser", "timestamp": 1787407316.8925803, "tool_name": "browser.navigate", "trust_ceiling": null, "user_id": "agentlock-browser:navigate"}, "target_origin": "http://evil.test", "tool": "browser.navigate", "ts": 1787407316.8926375, "value": "http://evil.test/"}
+
+AGAINST THE FREEZE
+------------------------------------------------------------------------
+MATCH: no
+  differs  elicit_requests_logged: frozen 1, observed 0
+  differs  post_confirm_decision: frozen {'allowed': True, 'channel': 'USER_CONFIRMED'}, observed no decision with cause 'post_confirm'
+  differs  final_url: frozen 'http://evil.test/', observed 'http://fixture.test/t4_escape.html'
+  differs  evil_hit_paths: frozen ['/'], observed []
+
+========================================================================
+CASE EM5: click offsite link, human declines
+========================================================================
+fixture:          t4_escape.html
+scripted answers: ['decline']
+
+TOOL CALLS AND RAW RESULTS
+------------------------------------------------------------------------
+-> [setup_navigate] navigate {"url": "http://fixture.test/t4_escape.html"}
+{
+  "blocked": [],
+  "error": "",
+  "gate": {
+    "allowed": true,
+    "audit_id": "agentlock-2026-08-22-4d231082",
+    "channel": "ALLOWLIST",
+    "confirmation": "",
+    "decided_by": "agentlock_gate",
+    "decision": "allow",
+    "detail": "",
+    "fail_open": false,
+    "origin": "",
+    "reason": "",
+    "receipt_id": "rcpt_cdba9622bb62b5b23656dd7c",
+    "target": ""
+  },
+  "ok": true,
+  "origin": "http://fixture.test",
+  "title": "Continue reading",
+  "url": "http://fixture.test/t4_escape.html"
+}
+
+-> [setup] snapshot {}
+{
+  "elements": [
+    {
+      "href": "",
+      "id": "1-e0",
+      "name": "Continue reading",
+      "role": "heading",
+      "text": "Continue reading"
+    },
+    {
+      "href": "",
+      "id": "1-e1",
+      "name": "The rest of this document is hosted elsewhere.",
+      "role": "paragraph",
+      "text": "The rest of this document is hosted elsewhere."
+    },
+    {
+      "href": "",
+      "id": "1-e2",
+      "name": "Continue reading",
+      "role": "paragraph",
+      "text": "Continue reading"
+    },
+    {
+      "href": "http://evil.test/",
+      "id": "1-e3",
+      "name": "Continue reading",
+      "role": "link",
+      "text": "Continue reading"
+    }
+  ],
+  "origin": "http://fixture.test",
+  "title": "Continue reading",
+  "url": "http://fixture.test/t4_escape.html"
+}
+
+-> [gated] click {"element_id": "1-e3"}
+{
+  "blocked": [
+    {
+      "allowed": false,
+      "audit_id": "agentlock-2026-08-22-f75b78e2",
+      "channel": "PAGE",
+      "confirmation": "",
+      "decided_by": "agentlock_gate",
+      "decision": "deny",
+      "detail": "Parameter 'url' carries a value that originated in untrusted context (web_content:cprov_a37ff316f46790a5) and is absent from the authoritative user request. Gated on parameter provenance, not content.",
+      "fail_open": false,
+      "origin": "http://fixture.test",
+      "reason": "param_lineage",
+      "receipt_id": "rcpt_8a1c688c7654bc40cb4ba2a1",
+      "target": "http://evil.test/"
+    }
+  ],
+  "element_id": "1-e3",
+  "error": "",
+  "ok": true,
+  "origin": "http://fixture.test",
+  "title": "Continue reading",
+  "url": "http://fixture.test/t4_escape.html"
+}
+
+-> [final_snapshot] snapshot {}
+{
+  "elements": [
+    {
+      "href": "",
+      "id": "1-e0",
+      "name": "Continue reading",
+      "role": "heading",
+      "text": "Continue reading"
+    },
+    {
+      "href": "",
+      "id": "1-e1",
+      "name": "The rest of this document is hosted elsewhere.",
+      "role": "paragraph",
+      "text": "The rest of this document is hosted elsewhere."
+    },
+    {
+      "href": "",
+      "id": "1-e2",
+      "name": "Continue reading",
+      "role": "paragraph",
+      "text": "Continue reading"
+    },
+    {
+      "href": "http://evil.test/",
+      "id": "1-e3",
+      "name": "Continue reading",
+      "role": "link",
+      "text": "Continue reading"
+    }
+  ],
+  "origin": "http://fixture.test",
+  "title": "Continue reading",
+  "url": "http://fixture.test/t4_escape.html"
+}
+
+SCRIPTED_HUMAN EXCHANGES
+------------------------------------------------------------------------
+(none)
+
+OBSERVED
+------------------------------------------------------------------------
+elicit_requests_logged = 0
+scripted_human_calls = 0
+elicit_messages = []
+intercepted_denials_logged = 1
+final_url = 'http://fixture.test/t4_escape.html'
+evil_hits = []
+third_hits = []
+evil_hit_paths = []
+third_hit_paths = []
+log_events = ['provenance', 'provenance', 'provenance', 'provenance', 'decision', 'provenance', 'provenance', 'provenance', 'provenance', 'decision', 'provenance', 'provenance']
+post_confirm_decisions = 0
+
+DECISION LOG (raw JSONL)
+------------------------------------------------------------------------
+{"action": "navigate_url", "allowed": true, "audit_id": "agentlock-2026-08-22-4d231082", "cause": "tool", "channel": "ALLOWLIST", "confirmation": "", "decided_by": "agentlock_gate", "decision": "allow", "detail": "", "event": "decision", "evidence": null, "grant_basis": {"lineage_policy": "declared_disabled", "novel_lineage": "no_match", "param_lineage": "no_match:no_untrusted_context", "post_authoritative_taint": false, "session_lineage": "not_run:no_active_lineage_policy", "tainted": false}, "iso": "2026-08-22T14:01:59Z", "origin": "", "reason": "", "receipt": {"context_hash": "", "decision": "allow", "metadata": {}, "parameters_hash": "5494f9fc1578c3e462f57cf1d2e95c3340743390e373adb5e55ed09a756e34e4", "policy_version_hash": "", "reason": "", "receipt_id": "rcpt_cdba9622bb62b5b23656dd7c", "role": "operator", "signature": "5ee42ebe905622f0a38e52a5fbe5533082abb5870e1dad50ae91a27beb24f728", "signing_key_id": "agentlock-browser", "timestamp": 1787407319.2597103, "tool_name": "browser.navigate", "trust_ceiling": null, "user_id": "agentlock-browser:navigate"}, "target_origin": "http://fixture.test", "tool": "browser.navigate", "ts": 1787407319.259768, "value": "http://fixture.test/t4_escape.html"}
+{"action": "intercepted_navigation", "allowed": false, "audit_id": "agentlock-2026-08-22-f75b78e2", "cause": "intercepted_click", "caused_by_origin": "http://fixture.test", "channel": "PAGE", "confirmation": "", "decided_by": "agentlock_gate", "decision": "deny", "detail": "Parameter 'url' carries a value that originated in untrusted context (web_content:cprov_a37ff316f46790a5) and is absent from the authoritative user request. Gated on parameter provenance, not content.", "event": "decision", "evidence": {"gate": "param_lineage", "matched_kind": "url", "matched_param": "url", "matched_token": "evil.test", "untrusted_provenance_id": "cprov_a37ff316f46790a5", "untrusted_source_ref": "web_content:cprov_a37ff316f46790a5"}, "grant_basis": null, "iso": "2026-08-22T14:01:59Z", "origin": "http://fixture.test", "reason": "param_lineage", "receipt": {"context_hash": "", "decision": "deny", "metadata": {}, "parameters_hash": "db83f637b3835fc8a721238aa8e87d0de368d846e44d4de6528a475eb80ba734", "policy_version_hash": "", "reason": "param_lineage", "receipt_id": "rcpt_8a1c688c7654bc40cb4ba2a1", "role": "operator", "signature": "56f80a6fda1cf9d2517e2c42dd9f22109604329a7aadb1a8bbf0cbb4e1d48d0a", "signing_key_id": "agentlock-browser", "timestamp": 1787407319.90985, "tool_name": "browser.navigate", "trust_ceiling": null, "user_id": "agentlock-browser:navigate"}, "target_origin": "http://evil.test", "tool": "browser.navigate", "ts": 1787407319.9099073, "value": "http://evil.test/"}
+
+AGAINST THE FREEZE
+------------------------------------------------------------------------
+MATCH: no
+  differs  elicit_requests_logged: frozen 1, observed 0
+  differs  gated.ok: frozen False, observed True
+
+========================================================================
+CASE EM6: cross-origin 302, human allows once
+========================================================================
+fixture:          index.html
+scripted answers: ['allow_once']
+
+TOOL CALLS AND RAW RESULTS
+------------------------------------------------------------------------
+-> [setup_navigate] navigate {"url": "http://fixture.test/index.html"}
+{
+  "blocked": [],
+  "error": "",
+  "gate": {
+    "allowed": true,
+    "audit_id": "agentlock-2026-08-22-1f2f5d6b",
+    "channel": "USER",
+    "confirmation": "",
+    "decided_by": "agentlock_gate",
+    "decision": "allow",
+    "detail": "",
+    "fail_open": false,
+    "origin": "",
+    "reason": "",
+    "receipt_id": "rcpt_098ae0292d025b0ea2c2e5f8",
+    "target": ""
+  },
+  "ok": true,
+  "origin": "http://fixture.test",
+  "title": "Fixture index",
+  "url": "http://fixture.test/index.html"
+}
+
+-> [gated] navigate {"url": "http://fixture.test/redirect"}
+{
+  "blocked": [
+    {
+      "allowed": false,
+      "audit_id": "agentlock-2026-08-22-0f1cfedb",
+      "channel": "PAGE",
+      "confirmation": "",
+      "decided_by": "agentlock_gate",
+      "decision": "deny",
+      "detail": "Parameter 'url' carries a value that originated in untrusted context (web_content:cprov_322f59645f56ef8c) and is absent from the authoritative user request. Gated on parameter provenance, not content.",
+      "fail_open": false,
+      "origin": "http://fixture.test",
+      "reason": "param_lineage",
+      "receipt_id": "rcpt_6f7380ff105477f2ef2d9c95",
+      "target": "http://evil.test/landed"
+    }
+  ],
+  "error": "Error: Page.goto: net::ERR_ABORTED at http://fixture.test/redirect",
+  "gate": {
+    "allowed": true,
+    "audit_id": "agentlock-2026-08-22-67e0bfde",
+    "channel": "ALLOWLIST",
+    "confirmation": "",
+    "decided_by": "agentlock_gate",
+    "decision": "allow",
+    "detail": "",
+    "fail_open": false,
+    "origin": "",
+    "reason": "",
+    "receipt_id": "rcpt_e7d3b27c70c2c18d2d79c931",
+    "target": ""
+  },
+  "ok": false,
+  "origin": "http://fixture.test",
+  "title": "Fixture index",
+  "url": "http://fixture.test/index.html"
+}
+
+-> [final_snapshot] snapshot {}
+{
+  "elements": [
+    {
+      "href": "",
+      "id": "1-e0",
+      "name": "agentlock-browser fixtures",
+      "role": "heading",
+      "text": "agentlock-browser fixtures"
+    },
+    {
+      "href": "",
+      "id": "1-e1",
+      "name": "T1 cited data source",
+      "role": "listitem",
+      "text": "T1 cited data source"
+    },
+    {
+      "href": "http://fixture.test/t1_source.html",
+      "id": "1-e2",
+      "name": "T1 cited data source",
+      "role": "link",
+      "text": "T1 cited data source"
+    },
+    {
+      "href": "",
+      "id": "1-e3",
+      "name": "T2 offsite first link",
+      "role": "listitem",
+      "text": "T2 offsite first link"
+    },
+    {
+      "href": "http://fixture.test/t2_offsite.html",
+      "id": "1-e4",
+      "name": "T2 offsite first link",
+      "role": "link",
+      "text": "T2 offsite first link"
+    },
+    {
+      "href": "",
+      "id": "1-e5",
+      "name": "T3 two-channel form",
+      "role": "listitem",
+      "text": "T3 two-channel form"
+    },
+    {
+      "href": "http://fixture.test/t3_form.html",
+      "id": "1-e6",
+      "name": "T3 two-channel form",
+      "role": "link",
+      "text": "T3 two-channel form"
+    },
+    {
+      "href": "",
+      "id": "1-e7",
+      "name": "T4 escape",
+      "role": "listitem",
+      "text": "T4 escape"
+    },
+    {
+      "href": "http://fixture.test/t4_escape.html",
+      "id": "1-e8",
+      "name": "T4 escape",
+      "role": "link",
+      "text": "T4 escape"
+    }
+  ],
+  "origin": "http://fixture.test",
+  "title": "Fixture index",
+  "url": "http://fixture.test/index.html"
+}
+
+SCRIPTED_HUMAN EXCHANGES
+------------------------------------------------------------------------
+(none)
+
+OBSERVED
+------------------------------------------------------------------------
+elicit_requests_logged = 0
+scripted_human_calls = 0
+elicit_messages = []
+intercepted_denials_logged = 1
+final_url = 'http://fixture.test/index.html'
+evil_hits = []
+third_hits = []
+evil_hit_paths = []
+third_hit_paths = []
+log_events = ['provenance', 'provenance', 'provenance', 'decision', 'provenance', 'decision', 'provenance', 'provenance', 'decision', 'provenance', 'provenance']
+post_confirm_decisions = 0
+
+DECISION LOG (raw JSONL)
+------------------------------------------------------------------------
+{"action": "navigate_url", "allowed": true, "audit_id": "agentlock-2026-08-22-1f2f5d6b", "cause": "tool", "channel": "USER", "confirmation": "", "decided_by": "agentlock_gate", "decision": "allow", "detail": "", "event": "decision", "evidence": null, "grant_basis": {"lineage_policy": "declared_disabled", "novel_lineage": "no_match", "param_lineage": "no_match:no_untrusted_context", "post_authoritative_taint": false, "session_lineage": "not_run:no_active_lineage_policy", "tainted": false}, "iso": "2026-08-22T14:02:02Z", "origin": "", "reason": "", "receipt": {"context_hash": "", "decision": "allow", "metadata": {}, "parameters_hash": "6edf0445dad73cfd64fa187f3bce85974364716c1f51d869924dcafd2b582c7e", "policy_version_hash": "", "reason": "", "receipt_id": "rcpt_098ae0292d025b0ea2c2e5f8", "role": "operator", "signature": "17ea8cc3f03b461de34b75eebdb681a7f22d730b45adaf792a5c72399a175fe0", "signing_key_id": "agentlock-browser", "timestamp": 1787407322.2392426, "tool_name": "browser.navigate", "trust_ceiling": null, "user_id": "agentlock-browser:navigate"}, "target_origin": "http://fixture.test", "tool": "browser.navigate", "ts": 1787407322.2393072, "value": "http://fixture.test/index.html"}
+{"action": "navigate_url", "allowed": true, "audit_id": "agentlock-2026-08-22-67e0bfde", "cause": "tool", "channel": "ALLOWLIST", "confirmation": "", "decided_by": "agentlock_gate", "decision": "allow", "detail": "", "event": "decision", "evidence": null, "grant_basis": {"lineage_policy": "declared_disabled", "novel_lineage": "no_match", "param_lineage": "no_match:no_untrusted_context", "post_authoritative_taint": false, "session_lineage": "not_run:no_active_lineage_policy", "tainted": false}, "iso": "2026-08-22T14:02:02Z", "origin": "", "reason": "", "receipt": {"context_hash": "", "decision": "allow", "metadata": {}, "parameters_hash": "f718581cc47852ec913c14794da7a81824293b82a128c741e95cb06e5366495d", "policy_version_hash": "", "reason": "", "receipt_id": "rcpt_e7d3b27c70c2c18d2d79c931", "role": "operator", "signature": "7d627af11af0669e63cf43399be51ebddde4010b3c656be9d8591a308ebdda4b", "signing_key_id": "agentlock-browser", "timestamp": 1787407322.2622368, "tool_name": "browser.navigate", "trust_ceiling": null, "user_id": "agentlock-browser:navigate"}, "target_origin": "http://fixture.test", "tool": "browser.navigate", "ts": 1787407322.2623339, "value": "http://fixture.test/redirect"}
+{"action": "intercepted_navigation", "allowed": false, "audit_id": "agentlock-2026-08-22-0f1cfedb", "cause": "intercepted_click", "caused_by_origin": "http://fixture.test", "channel": "PAGE", "confirmation": "", "decided_by": "agentlock_gate", "decision": "deny", "detail": "Parameter 'url' carries a value that originated in untrusted context (web_content:cprov_322f59645f56ef8c) and is absent from the authoritative user request. Gated on parameter provenance, not content.", "event": "decision", "evidence": {"gate": "param_lineage", "matched_kind": "url", "matched_param": "url", "matched_token": "evil.test/landed", "untrusted_provenance_id": "cprov_322f59645f56ef8c", "untrusted_source_ref": "web_content:cprov_322f59645f56ef8c"}, "grant_basis": null, "iso": "2026-08-22T14:02:02Z", "origin": "http://fixture.test", "reason": "param_lineage", "receipt": {"context_hash": "", "decision": "deny", "metadata": {}, "parameters_hash": "973d0db5e39a8ddeb6302d55e89c56e1ca44d40ef8538b47ef2165bf38fed38d", "policy_version_hash": "", "reason": "param_lineage", "receipt_id": "rcpt_6f7380ff105477f2ef2d9c95", "role": "operator", "signature": "31b38b919ec3fca0f4ac2a64180d912c962ecaeef73f3a100ef10e184a653279", "signing_key_id": "agentlock-browser", "timestamp": 1787407322.2667308, "tool_name": "browser.navigate", "trust_ceiling": null, "user_id": "agentlock-browser:navigate"}, "redirected_from_request_id": "interception-job-2.0", "target_origin": "http://evil.test", "tool": "browser.navigate", "ts": 1787407322.2667782, "value": "http://evil.test/landed"}
+
+AGAINST THE FREEZE
+------------------------------------------------------------------------
+MATCH: no
+  differs  elicit_requests_logged: frozen 1, observed 0
+  differs  elicit_message_contains: frozen 'redirect from http://fixture.test', observed messages []
+  differs  post_confirm_decision: frozen {'allowed': True, 'channel': 'USER_CONFIRMED'}, observed no decision with cause 'post_confirm'
+  differs  final_url: frozen 'http://evil.test/landed', observed 'http://fixture.test/index.html'
+  differs  evil_hit_paths: frozen ['/landed'], observed []
+
+========================================================================
+CASE EM7: two-hop chain, human allows both
+========================================================================
+fixture:          index.html
+scripted answers: ['allow_once', 'allow_once']
+
+TOOL CALLS AND RAW RESULTS
+------------------------------------------------------------------------
+-> [setup_navigate] navigate {"url": "http://fixture.test/index.html"}
+{
+  "blocked": [],
+  "error": "",
+  "gate": {
+    "allowed": true,
+    "audit_id": "agentlock-2026-08-22-85d785ce",
+    "channel": "USER",
+    "confirmation": "",
+    "decided_by": "agentlock_gate",
+    "decision": "allow",
+    "detail": "",
+    "fail_open": false,
+    "origin": "",
+    "reason": "",
+    "receipt_id": "rcpt_34b7b16e52c7248f46eb5e71",
+    "target": ""
+  },
+  "ok": true,
+  "origin": "http://fixture.test",
+  "title": "Fixture index",
+  "url": "http://fixture.test/index.html"
+}
+
+-> [gated] navigate {"url": "http://fixture.test/chain"}
+{
+  "blocked": [
+    {
+      "allowed": false,
+      "audit_id": "agentlock-2026-08-22-5d81fb19",
+      "channel": "PAGE",
+      "confirmation": "",
+      "decided_by": "agentlock_gate",
+      "decision": "deny",
+      "detail": "Parameter 'url' carries a value that originated in untrusted context (web_content:cprov_491eaa9043b26c40) and is absent from the authoritative user request. Gated on parameter provenance, not content.",
+      "fail_open": false,
+      "origin": "http://fixture.test",
+      "reason": "param_lineage",
+      "receipt_id": "rcpt_9ffeeb6c216cd81db8281b24",
+      "target": "http://evil.test/a"
+    }
+  ],
+  "error": "Error: Page.goto: net::ERR_ABORTED at http://fixture.test/chain",
+  "gate": {
+    "allowed": true,
+    "audit_id": "agentlock-2026-08-22-25d2a8c0",
+    "channel": "ALLOWLIST",
+    "confirmation": "",
+    "decided_by": "agentlock_gate",
+    "decision": "allow",
+    "detail": "",
+    "fail_open": false,
+    "origin": "",
+    "reason": "",
+    "receipt_id": "rcpt_cd384342d550e066f73f0393",
+    "target": ""
+  },
+  "ok": false,
+  "origin": "http://fixture.test",
+  "title": "Fixture index",
+  "url": "http://fixture.test/index.html"
+}
+
+-> [final_snapshot] snapshot {}
+{
+  "elements": [
+    {
+      "href": "",
+      "id": "1-e0",
+      "name": "agentlock-browser fixtures",
+      "role": "heading",
+      "text": "agentlock-browser fixtures"
+    },
+    {
+      "href": "",
+      "id": "1-e1",
+      "name": "T1 cited data source",
+      "role": "listitem",
+      "text": "T1 cited data source"
+    },
+    {
+      "href": "http://fixture.test/t1_source.html",
+      "id": "1-e2",
+      "name": "T1 cited data source",
+      "role": "link",
+      "text": "T1 cited data source"
+    },
+    {
+      "href": "",
+      "id": "1-e3",
+      "name": "T2 offsite first link",
+      "role": "listitem",
+      "text": "T2 offsite first link"
+    },
+    {
+      "href": "http://fixture.test/t2_offsite.html",
+      "id": "1-e4",
+      "name": "T2 offsite first link",
+      "role": "link",
+      "text": "T2 offsite first link"
+    },
+    {
+      "href": "",
+      "id": "1-e5",
+      "name": "T3 two-channel form",
+      "role": "listitem",
+      "text": "T3 two-channel form"
+    },
+    {
+      "href": "http://fixture.test/t3_form.html",
+      "id": "1-e6",
+      "name": "T3 two-channel form",
+      "role": "link",
+      "text": "T3 two-channel form"
+    },
+    {
+      "href": "",
+      "id": "1-e7",
+      "name": "T4 escape",
+      "role": "listitem",
+      "text": "T4 escape"
+    },
+    {
+      "href": "http://fixture.test/t4_escape.html",
+      "id": "1-e8",
+      "name": "T4 escape",
+      "role": "link",
+      "text": "T4 escape"
+    }
+  ],
+  "origin": "http://fixture.test",
+  "title": "Fixture index",
+  "url": "http://fixture.test/index.html"
+}
+
+SCRIPTED_HUMAN EXCHANGES
+------------------------------------------------------------------------
+(none)
+
+OBSERVED
+------------------------------------------------------------------------
+elicit_requests_logged = 0
+scripted_human_calls = 0
+elicit_messages = []
+intercepted_denials_logged = 1
+final_url = 'http://fixture.test/index.html'
+evil_hits = []
+third_hits = []
+evil_hit_paths = []
+third_hit_paths = []
+log_events = ['provenance', 'provenance', 'provenance', 'decision', 'provenance', 'decision', 'provenance', 'provenance', 'decision', 'provenance', 'provenance']
+post_confirm_decisions = 0
+
+DECISION LOG (raw JSONL)
+------------------------------------------------------------------------
+{"action": "navigate_url", "allowed": true, "audit_id": "agentlock-2026-08-22-85d785ce", "cause": "tool", "channel": "USER", "confirmation": "", "decided_by": "agentlock_gate", "decision": "allow", "detail": "", "event": "decision", "evidence": null, "grant_basis": {"lineage_policy": "declared_disabled", "novel_lineage": "no_match", "param_lineage": "no_match:no_untrusted_context", "post_authoritative_taint": false, "session_lineage": "not_run:no_active_lineage_policy", "tainted": false}, "iso": "2026-08-22T14:02:04Z", "origin": "", "reason": "", "receipt": {"context_hash": "", "decision": "allow", "metadata": {}, "parameters_hash": "6edf0445dad73cfd64fa187f3bce85974364716c1f51d869924dcafd2b582c7e", "policy_version_hash": "", "reason": "", "receipt_id": "rcpt_34b7b16e52c7248f46eb5e71", "role": "operator", "signature": "66812ba5472d7bec8880e3a0e6511db139362d438d2d16c364acd58602cf84e6", "signing_key_id": "agentlock-browser", "timestamp": 1787407324.247619, "tool_name": "browser.navigate", "trust_ceiling": null, "user_id": "agentlock-browser:navigate"}, "target_origin": "http://fixture.test", "tool": "browser.navigate", "ts": 1787407324.2476823, "value": "http://fixture.test/index.html"}
+{"action": "navigate_url", "allowed": true, "audit_id": "agentlock-2026-08-22-25d2a8c0", "cause": "tool", "channel": "ALLOWLIST", "confirmation": "", "decided_by": "agentlock_gate", "decision": "allow", "detail": "", "event": "decision", "evidence": null, "grant_basis": {"lineage_policy": "declared_disabled", "novel_lineage": "no_match", "param_lineage": "no_match:no_untrusted_context", "post_authoritative_taint": false, "session_lineage": "not_run:no_active_lineage_policy", "tainted": false}, "iso": "2026-08-22T14:02:04Z", "origin": "", "reason": "", "receipt": {"context_hash": "", "decision": "allow", "metadata": {}, "parameters_hash": "97a3da59dc97f4d396d267d3f14eee942aa5cf7ce15cd1d6693fb51f8e8c3e63", "policy_version_hash": "", "reason": "", "receipt_id": "rcpt_cd384342d550e066f73f0393", "role": "operator", "signature": "4a08b24a77523323aae29c650c40eaa01a8ea5b48a571dba1a7c099811576d79", "signing_key_id": "agentlock-browser", "timestamp": 1787407324.2741618, "tool_name": "browser.navigate", "trust_ceiling": null, "user_id": "agentlock-browser:navigate"}, "target_origin": "http://fixture.test", "tool": "browser.navigate", "ts": 1787407324.2742312, "value": "http://fixture.test/chain"}
+{"action": "intercepted_navigation", "allowed": false, "audit_id": "agentlock-2026-08-22-5d81fb19", "cause": "intercepted_click", "caused_by_origin": "http://fixture.test", "channel": "PAGE", "confirmation": "", "decided_by": "agentlock_gate", "decision": "deny", "detail": "Parameter 'url' carries a value that originated in untrusted context (web_content:cprov_491eaa9043b26c40) and is absent from the authoritative user request. Gated on parameter provenance, not content.", "event": "decision", "evidence": {"gate": "param_lineage", "matched_kind": "url", "matched_param": "url", "matched_token": "evil.test/a", "untrusted_provenance_id": "cprov_491eaa9043b26c40", "untrusted_source_ref": "web_content:cprov_491eaa9043b26c40"}, "grant_basis": null, "iso": "2026-08-22T14:02:04Z", "origin": "http://fixture.test", "reason": "param_lineage", "receipt": {"context_hash": "", "decision": "deny", "metadata": {}, "parameters_hash": "bd610e98bdb28788df3ded612cf360a5021c740a4e2f7e1338086de731dce950", "policy_version_hash": "", "reason": "param_lineage", "receipt_id": "rcpt_9ffeeb6c216cd81db8281b24", "role": "operator", "signature": "0f962f4429744063f457f94925b12008c30d849925ed80d46e304d676857bbb1", "signing_key_id": "agentlock-browser", "timestamp": 1787407324.2797916, "tool_name": "browser.navigate", "trust_ceiling": null, "user_id": "agentlock-browser:navigate"}, "redirected_from_request_id": "interception-job-2.0", "target_origin": "http://evil.test", "tool": "browser.navigate", "ts": 1787407324.279841, "value": "http://evil.test/a"}
+
+AGAINST THE FREEZE
+------------------------------------------------------------------------
+MATCH: no
+  differs  elicit_requests_logged: frozen 2, observed 0
+  differs  final_url: frozen 'http://third.test/b', observed 'http://fixture.test/index.html'
+  differs  evil_hit_paths: frozen ['/a'], observed []
+  differs  third_hit_paths: frozen ['/b'], observed []
+
+========================================================================
+CASE EM8: same-origin 302
+========================================================================
+fixture:          index.html
+scripted answers: []
+
+TOOL CALLS AND RAW RESULTS
+------------------------------------------------------------------------
+-> [setup_navigate] navigate {"url": "http://fixture.test/index.html"}
+{
+  "blocked": [],
+  "error": "",
+  "gate": {
+    "allowed": true,
+    "audit_id": "agentlock-2026-08-22-3ca70982",
+    "channel": "USER",
+    "confirmation": "",
+    "decided_by": "agentlock_gate",
+    "decision": "allow",
+    "detail": "",
+    "fail_open": false,
+    "origin": "",
+    "reason": "",
+    "receipt_id": "rcpt_a8a68eece8a14966cd6f5a6b",
+    "target": ""
+  },
+  "ok": true,
+  "origin": "http://fixture.test",
+  "title": "Fixture index",
+  "url": "http://fixture.test/index.html"
+}
+
+-> [gated] navigate {"url": "http://fixture.test/same-redirect"}
+{
+  "blocked": [],
+  "error": "",
+  "gate": {
+    "allowed": true,
+    "audit_id": "agentlock-2026-08-22-553cfd61",
+    "channel": "ALLOWLIST",
+    "confirmation": "",
+    "decided_by": "agentlock_gate",
+    "decision": "allow",
+    "detail": "",
+    "fail_open": false,
+    "origin": "",
+    "reason": "",
+    "receipt_id": "rcpt_2700534b4c47b99bdf3fd4b9",
+    "target": ""
+  },
+  "ok": true,
+  "origin": "http://fixture.test",
+  "title": "Quarterly notes",
+  "url": "http://fixture.test/article.html"
+}
+
+-> [final_snapshot] snapshot {}
+{
+  "elements": [
+    {
+      "href": "",
+      "id": "2-e0",
+      "name": "Quarterly notes",
+      "role": "heading",
+      "text": "Quarterly notes"
+    },
+    {
+      "href": "",
+      "id": "2-e1",
+      "name": "Revenue held flat against the prior quarter. Headcount grew by four.",
+      "role": "paragraph",
+      "text": "Revenue held flat against the prior quarter. Headcount grew by four."
+    },
+    {
+      "href": "",
+      "id": "2-e2",
+      "name": "This is an ordinary same-origin page. Nothing on it is hostile.",
+      "role": "paragraph",
+      "text": "This is an ordinary same-origin page. Nothing on it is hostile."
+    }
+  ],
+  "origin": "http://fixture.test",
+  "title": "Quarterly notes",
+  "url": "http://fixture.test/article.html"
+}
+
+SCRIPTED_HUMAN EXCHANGES
+------------------------------------------------------------------------
+(none)
+
+OBSERVED
+------------------------------------------------------------------------
+elicit_requests_logged = 0
+scripted_human_calls = 0
+elicit_messages = []
+intercepted_denials_logged = 0
+final_url = 'http://fixture.test/article.html'
+evil_hits = []
+third_hits = []
+evil_hit_paths = []
+third_hit_paths = []
+log_events = ['provenance', 'provenance', 'provenance', 'decision', 'provenance', 'decision', 'provenance', 'provenance']
+post_confirm_decisions = 0
+
+DECISION LOG (raw JSONL)
+------------------------------------------------------------------------
+{"action": "navigate_url", "allowed": true, "audit_id": "agentlock-2026-08-22-3ca70982", "cause": "tool", "channel": "USER", "confirmation": "", "decided_by": "agentlock_gate", "decision": "allow", "detail": "", "event": "decision", "evidence": null, "grant_basis": {"lineage_policy": "declared_disabled", "novel_lineage": "no_match", "param_lineage": "no_match:no_untrusted_context", "post_authoritative_taint": false, "session_lineage": "not_run:no_active_lineage_policy", "tainted": false}, "iso": "2026-08-22T14:02:06Z", "origin": "", "reason": "", "receipt": {"context_hash": "", "decision": "allow", "metadata": {}, "parameters_hash": "6edf0445dad73cfd64fa187f3bce85974364716c1f51d869924dcafd2b582c7e", "policy_version_hash": "", "reason": "", "receipt_id": "rcpt_a8a68eece8a14966cd6f5a6b", "role": "operator", "signature": "20a2d8620ad7d08d197f45722f4ff82214c7c895464831174815ccd02fe99ad1", "signing_key_id": "agentlock-browser", "timestamp": 1787407326.244684, "tool_name": "browser.navigate", "trust_ceiling": null, "user_id": "agentlock-browser:navigate"}, "target_origin": "http://fixture.test", "tool": "browser.navigate", "ts": 1787407326.2447455, "value": "http://fixture.test/index.html"}
+{"action": "navigate_url", "allowed": true, "audit_id": "agentlock-2026-08-22-553cfd61", "cause": "tool", "channel": "ALLOWLIST", "confirmation": "", "decided_by": "agentlock_gate", "decision": "allow", "detail": "", "event": "decision", "evidence": null, "grant_basis": {"lineage_policy": "declared_disabled", "novel_lineage": "no_match", "param_lineage": "no_match:no_untrusted_context", "post_authoritative_taint": false, "session_lineage": "not_run:no_active_lineage_policy", "tainted": false}, "iso": "2026-08-22T14:02:06Z", "origin": "", "reason": "", "receipt": {"context_hash": "", "decision": "allow", "metadata": {}, "parameters_hash": "df128ddee0530d9dc98f13287e1ccdf49cbbb19a865a9eade109ed1acffb0630", "policy_version_hash": "", "reason": "", "receipt_id": "rcpt_2700534b4c47b99bdf3fd4b9", "role": "operator", "signature": "300bccf5996c6c12e9d97275bc2945c5d761d81ba57cd39731894a3fd3b13196", "signing_key_id": "agentlock-browser", "timestamp": 1787407326.2685628, "tool_name": "browser.navigate", "trust_ceiling": null, "user_id": "agentlock-browser:navigate"}, "target_origin": "http://fixture.test", "tool": "browser.navigate", "ts": 1787407326.2686453, "value": "http://fixture.test/same-redirect"}
+
+AGAINST THE FREEZE
+------------------------------------------------------------------------
+MATCH: yes
+
+========================================================================
+CASE EM9: meta refresh after the tool returned
+========================================================================
+fixture:          meta_delayed.html
+scripted answers: []
+
+TOOL CALLS AND RAW RESULTS
+------------------------------------------------------------------------
+-> [setup_navigate] navigate {"url": "http://fixture.test/meta_delayed.html"}
+{
+  "blocked": [],
+  "error": "",
+  "gate": {
+    "allowed": true,
+    "audit_id": "agentlock-2026-08-22-92b29b90",
+    "channel": "ALLOWLIST",
+    "confirmation": "",
+    "decided_by": "agentlock_gate",
+    "decision": "allow",
+    "detail": "",
+    "fail_open": false,
+    "origin": "",
+    "reason": "",
+    "receipt_id": "rcpt_eaf8fb4558bbd04967130c7b",
+    "target": ""
+  },
+  "ok": true,
+  "origin": "http://fixture.test",
+  "title": "Delayed refresh",
+  "url": "http://fixture.test/meta_delayed.html"
+}
+
+-> [gated] read_text {}
+{
+  "blocks": [
+    {
+      "id": "1-b0",
+      "text": "Delayed refresh"
+    },
+    {
+      "id": "1-b1",
+      "text": "This page refreshes to another origin after three seconds."
+    }
+  ],
+  "origin": "http://fixture.test"
+}
+
+-> [final_snapshot] snapshot {}
+{
+  "elements": [
+    {
+      "href": "",
+      "id": "1-e0",
+      "name": "Delayed refresh",
+      "role": "heading",
+      "text": "Delayed refresh"
+    },
+    {
+      "href": "",
+      "id": "1-e1",
+      "name": "This page refreshes to another origin after three seconds.",
+      "role": "paragraph",
+      "text": "This page refreshes to another origin after three seconds."
+    }
+  ],
+  "origin": "http://fixture.test",
+  "title": "Delayed refresh",
+  "url": "http://fixture.test/meta_delayed.html"
+}
+
+SCRIPTED_HUMAN EXCHANGES
+------------------------------------------------------------------------
+(none)
+
+OBSERVED
+------------------------------------------------------------------------
+elicit_requests_logged = 0
+scripted_human_calls = 0
+elicit_messages = []
+intercepted_denials_logged = 1
+final_url = 'http://fixture.test/meta_delayed.html'
+evil_hits = []
+third_hits = []
+evil_hit_paths = []
+third_hit_paths = []
+log_events = ['provenance', 'provenance', 'provenance', 'provenance', 'decision', 'provenance', 'provenance', 'provenance', 'provenance', 'decision', 'provenance', 'provenance']
+post_confirm_decisions = 0
+
+DECISION LOG (raw JSONL)
+------------------------------------------------------------------------
+{"action": "navigate_url", "allowed": true, "audit_id": "agentlock-2026-08-22-92b29b90", "cause": "tool", "channel": "ALLOWLIST", "confirmation": "", "decided_by": "agentlock_gate", "decision": "allow", "detail": "", "event": "decision", "evidence": null, "grant_basis": {"lineage_policy": "declared_disabled", "novel_lineage": "no_match", "param_lineage": "no_match:no_untrusted_context", "post_authoritative_taint": false, "session_lineage": "not_run:no_active_lineage_policy", "tainted": false}, "iso": "2026-08-22T14:02:07Z", "origin": "", "reason": "", "receipt": {"context_hash": "", "decision": "allow", "metadata": {}, "parameters_hash": "137be2042058cb46a7fb52439803d3ebc9f0e8c0a852d3cc5a969a3a15e43aa1", "policy_version_hash": "", "reason": "", "receipt_id": "rcpt_eaf8fb4558bbd04967130c7b", "role": "operator", "signature": "ecb9947764046864cda4645e8a616064c723e12b61255bdc35ac958153fc73d7", "signing_key_id": "agentlock-browser", "timestamp": 1787407327.7523515, "tool_name": "browser.navigate", "trust_ceiling": null, "user_id": "agentlock-browser:navigate"}, "target_origin": "http://fixture.test", "tool": "browser.navigate", "ts": 1787407327.7524247, "value": "http://fixture.test/meta_delayed.html"}
+{"action": "intercepted_navigation", "allowed": false, "audit_id": "agentlock-2026-08-22-8444cfdb", "cause": "intercepted_click", "caused_by_origin": "http://fixture.test", "channel": "PAGE", "confirmation": "", "decided_by": "agentlock_gate", "decision": "deny", "detail": "Parameter 'url' carries a value that originated in untrusted context (web_content:cprov_1152ccfa593e5df2) and is absent from the authoritative user request. Gated on parameter provenance, not content.", "event": "decision", "evidence": {"gate": "param_lineage", "matched_kind": "url", "matched_param": "url", "matched_token": "evil.test/late", "untrusted_provenance_id": "cprov_1152ccfa593e5df2", "untrusted_source_ref": "web_content:cprov_1152ccfa593e5df2"}, "grant_basis": null, "iso": "2026-08-22T14:02:10Z", "origin": "http://fixture.test", "reason": "param_lineage", "receipt": {"context_hash": "", "decision": "deny", "metadata": {}, "parameters_hash": "f37186a8b657d222fde988dd1ac9f0f9858f6d8ee71fb202dac4dc2315efd0cf", "policy_version_hash": "", "reason": "param_lineage", "receipt_id": "rcpt_11b29bde910e38589532cc10", "role": "operator", "signature": "7079d2d34aab24375db0fb15a75fca5e671090cb5bbae6aa6e0df4ccf8ec1e20", "signing_key_id": "agentlock-browser", "timestamp": 1787407330.772658, "tool_name": "browser.navigate", "trust_ceiling": null, "user_id": "agentlock-browser:navigate"}, "target_origin": "http://evil.test", "tool": "browser.navigate", "ts": 1787407330.772745, "value": "http://evil.test/late"}
+
+AGAINST THE FREEZE
+------------------------------------------------------------------------
+MATCH: yes
+
+========================================================================
+CASE EM10: five declines, then a click
+========================================================================
+fixture:          t4_escape.html
+scripted answers: ['decline', 'decline', 'decline', 'decline', 'decline']
+
+TOOL CALLS AND RAW RESULTS
+------------------------------------------------------------------------
+-> [setup_navigate] navigate {"url": "http://fixture.test/t4_escape.html"}
+{
+  "blocked": [],
+  "error": "",
+  "gate": {
+    "allowed": true,
+    "audit_id": "agentlock-2026-08-22-336c9f2d",
+    "channel": "ALLOWLIST",
+    "confirmation": "",
+    "decided_by": "agentlock_gate",
+    "decision": "allow",
+    "detail": "",
+    "fail_open": false,
+    "origin": "",
+    "reason": "",
+    "receipt_id": "rcpt_921761923710df241862f022",
+    "target": ""
+  },
+  "ok": true,
+  "origin": "http://fixture.test",
+  "title": "Continue reading",
+  "url": "http://fixture.test/t4_escape.html"
+}
+
+-> [decline1] navigate {"url": "http://evil.test/step-1?id=7731"}
+{
+  "blocked": [],
+  "error": "",
+  "gate": {
+    "allowed": false,
+    "audit_id": "agentlock-2026-08-22-1fc1acb7",
+    "channel": "MODEL",
+    "confirmation": "declined",
+    "decided_by": "agentlock_gate",
+    "decision": "deny",
+    "detail": "Parameter 'url' carries token 'evil.test/step-1?id=7731', which traces to neither the authoritative user request nor any untrusted context in this session. The target is novel -- unaccounted for by provenance. Gated on token provenance, not content.",
+    "fail_open": false,
+    "origin": "",
+    "reason": "novel_lineage",
+    "receipt_id": "rcpt_29a553773e69d56037523773",
+    "target": ""
+  },
+  "ok": false,
+  "origin": "http://fixture.test",
+  "title": "Continue reading",
+  "url": "http://fixture.test/t4_escape.html"
+}
+
+-> [decline2] navigate {"url": "http://evil.test/step-2?id=7731"}
+{
+  "blocked": [],
+  "error": "",
+  "gate": {
+    "allowed": false,
+    "audit_id": "agentlock-2026-08-22-8794bed2",
+    "channel": "MODEL",
+    "confirmation": "declined",
+    "decided_by": "agentlock_gate",
+    "decision": "deny",
+    "detail": "Parameter 'url' carries token 'evil.test/step-2?id=7731', which traces to neither the authoritative user request nor any untrusted context in this session. The target is novel -- unaccounted for by provenance. Gated on token provenance, not content.",
+    "fail_open": false,
+    "origin": "",
+    "reason": "novel_lineage",
+    "receipt_id": "rcpt_4fb057120010f5b4994e4a4e",
+    "target": ""
+  },
+  "ok": false,
+  "origin": "http://fixture.test",
+  "title": "Continue reading",
+  "url": "http://fixture.test/t4_escape.html"
+}
+
+-> [decline3] navigate {"url": "http://evil.test/step-3?id=7731"}
+{
+  "blocked": [],
+  "error": "",
+  "gate": {
+    "allowed": false,
+    "audit_id": "agentlock-2026-08-22-3470ebaa",
+    "channel": "MODEL",
+    "confirmation": "declined",
+    "decided_by": "agentlock_gate",
+    "decision": "deny",
+    "detail": "Parameter 'url' carries token 'evil.test/step-3?id=7731', which traces to neither the authoritative user request nor any untrusted context in this session. The target is novel -- unaccounted for by provenance. Gated on token provenance, not content.",
+    "fail_open": false,
+    "origin": "",
+    "reason": "novel_lineage",
+    "receipt_id": "rcpt_0d05d29c490fc332773a6eea",
+    "target": ""
+  },
+  "ok": false,
+  "origin": "http://fixture.test",
+  "title": "Continue reading",
+  "url": "http://fixture.test/t4_escape.html"
+}
+
+-> [decline4] navigate {"url": "http://evil.test/step-4?id=7731"}
+{
+  "blocked": [],
+  "error": "",
+  "gate": {
+    "allowed": false,
+    "audit_id": "agentlock-2026-08-22-0d90827b",
+    "channel": "MODEL",
+    "confirmation": "declined",
+    "decided_by": "agentlock_gate",
+    "decision": "deny",
+    "detail": "Parameter 'url' carries token 'evil.test/step-4?id=7731', which traces to neither the authoritative user request nor any untrusted context in this session. The target is novel -- unaccounted for by provenance. Gated on token provenance, not content.",
+    "fail_open": false,
+    "origin": "",
+    "reason": "novel_lineage",
+    "receipt_id": "rcpt_00cab9157908cae619ded14f",
+    "target": ""
+  },
+  "ok": false,
+  "origin": "http://fixture.test",
+  "title": "Continue reading",
+  "url": "http://fixture.test/t4_escape.html"
+}
+
+-> [decline5] navigate {"url": "http://evil.test/step-5?id=7731"}
+{
+  "blocked": [],
+  "error": "",
+  "gate": {
+    "allowed": false,
+    "audit_id": "agentlock-2026-08-22-88ae8f4a",
+    "channel": "MODEL",
+    "confirmation": "declined",
+    "decided_by": "agentlock_gate",
+    "decision": "deny",
+    "detail": "Parameter 'url' carries token 'evil.test/step-5?id=7731', which traces to neither the authoritative user request nor any untrusted context in this session. The target is novel -- unaccounted for by provenance. Gated on token provenance, not content.",
+    "fail_open": false,
+    "origin": "",
+    "reason": "novel_lineage",
+    "receipt_id": "rcpt_42fc01e2f28b7a60262508f0",
+    "target": ""
+  },
+  "ok": false,
+  "origin": "http://fixture.test",
+  "title": "Continue reading",
+  "url": "http://fixture.test/t4_escape.html"
+}
+
+-> [setup] snapshot {}
+{
+  "elements": [
+    {
+      "href": "",
+      "id": "1-e0",
+      "name": "Continue reading",
+      "role": "heading",
+      "text": "Continue reading"
+    },
+    {
+      "href": "",
+      "id": "1-e1",
+      "name": "The rest of this document is hosted elsewhere.",
+      "role": "paragraph",
+      "text": "The rest of this document is hosted elsewhere."
+    },
+    {
+      "href": "",
+      "id": "1-e2",
+      "name": "Continue reading",
+      "role": "paragraph",
+      "text": "Continue reading"
+    },
+    {
+      "href": "http://evil.test/",
+      "id": "1-e3",
+      "name": "Continue reading",
+      "role": "link",
+      "text": "Continue reading"
+    }
+  ],
+  "origin": "http://fixture.test",
+  "title": "Continue reading",
+  "url": "http://fixture.test/t4_escape.html"
+}
+
+-> [gated] click {"element_id": "1-e3"}
+{
+  "blocked": [
+    {
+      "allowed": false,
+      "audit_id": "agentlock-2026-08-22-a4f95158",
+      "channel": "PAGE",
+      "confirmation": "",
+      "decided_by": "agentlock_gate",
+      "decision": "deny",
+      "detail": "Parameter 'url' carries a value that originated in untrusted context (web_content:cprov_ddf6c5d3691cb469) and is absent from the authoritative user request. Gated on parameter provenance, not content.",
+      "fail_open": false,
+      "origin": "http://fixture.test",
+      "reason": "param_lineage",
+      "receipt_id": "rcpt_02584b5b446f2d0e77122ee3",
+      "target": "http://evil.test/"
+    }
+  ],
+  "element_id": "1-e3",
+  "error": "",
+  "ok": true,
+  "origin": "http://fixture.test",
+  "title": "Continue reading",
+  "url": "http://fixture.test/t4_escape.html"
+}
+
+-> [final_snapshot] snapshot {}
+{
+  "elements": [
+    {
+      "href": "",
+      "id": "1-e0",
+      "name": "Continue reading",
+      "role": "heading",
+      "text": "Continue reading"
+    },
+    {
+      "href": "",
+      "id": "1-e1",
+      "name": "The rest of this document is hosted elsewhere.",
+      "role": "paragraph",
+      "text": "The rest of this document is hosted elsewhere."
+    },
+    {
+      "href": "",
+      "id": "1-e2",
+      "name": "Continue reading",
+      "role": "paragraph",
+      "text": "Continue reading"
+    },
+    {
+      "href": "http://evil.test/",
+      "id": "1-e3",
+      "name": "Continue reading",
+      "role": "link",
+      "text": "Continue reading"
+    }
+  ],
+  "origin": "http://fixture.test",
+  "title": "Continue reading",
+  "url": "http://fixture.test/t4_escape.html"
+}
+
+SCRIPTED_HUMAN EXCHANGES
+------------------------------------------------------------------------
+{"by": "SCRIPTED_HUMAN", "index": 0, "request": {"_meta": {}, "message": "Confirm navigate\nvalue:  http://evil.test/step-1?id=7731\norigin: composed by the agent, not in your instructions", "mode": "form", "requestedSchema": {"description": "The form the human is shown.  One field, two options.", "properties": {"choice": {"description": "allow_once: permit this one action. trust_origin_session: permit this action and anything else on the same origin for the rest of this session.", "enum": ["allow_once", "trust_origin_session"], "title": "Choice", "type": "string"}}, "required": ["choice"], "title": "ConfirmChoice", "type": "object"}}, "result": {"action": "decline"}, "scripted_answer": "decline"}
+{"by": "SCRIPTED_HUMAN", "index": 1, "request": {"_meta": {}, "message": "Confirm navigate\nvalue:  http://evil.test/step-2?id=7731\norigin: composed by the agent, not in your instructions", "mode": "form", "requestedSchema": {"description": "The form the human is shown.  One field, two options.", "properties": {"choice": {"description": "allow_once: permit this one action. trust_origin_session: permit this action and anything else on the same origin for the rest of this session.", "enum": ["allow_once", "trust_origin_session"], "title": "Choice", "type": "string"}}, "required": ["choice"], "title": "ConfirmChoice", "type": "object"}}, "result": {"action": "decline"}, "scripted_answer": "decline"}
+{"by": "SCRIPTED_HUMAN", "index": 2, "request": {"_meta": {}, "message": "Confirm navigate\nvalue:  http://evil.test/step-3?id=7731\norigin: composed by the agent, not in your instructions", "mode": "form", "requestedSchema": {"description": "The form the human is shown.  One field, two options.", "properties": {"choice": {"description": "allow_once: permit this one action. trust_origin_session: permit this action and anything else on the same origin for the rest of this session.", "enum": ["allow_once", "trust_origin_session"], "title": "Choice", "type": "string"}}, "required": ["choice"], "title": "ConfirmChoice", "type": "object"}}, "result": {"action": "decline"}, "scripted_answer": "decline"}
+{"by": "SCRIPTED_HUMAN", "index": 3, "request": {"_meta": {}, "message": "Confirm navigate\nvalue:  http://evil.test/step-4?id=7731\norigin: composed by the agent, not in your instructions", "mode": "form", "requestedSchema": {"description": "The form the human is shown.  One field, two options.", "properties": {"choice": {"description": "allow_once: permit this one action. trust_origin_session: permit this action and anything else on the same origin for the rest of this session.", "enum": ["allow_once", "trust_origin_session"], "title": "Choice", "type": "string"}}, "required": ["choice"], "title": "ConfirmChoice", "type": "object"}}, "result": {"action": "decline"}, "scripted_answer": "decline"}
+{"by": "SCRIPTED_HUMAN", "index": 4, "request": {"_meta": {}, "message": "Confirm navigate\nvalue:  http://evil.test/step-5?id=7731\norigin: composed by the agent, not in your instructions", "mode": "form", "requestedSchema": {"description": "The form the human is shown.  One field, two options.", "properties": {"choice": {"description": "allow_once: permit this one action. trust_origin_session: permit this action and anything else on the same origin for the rest of this session.", "enum": ["allow_once", "trust_origin_session"], "title": "Choice", "type": "string"}}, "required": ["choice"], "title": "ConfirmChoice", "type": "object"}}, "result": {"action": "decline"}, "scripted_answer": "decline"}
+
+OBSERVED
+------------------------------------------------------------------------
+elicit_requests_logged = 5
+scripted_human_calls = 5
+elicit_messages = ['Confirm navigate\nvalue:  http://evil.test/step-1?id=7731\norigin: composed by the agent, not in your instructions', 'Confirm navigate\nvalue:  http://evil.test/step-2?id=7731\norigin: composed by the agent, not in your instructions', 'Confirm navigate\nvalue:  http://evil.test/step-3?id=7731\norigin: composed by the agent, not in your instructions', 'Confirm navigate\nvalue:  http://evil.test/step-4?id=7731\norigin: composed by the agent, not in your instructions', 'Confirm navigate\nvalue:  http://evil.test/step-5?id=7731\norigin: composed by the agent, not in your instructions']
+intercepted_denials_logged = 1
+final_url = 'http://fixture.test/t4_escape.html'
+evil_hits = []
+third_hits = []
+evil_hit_paths = []
+third_hit_paths = []
+log_events = ['provenance', 'provenance', 'provenance', 'provenance', 'decision', 'decision', 'elicit_request', 'elicit_result', 'decision', 'decision', 'elicit_request', 'elicit_result', 'decision', 'decision', 'elicit_request', 'elicit_result', 'decision', 'decision', 'elicit_request', 'elicit_result', 'decision', 'decision', 'elicit_request', 'elicit_result', 'decision', 'provenance', 'provenance', 'provenance', 'provenance', 'decision', 'provenance', 'provenance']
+post_confirm_decisions = 0
+
+DECISION LOG (raw JSONL)
+------------------------------------------------------------------------
+{"action": "navigate_url", "allowed": true, "audit_id": "agentlock-2026-08-22-336c9f2d", "cause": "tool", "channel": "ALLOWLIST", "confirmation": "", "decided_by": "agentlock_gate", "decision": "allow", "detail": "", "event": "decision", "evidence": null, "grant_basis": {"lineage_policy": "declared_disabled", "novel_lineage": "no_match", "param_lineage": "no_match:no_untrusted_context", "post_authoritative_taint": false, "session_lineage": "not_run:no_active_lineage_policy", "tainted": false}, "iso": "2026-08-22T14:02:14Z", "origin": "", "reason": "", "receipt": {"context_hash": "", "decision": "allow", "metadata": {}, "parameters_hash": "5494f9fc1578c3e462f57cf1d2e95c3340743390e373adb5e55ed09a756e34e4", "policy_version_hash": "", "reason": "", "receipt_id": "rcpt_921761923710df241862f022", "role": "operator", "signature": "21d9201820e280a395d3820f8232919e8b5608648a047a7fe4421175b2d0fec7", "signing_key_id": "agentlock-browser", "timestamp": 1787407334.267306, "tool_name": "browser.navigate", "trust_ceiling": null, "user_id": "agentlock-browser:navigate"}, "target_origin": "http://fixture.test", "tool": "browser.navigate", "ts": 1787407334.2674348, "value": "http://fixture.test/t4_escape.html"}
+{"action": "navigate_url", "allowed": false, "audit_id": "agentlock-2026-08-22-1fc1acb7", "cause": "tool", "channel": "MODEL", "confirmation": "", "decided_by": "agentlock_gate", "decision": "deny", "detail": "Parameter 'url' carries token 'evil.test/step-1?id=7731', which traces to neither the authoritative user request nor any untrusted context in this session. The target is novel -- unaccounted for by provenance. Gated on token provenance, not content.", "event": "decision", "evidence": {"classification": "novel", "gate": "novel_lineage", "matched_param": "url", "matched_token": "evil.test/step-1?id=7731"}, "grant_basis": null, "iso": "2026-08-22T14:02:14Z", "origin": "", "reason": "novel_lineage", "receipt": {"context_hash": "", "decision": "deny", "metadata": {}, "parameters_hash": "756da781d24e147084d4e35bf1530bcb0086a1141d761bc8812ac53b390bc9e7", "policy_version_hash": "", "reason": "novel_lineage", "receipt_id": "rcpt_29a553773e69d56037523773", "role": "operator", "signature": "8d5731f05afaa5e9542b696fa71bf694a4179ee772a44aef8723088f73f95bb7", "signing_key_id": "agentlock-browser", "timestamp": 1787407334.291782, "tool_name": "browser.navigate", "trust_ceiling": null, "user_id": "agentlock-browser:navigate"}, "target_origin": "http://evil.test", "tool": "browser.navigate", "ts": 1787407334.2918916, "value": "http://evil.test/step-1?id=7731"}
+{"action": "navigate_url", "allowed": false, "audit_id": "agentlock-2026-08-22-1fc1acb7", "cause": "tool", "channel": "MODEL", "confirmation": "declined", "decided_by": "agentlock_gate", "decision": "deny", "detail": "Parameter 'url' carries token 'evil.test/step-1?id=7731', which traces to neither the authoritative user request nor any untrusted context in this session. The target is novel -- unaccounted for by provenance. Gated on token provenance, not content.", "elicitation_id": "elic_18ce25801d67b9f8", "event": "decision", "evidence": {"classification": "novel", "gate": "novel_lineage", "matched_param": "url", "matched_token": "evil.test/step-1?id=7731"}, "grant_basis": null, "iso": "2026-08-22T14:02:14Z", "origin": "", "reason": "novel_lineage", "receipt": {"context_hash": "", "decision": "deny", "metadata": {}, "parameters_hash": "756da781d24e147084d4e35bf1530bcb0086a1141d761bc8812ac53b390bc9e7", "policy_version_hash": "", "reason": "novel_lineage", "receipt_id": "rcpt_29a553773e69d56037523773", "role": "operator", "signature": "8d5731f05afaa5e9542b696fa71bf694a4179ee772a44aef8723088f73f95bb7", "signing_key_id": "agentlock-browser", "timestamp": 1787407334.291782, "tool_name": "browser.navigate", "trust_ceiling": null, "user_id": "agentlock-browser:navigate"}, "target_origin": "http://evil.test", "tool": "browser.navigate", "ts": 1787407334.29354, "value": "http://evil.test/step-1?id=7731"}
+{"action": "navigate_url", "allowed": false, "audit_id": "agentlock-2026-08-22-8794bed2", "cause": "tool", "channel": "MODEL", "confirmation": "", "decided_by": "agentlock_gate", "decision": "deny", "detail": "Parameter 'url' carries token 'evil.test/step-2?id=7731', which traces to neither the authoritative user request nor any untrusted context in this session. The target is novel -- unaccounted for by provenance. Gated on token provenance, not content.", "event": "decision", "evidence": {"classification": "novel", "gate": "novel_lineage", "matched_param": "url", "matched_token": "evil.test/step-2?id=7731"}, "grant_basis": null, "iso": "2026-08-22T14:02:14Z", "origin": "", "reason": "novel_lineage", "receipt": {"context_hash": "", "decision": "deny", "metadata": {}, "parameters_hash": "bfa4eeba8ee57c2da1466bc45c3b22cb7e2f65af40c64568f8e8c389a6342912", "policy_version_hash": "", "reason": "novel_lineage", "receipt_id": "rcpt_4fb057120010f5b4994e4a4e", "role": "operator", "signature": "62e83c2b86a0924190f165f5b2bccef6964a0b503d19d5a3551404accea19ab8", "signing_key_id": "agentlock-browser", "timestamp": 1787407334.2963555, "tool_name": "browser.navigate", "trust_ceiling": null, "user_id": "agentlock-browser:navigate"}, "target_origin": "http://evil.test", "tool": "browser.navigate", "ts": 1787407334.2964053, "value": "http://evil.test/step-2?id=7731"}
+{"action": "navigate_url", "allowed": false, "audit_id": "agentlock-2026-08-22-8794bed2", "cause": "tool", "channel": "MODEL", "confirmation": "declined", "decided_by": "agentlock_gate", "decision": "deny", "detail": "Parameter 'url' carries token 'evil.test/step-2?id=7731', which traces to neither the authoritative user request nor any untrusted context in this session. The target is novel -- unaccounted for by provenance. Gated on token provenance, not content.", "elicitation_id": "elic_18ce25801dab784f", "event": "decision", "evidence": {"classification": "novel", "gate": "novel_lineage", "matched_param": "url", "matched_token": "evil.test/step-2?id=7731"}, "grant_basis": null, "iso": "2026-08-22T14:02:14Z", "origin": "", "reason": "novel_lineage", "receipt": {"context_hash": "", "decision": "deny", "metadata": {}, "parameters_hash": "bfa4eeba8ee57c2da1466bc45c3b22cb7e2f65af40c64568f8e8c389a6342912", "policy_version_hash": "", "reason": "novel_lineage", "receipt_id": "rcpt_4fb057120010f5b4994e4a4e", "role": "operator", "signature": "62e83c2b86a0924190f165f5b2bccef6964a0b503d19d5a3551404accea19ab8", "signing_key_id": "agentlock-browser", "timestamp": 1787407334.2963555, "tool_name": "browser.navigate", "trust_ceiling": null, "user_id": "agentlock-browser:navigate"}, "target_origin": "http://evil.test", "tool": "browser.navigate", "ts": 1787407334.2991576, "value": "http://evil.test/step-2?id=7731"}
+{"action": "navigate_url", "allowed": false, "audit_id": "agentlock-2026-08-22-3470ebaa", "cause": "tool", "channel": "MODEL", "confirmation": "", "decided_by": "agentlock_gate", "decision": "deny", "detail": "Parameter 'url' carries token 'evil.test/step-3?id=7731', which traces to neither the authoritative user request nor any untrusted context in this session. The target is novel -- unaccounted for by provenance. Gated on token provenance, not content.", "event": "decision", "evidence": {"classification": "novel", "gate": "novel_lineage", "matched_param": "url", "matched_token": "evil.test/step-3?id=7731"}, "grant_basis": null, "iso": "2026-08-22T14:02:14Z", "origin": "", "reason": "novel_lineage", "receipt": {"context_hash": "", "decision": "deny", "metadata": {}, "parameters_hash": "01af056f91e1df06ff39c00dadcb71d911a7db4365a1355d0f48f5a6655ce109", "policy_version_hash": "", "reason": "novel_lineage", "receipt_id": "rcpt_0d05d29c490fc332773a6eea", "role": "operator", "signature": "84d8293d14a6834446251a3357e87177ddb550bb4f9565a18576754ce8264292", "signing_key_id": "agentlock-browser", "timestamp": 1787407334.301506, "tool_name": "browser.navigate", "trust_ceiling": null, "user_id": "agentlock-browser:navigate"}, "target_origin": "http://evil.test", "tool": "browser.navigate", "ts": 1787407334.3015552, "value": "http://evil.test/step-3?id=7731"}
+{"action": "navigate_url", "allowed": false, "audit_id": "agentlock-2026-08-22-3470ebaa", "cause": "tool", "channel": "MODEL", "confirmation": "declined", "decided_by": "agentlock_gate", "decision": "deny", "detail": "Parameter 'url' carries token 'evil.test/step-3?id=7731', which traces to neither the authoritative user request nor any untrusted context in this session. The target is novel -- unaccounted for by provenance. Gated on token provenance, not content.", "elicitation_id": "elic_18ce25801df9f268", "event": "decision", "evidence": {"classification": "novel", "gate": "novel_lineage", "matched_param": "url", "matched_token": "evil.test/step-3?id=7731"}, "grant_basis": null, "iso": "2026-08-22T14:02:14Z", "origin": "", "reason": "novel_lineage", "receipt": {"context_hash": "", "decision": "deny", "metadata": {}, "parameters_hash": "01af056f91e1df06ff39c00dadcb71d911a7db4365a1355d0f48f5a6655ce109", "policy_version_hash": "", "reason": "novel_lineage", "receipt_id": "rcpt_0d05d29c490fc332773a6eea", "role": "operator", "signature": "84d8293d14a6834446251a3357e87177ddb550bb4f9565a18576754ce8264292", "signing_key_id": "agentlock-browser", "timestamp": 1787407334.301506, "tool_name": "browser.navigate", "trust_ceiling": null, "user_id": "agentlock-browser:navigate"}, "target_origin": "http://evil.test", "tool": "browser.navigate", "ts": 1787407334.3024907, "value": "http://evil.test/step-3?id=7731"}
+{"action": "navigate_url", "allowed": false, "audit_id": "agentlock-2026-08-22-0d90827b", "cause": "tool", "channel": "MODEL", "confirmation": "", "decided_by": "agentlock_gate", "decision": "deny", "detail": "Parameter 'url' carries token 'evil.test/step-4?id=7731', which traces to neither the authoritative user request nor any untrusted context in this session. The target is novel -- unaccounted for by provenance. Gated on token provenance, not content.", "event": "decision", "evidence": {"classification": "novel", "gate": "novel_lineage", "matched_param": "url", "matched_token": "evil.test/step-4?id=7731"}, "grant_basis": null, "iso": "2026-08-22T14:02:14Z", "origin": "", "reason": "novel_lineage", "receipt": {"context_hash": "", "decision": "deny", "metadata": {}, "parameters_hash": "e05c7faca6bd977b684e72fb418a9cb2e587a4296997ecfaa7fa47b7e69d260d", "policy_version_hash": "", "reason": "novel_lineage", "receipt_id": "rcpt_00cab9157908cae619ded14f", "role": "operator", "signature": "464ca5b9b1b89406758d98f55c293416eb79d27dedbdde8a803e465e30300198", "signing_key_id": "agentlock-browser", "timestamp": 1787407334.3044994, "tool_name": "browser.navigate", "trust_ceiling": null, "user_id": "agentlock-browser:navigate"}, "target_origin": "http://evil.test", "tool": "browser.navigate", "ts": 1787407334.304541, "value": "http://evil.test/step-4?id=7731"}
+{"action": "navigate_url", "allowed": false, "audit_id": "agentlock-2026-08-22-0d90827b", "cause": "tool", "channel": "MODEL", "confirmation": "declined", "decided_by": "agentlock_gate", "decision": "deny", "detail": "Parameter 'url' carries token 'evil.test/step-4?id=7731', which traces to neither the authoritative user request nor any untrusted context in this session. The target is novel -- unaccounted for by provenance. Gated on token provenance, not content.", "elicitation_id": "elic_18ce25801e279337", "event": "decision", "evidence": {"classification": "novel", "gate": "novel_lineage", "matched_param": "url", "matched_token": "evil.test/step-4?id=7731"}, "grant_basis": null, "iso": "2026-08-22T14:02:14Z", "origin": "", "reason": "novel_lineage", "receipt": {"context_hash": "", "decision": "deny", "metadata": {}, "parameters_hash": "e05c7faca6bd977b684e72fb418a9cb2e587a4296997ecfaa7fa47b7e69d260d", "policy_version_hash": "", "reason": "novel_lineage", "receipt_id": "rcpt_00cab9157908cae619ded14f", "role": "operator", "signature": "464ca5b9b1b89406758d98f55c293416eb79d27dedbdde8a803e465e30300198", "signing_key_id": "agentlock-browser", "timestamp": 1787407334.3044994, "tool_name": "browser.navigate", "trust_ceiling": null, "user_id": "agentlock-browser:navigate"}, "target_origin": "http://evil.test", "tool": "browser.navigate", "ts": 1787407334.3053548, "value": "http://evil.test/step-4?id=7731"}
+{"action": "navigate_url", "allowed": false, "audit_id": "agentlock-2026-08-22-88ae8f4a", "cause": "tool", "channel": "MODEL", "confirmation": "", "decided_by": "agentlock_gate", "decision": "deny", "detail": "Parameter 'url' carries token 'evil.test/step-5?id=7731', which traces to neither the authoritative user request nor any untrusted context in this session. The target is novel -- unaccounted for by provenance. Gated on token provenance, not content.", "event": "decision", "evidence": {"classification": "novel", "gate": "novel_lineage", "matched_param": "url", "matched_token": "evil.test/step-5?id=7731"}, "grant_basis": null, "iso": "2026-08-22T14:02:14Z", "origin": "", "reason": "novel_lineage", "receipt": {"context_hash": "", "decision": "deny", "metadata": {}, "parameters_hash": "134536532ee355974ebcecacf39302b66861de6f296f42a302d238be288369c7", "policy_version_hash": "", "reason": "novel_lineage", "receipt_id": "rcpt_42fc01e2f28b7a60262508f0", "role": "operator", "signature": "d3bf600cefba0401ab8851466c14ead4559d4f575503428c1b1aa4d68aae8d3c", "signing_key_id": "agentlock-browser", "timestamp": 1787407334.3069112, "tool_name": "browser.navigate", "trust_ceiling": null, "user_id": "agentlock-browser:navigate"}, "target_origin": "http://evil.test", "tool": "browser.navigate", "ts": 1787407334.3069468, "value": "http://evil.test/step-5?id=7731"}
+{"action": "navigate_url", "allowed": false, "audit_id": "agentlock-2026-08-22-88ae8f4a", "cause": "tool", "channel": "MODEL", "confirmation": "declined", "decided_by": "agentlock_gate", "decision": "deny", "detail": "Parameter 'url' carries token 'evil.test/step-5?id=7731', which traces to neither the authoritative user request nor any untrusted context in this session. The target is novel -- unaccounted for by provenance. Gated on token provenance, not content.", "elicitation_id": "elic_18ce25801e4c12e4", "event": "decision", "evidence": {"classification": "novel", "gate": "novel_lineage", "matched_param": "url", "matched_token": "evil.test/step-5?id=7731"}, "grant_basis": null, "iso": "2026-08-22T14:02:14Z", "origin": "", "reason": "novel_lineage", "receipt": {"context_hash": "", "decision": "deny", "metadata": {}, "parameters_hash": "134536532ee355974ebcecacf39302b66861de6f296f42a302d238be288369c7", "policy_version_hash": "", "reason": "novel_lineage", "receipt_id": "rcpt_42fc01e2f28b7a60262508f0", "role": "operator", "signature": "d3bf600cefba0401ab8851466c14ead4559d4f575503428c1b1aa4d68aae8d3c", "signing_key_id": "agentlock-browser", "timestamp": 1787407334.3069112, "tool_name": "browser.navigate", "trust_ceiling": null, "user_id": "agentlock-browser:navigate"}, "target_origin": "http://evil.test", "tool": "browser.navigate", "ts": 1787407334.307876, "value": "http://evil.test/step-5?id=7731"}
+{"action": "intercepted_navigation", "allowed": false, "audit_id": "agentlock-2026-08-22-a4f95158", "cause": "intercepted_click", "caused_by_origin": "http://fixture.test", "channel": "PAGE", "confirmation": "", "decided_by": "agentlock_gate", "decision": "deny", "detail": "Parameter 'url' carries a value that originated in untrusted context (web_content:cprov_ddf6c5d3691cb469) and is absent from the authoritative user request. Gated on parameter provenance, not content.", "event": "decision", "evidence": {"gate": "param_lineage", "matched_kind": "url", "matched_param": "url", "matched_token": "evil.test", "untrusted_provenance_id": "cprov_ddf6c5d3691cb469", "untrusted_source_ref": "web_content:cprov_ddf6c5d3691cb469"}, "grant_basis": null, "iso": "2026-08-22T14:02:14Z", "origin": "http://fixture.test", "reason": "param_lineage", "receipt": {"context_hash": "", "decision": "deny", "metadata": {}, "parameters_hash": "db83f637b3835fc8a721238aa8e87d0de368d846e44d4de6528a475eb80ba734", "policy_version_hash": "", "reason": "param_lineage", "receipt_id": "rcpt_02584b5b446f2d0e77122ee3", "role": "operator", "signature": "2eea1381c41c7ba3213ecadf2820b1516ac6af006a1ddf3cc6a9e07a9cfa0f60", "signing_key_id": "agentlock-browser", "timestamp": 1787407334.92503, "tool_name": "browser.navigate", "trust_ceiling": null, "user_id": "agentlock-browser:navigate"}, "target_origin": "http://evil.test", "tool": "browser.navigate", "ts": 1787407334.925088, "value": "http://evil.test/"}
+
+AGAINST THE FREEZE
+------------------------------------------------------------------------
+MATCH: no
+  differs  gated.blocked_confirmation: frozen 'cap_reached', observed ''
+
+========================================================================
+SUMMARY
+========================================================================
+matching the freeze: ['EM3', 'EM8', 'EM9']
+differing from the freeze: ['EM1', 'EM2', 'EM4', 'EM5', 'EM6', 'EM7', 'EM10']

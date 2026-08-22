@@ -31,11 +31,50 @@ RESULTS = Path(__file__).parent / "results"
 
 FIXTURE_HOST = "fixture.test"
 EVIL_HOST = "evil.test"
+#: A third origin, so a redirect chain can leave the second one and the two
+#: hops can be told apart by which server recorded the request.
+THIRD_HOST = "third.test"
 
 
 class _QuietHandler(SimpleHTTPRequestHandler):
     def log_message(self, *args: object) -> None:  # noqa: D102 - silence stderr
         pass
+
+    def redirect_to(self, target: str) -> None:
+        """Answer with a 302 to ``target``."""
+        self.send_response(302)
+        self.send_header("Location", target)
+        self.send_header("Content-Length", "0")
+        self.end_headers()
+
+    def serve_page(self, body: bytes) -> None:
+        self.send_response(200)
+        self.send_header("Content-Type", "text/html; charset=utf-8")
+        self.send_header("Content-Length", str(len(body)))
+        self.end_headers()
+        self.wfile.write(body)
+
+
+class _FixtureHandler(_QuietHandler):
+    """Serves tests/fixtures, plus a few synthetic redirect routes.
+
+    A 302 cannot come out of a static file, and the redirect cases need one
+    served by the allowlisted origin itself.  Every route here is a path no
+    fixture file uses.
+    """
+
+    REDIRECTS = {
+        "/redirect": f"http://{EVIL_HOST}/landed",
+        "/chain": f"http://{EVIL_HOST}/a",
+        "/same-redirect": f"http://{FIXTURE_HOST}/article.html",
+    }
+
+    def do_GET(self) -> None:  # noqa: N802 - stdlib naming
+        target = self.REDIRECTS.get(self.path)
+        if target is not None:
+            self.redirect_to(target)
+            return
+        super().do_GET()
 
 
 class _EvilHandler(_QuietHandler):
@@ -44,14 +83,27 @@ class _EvilHandler(_QuietHandler):
 
     hits: list[str] = []
 
+    #: ``/a`` is the middle of the two-hop chain: it redirects on to the third
+    #: origin, so a chain that leaves the second origin can be measured.
+    REDIRECTS = {"/a": f"http://{THIRD_HOST}/b"}
+
     def do_GET(self) -> None:  # noqa: N802 - stdlib naming
         type(self).hits.append(self.path)
-        body = b"<!doctype html><title>evil</title><h1>collected</h1>"
-        self.send_response(200)
-        self.send_header("Content-Type", "text/html; charset=utf-8")
-        self.send_header("Content-Length", str(len(body)))
-        self.end_headers()
-        self.wfile.write(body)
+        target = self.REDIRECTS.get(self.path)
+        if target is not None:
+            self.redirect_to(target)
+            return
+        self.serve_page(b"<!doctype html><title>evil</title><h1>collected</h1>")
+
+
+class _ThirdHandler(_QuietHandler):
+    """The third origin.  Records what reached it, like the second."""
+
+    hits: list[str] = []
+
+    def do_GET(self) -> None:  # noqa: N802 - stdlib naming
+        type(self).hits.append(self.path)
+        self.serve_page(b"<!doctype html><title>third</title><h1>third</h1>")
 
 
 @dataclass
@@ -59,6 +111,7 @@ class Origins:
     fixture_url: str
     evil_url: str
     chromium_args: list[str]
+    third_url: str = ""
 
     def fixture(self, path: str) -> str:
         return f"{self.fixture_url}/{path.lstrip('/')}"
@@ -68,30 +121,35 @@ class Origins:
 def serve_origins() -> Iterator[Origins]:
     """Start both origins and yield the chromium args that make them real."""
     _EvilHandler.hits = []
+    _ThirdHandler.hits = []
     fixture_server = ThreadingHTTPServer(
-        ("127.0.0.1", 0), partial(_QuietHandler, directory=str(FIXTURES))
+        ("127.0.0.1", 0), partial(_FixtureHandler, directory=str(FIXTURES))
     )
     evil_server = ThreadingHTTPServer(("127.0.0.1", 0), _EvilHandler)
+    third_server = ThreadingHTTPServer(("127.0.0.1", 0), _ThirdHandler)
     threads = []
-    for server in (fixture_server, evil_server):
+    for server in (fixture_server, evil_server, third_server):
         thread = threading.Thread(target=server.serve_forever, daemon=True)
         thread.start()
         threads.append(thread)
 
     fixture_port = fixture_server.server_address[1]
     evil_port = evil_server.server_address[1]
+    third_port = third_server.server_address[1]
     rules = (
         f"MAP {FIXTURE_HOST} 127.0.0.1:{fixture_port},"
-        f"MAP {EVIL_HOST} 127.0.0.1:{evil_port}"
+        f"MAP {EVIL_HOST} 127.0.0.1:{evil_port},"
+        f"MAP {THIRD_HOST} 127.0.0.1:{third_port}"
     )
     try:
         yield Origins(
             fixture_url=f"http://{FIXTURE_HOST}",
             evil_url=f"http://{EVIL_HOST}",
+            third_url=f"http://{THIRD_HOST}",
             chromium_args=[f"--host-resolver-rules={rules}", "--no-proxy-server"],
         )
     finally:
-        for server in (fixture_server, evil_server):
+        for server in (fixture_server, evil_server, third_server):
             server.shutdown()
             server.server_close()
         for thread in threads:
@@ -101,6 +159,11 @@ def serve_origins() -> Iterator[Origins]:
 def evil_hits() -> list[str]:
     """Paths that actually reached the second origin."""
     return list(_EvilHandler.hits)
+
+
+def third_hits() -> list[str]:
+    """Paths that actually reached the third origin."""
+    return list(_ThirdHandler.hits)
 
 
 @contextlib.asynccontextmanager
