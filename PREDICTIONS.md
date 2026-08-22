@@ -300,3 +300,19 @@ EL8 is unchanged (no elicitation at all). EL8b (new): a client
 advertising {"elicitation": {"url": {}}} only: deny, confirmation
 unavailable, no elicit_request logged. EL8c (new): a client
 advertising {"elicitation": {}}: treated as available; EL1 behavior.
+
+## Amendment 2026-08-23d (append-only): fail_open on the tool result
+
+Replay of 2026-08-23b stopped on EL7off: the log line carries
+fail_open true, the tool result's gate block does not carry the field
+at all, and the harness read the gate block. The pre-fix baseline
+shows the field has never been on the tool result. NEEDS.md item 3
+states the fail-open grant is returned to the caller in the same
+words as the log; it was not. Mechanism addition: the gate block on
+every tool result carries fail_open (bool). Predictions: EL7off
+gate.fail_open true; every other EL case gate.fail_open false where a
+gate block is present; all other EL fields unchanged from the 0.2.0
+replay; T5, test_redirects, test_new_pages unchanged. Baseline note:
+the Step 2 expectation that EL8 and EL8b would pass vacuously was
+wrong; the confirmation field did not exist pre-fix. Recorded, not
+reconciled.
