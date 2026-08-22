@@ -1,0 +1,42 @@
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[project]
+name = "agentlock-browser"
+version = "0.1.0"
+description = "Provenance-gated browsing tools for AI agents, over MCP. AgentLock enforces which channel a value came from before the browser acts on it."
+readme = "README.md"
+requires-python = ">=3.11"
+license = "AGPL-3.0-or-later"
+authors = [{ name = "David Grice" }]
+keywords = ["mcp", "agentlock", "authorization", "provenance", "browser", "playwright"]
+classifiers = [
+  "Development Status :: 3 - Alpha",
+  "Intended Audience :: Developers",
+  "License :: OSI Approved :: GNU Affero General Public License v3 or later (AGPLv3+)",
+  "Programming Language :: Python :: 3.11",
+  "Programming Language :: Python :: 3.12",
+  "Programming Language :: Python :: 3.13",
+  "Topic :: Security",
+]
+dependencies = [
+  "agentlock",
+  "mcp",
+  "playwright",
+]
+
+[project.optional-dependencies]
+dev = ["pytest"]
+
+[project.scripts]
+agentlock-browser = "agentlock_browser.__main__:main"
+
+[project.urls]
+Homepage = "https://agentlock.dev"
+
+[tool.hatch.build.targets.wheel]
+packages = ["agentlock_browser"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]

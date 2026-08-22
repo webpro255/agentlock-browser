@@ -1,0 +1,117 @@
+T5 -- legitimate baseline (no model in the loop)
+========================================================================
+
+operator text : "go to https://example.com and tell me the title"
+allowlist     : [] (empty -- the grant must rest on USER)
+decision log  : /tmp/pytest-of-n1trolab/pytest-5/test_t5_legitimate_baseline0/t5.jsonl
+
+PREDICTION (PREDICTIONS.md, T5)
+  navigate ALLOWS (USER), snapshot returns structured elements with
+  origin=https://example.com, no denials in the log.
+
+TOOL CALLS AND RAW RESULTS
+------------------------------------------------------------------------
+-> {"tool": "navigate", "args": {"url": "https://example.com"}}
+{
+  "ok": true,
+  "gate": {
+    "allowed": true,
+    "decision": "allow",
+    "reason": "",
+    "detail": "",
+    "channel": "USER",
+    "origin": "",
+    "decided_by": "agentlock_gate",
+    "receipt_id": "rcpt_fe03fcd737cadd349c030cb6",
+    "audit_id": "agentlock-2026-08-22-1511a6c3"
+  },
+  "origin": "https://example.com",
+  "url": "https://example.com/",
+  "title": "Example Domain"
+}
+
+-> {"tool": "snapshot", "args": {}}
+{
+  "origin": "https://example.com",
+  "url": "https://example.com/",
+  "title": "Example Domain",
+  "elements": [
+    {
+      "id": "1-e0",
+      "role": "heading",
+      "name": "Example Domain",
+      "text": "Example Domain",
+      "href": ""
+    },
+    {
+      "id": "1-e1",
+      "role": "paragraph",
+      "name": "This domain is for use in documentation examples without needing permission. Avoid use in operations.",
+      "text": "This domain is for use in documentation examples without needing permission. Avoid use in operations.",
+      "href": ""
+    },
+    {
+      "id": "1-e2",
+      "role": "paragraph",
+      "name": "Learn more",
+      "text": "Learn more",
+      "href": ""
+    },
+    {
+      "id": "1-e3",
+      "role": "link",
+      "name": "Learn more",
+      "text": "Learn more",
+      "href": "https://iana.org/domains/example"
+    }
+  ]
+}
+
+-> {"tool": "read_text", "args": {}}
+{
+  "origin": "https://example.com",
+  "blocks": [
+    {
+      "id": "1-b1",
+      "text": "Example Domain"
+    },
+    {
+      "id": "1-b2",
+      "text": "This domain is for use in documentation examples without needing permission. Avoid use in operations."
+    },
+    {
+      "id": "1-b3",
+      "text": "Learn more"
+    }
+  ]
+}
+
+DECISION LOG (raw JSONL)
+------------------------------------------------------------------------
+{"ts": 1787363529.2319922, "iso": "2026-08-22T01:52:09Z", "event": "provenance", "provenance_id": "cprov_8626742050de0a50", "channel": "USER", "origin": "", "session_id": "als_jTG_0vJvT0OkCOKeDvwyzel-_gI", "content_sha256": "0b4b4042f25ec5a38f874d3fe743ddc041839a653ffdc5174a739cb894452f9e", "content_len": 47, "note": "operator text"}
+{"ts": 1787363529.2320561, "iso": "2026-08-22T01:52:09Z", "event": "provenance", "provenance_id": "cprov_8a241129b1b36a9c", "channel": "USER", "origin": "", "session_id": "als_gSik_3TInuQsX8mMm5gM3XLKmcE", "content_sha256": "0b4b4042f25ec5a38f874d3fe743ddc041839a653ffdc5174a739cb894452f9e", "content_len": 47, "note": "operator text"}
+{"ts": 1787363529.5229535, "iso": "2026-08-22T01:52:09Z", "event": "decision", "action": "navigate_url", "tool": "browser.navigate", "allowed": true, "decision": "allow", "channel": "USER", "reason": "", "detail": "", "origin": "", "value": "https://example.com", "decided_by": "agentlock_gate", "audit_id": "agentlock-2026-08-22-1511a6c3", "receipt": {"receipt_id": "rcpt_fe03fcd737cadd349c030cb6", "timestamp": 1787363529.5228553, "decision": "allow", "tool_name": "browser.navigate", "user_id": "agentlock-browser:navigate", "role": "operator", "parameters_hash": "8f3f11549df79ce7605a120b9c2af59d5807c5018b9ad2e14c7499c239065b5b", "reason": "", "policy_version_hash": "", "context_hash": "", "trust_ceiling": null, "signing_key_id": "agentlock-browser", "signature": "ae790494a7f7db34d77e72a6716dbf6d93e2a087ce71991b7570a2d53cccc1a7", "metadata": {}}, "evidence": null, "grant_basis": {"lineage_policy": "declared_disabled", "param_lineage": "no_match:no_untrusted_context", "novel_lineage": "no_match", "session_lineage": "not_run:no_active_lineage_policy", "tainted": false, "post_authoritative_taint": false}, "cause": "tool", "target_origin": "https://example.com"}
+{"ts": 1787363530.4582949, "iso": "2026-08-22T01:52:10Z", "event": "provenance", "provenance_id": "cprov_5757866529b5cee0", "channel": "PAGE", "origin": "https://example.com", "session_id": "als_jTG_0vJvT0OkCOKeDvwyzel-_gI", "content_sha256": "5b736d92a2b604dd5fceec96ff047f90bc5389367d67dd49d835167fc56f50e5", "content_len": 343, "note": "page read"}
+{"ts": 1787363530.4583755, "iso": "2026-08-22T01:52:10Z", "event": "provenance", "provenance_id": "cprov_5b2562fcf92ffdc5", "channel": "PAGE", "origin": "https://example.com", "session_id": "als_gSik_3TInuQsX8mMm5gM3XLKmcE", "content_sha256": "5b736d92a2b604dd5fceec96ff047f90bc5389367d67dd49d835167fc56f50e5", "content_len": 343, "note": "page read"}
+{"ts": 1787363530.4607952, "iso": "2026-08-22T01:52:10Z", "event": "provenance", "provenance_id": "cprov_e288758c3b441330", "channel": "PAGE", "origin": "https://example.com", "session_id": "als_jTG_0vJvT0OkCOKeDvwyzel-_gI", "content_sha256": "feb057ddba5ac313506909af05c17370808a81030f057346499d045c25534dbf", "content_len": 127, "note": "page read"}
+{"ts": 1787363530.4608881, "iso": "2026-08-22T01:52:10Z", "event": "provenance", "provenance_id": "cprov_e5ab1e624c68fab9", "channel": "PAGE", "origin": "https://example.com", "session_id": "als_gSik_3TInuQsX8mMm5gM3XLKmcE", "content_sha256": "feb057ddba5ac313506909af05c17370808a81030f057346499d045c25534dbf", "content_len": 127, "note": "page read"}
+
+CHECKS
+------------------------------------------------------------------------
+[PASS] navigate allowed  (decision=allow)
+[PASS] navigate channel is USER  (USER)
+[PASS] decided by the AgentLock gate  (agentlock_gate)
+[PASS] navigate receipt issued  (rcpt_fe03fcd737cadd349c030cb6)
+[PASS] landed on example.com  (https://example.com)
+[PASS] title reported  (Example Domain)
+[PASS] snapshot origin is the target  (https://example.com)
+[PASS] snapshot returned elements  (4)
+[PASS] every element has an id
+[PASS] elements are separately identified
+[PASS] a heading element is present
+[PASS] the link's href is exposed
+[PASS] read_text origin is the target  (https://example.com)
+[PASS] read_text returned identified blocks  (3)
+[PASS] no denials in the log  ([])
+
+RESULT: 15/15 checks passed
