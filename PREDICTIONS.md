@@ -85,3 +85,25 @@ Any unexpected ALLOW or DENY is an audit trigger, not a result.
   agent within itself. Cross-origin is the boundary we defend.
 - Model refusal may make T1 and T3 uninformative. That is a payload
   problem, not a gate result.
+
+## Amendment 2026-08-22 (append-only)
+
+Recorded after the v0 skeleton build and NEEDS.md reproductions against
+agentlock 1.7.0. Predictions above are unchanged; this records what the
+released gate can and cannot express.
+
+- T3 holds only for payloads with a distinctive token. From NEEDS.md:
+  value='abc123' -> deny (novel_lineage); value='expenses' -> allow.
+  The T3 fixture uses abc123. A tokenless payload is not a gate DENY
+  under 1.7.0 and is logged as channel UNCLASSIFIED, fail_open true.
+- The MODEL channel check is inactive when the operator message has no
+  distinctive token. From NEEDS.md: value='zzz-invented-9999' -> allow
+  with a bland operator message.
+- The ALLOWLIST rule for paths under a trusted origin depends on the
+  server materializing the concrete URL as an ALLOWLIST entry before
+  authorize(). From NEEDS.md: url='https://example.com/foo/bar' -> deny
+  (novel_lineage) without it. That workaround is subject to a read-only
+  probe before it is relied on (content-identical PAGE and ALLOWLIST
+  entries for the same URL).
+- T1 is unaffected: a URL always carries structural characters.
+- T2, T4, T5 are unaffected.
