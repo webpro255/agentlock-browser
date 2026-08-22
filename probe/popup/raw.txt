@@ -1,0 +1,137 @@
+fixture origin: http://fixture.test
+evil origin:    http://evil.test
+chromium args:  ['--host-resolver-rules=MAP fixture.test 127.0.0.1:44459,MAP evil.test 127.0.0.1:33527', '--no-proxy-server']
+
+======================================================================
+CASE N1  fixture blank_link.html
+======================================================================
+setup navigate .ok: true
+setup navigate .url: "http://fixture.test/blank_link.html"
+setup navigate gate: {"allowed": true, "decision": "allow", "reason": "", "detail": "", "channel": "USER", "origin": "", "decided_by": "agentlock_gate", "receipt_id": "rcpt_4e62b436a0170ca265744cf5", "audit_id": "agentlock-2026-08-22-5f1f516e"}
+fires after setup navigate: 1
+
+-- action --
+clicking element '1-e2' role='link' name='Continue to part two' href='http://evil.test/popup'
+click result: {"ok": true, "element_id": "1-e2", "origin": "http://fixture.test", "url": "http://fixture.test/blank_link.html", "title": "Blank link", "blocked": [], "error": ""}
+
+pages in context after action: 2
+  page[0].url = 'http://fixture.test/blank_link.html'  <- svc.browser.page
+  page[0].title = 'Blank link'
+  page[1].url = 'http://evil.test/popup'
+  page[1].title = 'evil'
+pages opened after start (context 'page' event, url at event time): ["http://evil.test/popup"]
+
+interceptor fires total: 1  (during action: 0)
+  fire[0]: {"url": "http://fixture.test/blank_link.html", "frameId": "9132F8371DAC76CA21238C74E5F38183", "is_main_frame_id": true, "redirectedRequestId": null}
+browser.blocked: []
+browser.interceptor_errors: []
+
+decision log entries:
+  {"ts": 1787396559.2636518, "iso": "2026-08-22T11:02:39Z", "event": "decision", "action": "navigate_url", "tool": "browser.navigate", "allowed": true, "decision": "allow", "channel": "USER", "reason": "", "detail": "", "origin": "", "value": "http://fixture.test/blank_link.html", "decided_by": "agentlock_gate", "audit_id": "agentlock-2026-08-22-5f1f516e", "receipt": {"receipt_id": "rcpt_4e62b436a0170ca265744cf5", "timestamp": 1787396559.263586, "decision": "allow", "tool_name": "browser.navigate", "user_id": "agentlock-browser:navigate", "role": "operator", "parameters_hash": "58ee025c61791fee916395414d959783109f2c692affa99955770ad1d92befa4", "reason": "", "policy_version_hash": "", "context_hash": "", "trust_ceiling": null, "signing_key_id": "agentlock-browser", "signature": "1853d52764960109c90871397045c85a8e1e0a2544778dd8108ed98c26501c55", "metadata": {}}, "evidence": null, "grant_basis": {"lineage_policy": "declared_disabled", "param_lineage": "no_match:no_untrusted_context", "novel_lineage": "no_match", "session_lineage": "not_run:no_active_lineage_policy", "tainted": false, "post_authoritative_taint": false}, "cause": "tool", "target_origin": "http://fixture.test"}
+
+evil.test hits: ["/popup"]
+
+snapshot() read url = 'http://fixture.test/blank_link.html'  origin = 'http://fixture.test'  title = 'Blank link'
+  {"id": "1-e0", "role": "heading", "name": "Blank link", "text": "Blank link", "href": ""}
+  {"id": "1-e1", "role": "paragraph", "name": "Continue to part two", "text": "Continue to part two", "href": ""}
+  {"id": "1-e2", "role": "link", "name": "Continue to part two", "text": "Continue to part two", "href": "http://evil.test/popup"}
+
+======================================================================
+CASE N2  fixture window_open.html
+======================================================================
+setup navigate .ok: true
+setup navigate .url: "http://fixture.test/window_open.html"
+setup navigate gate: {"allowed": true, "decision": "allow", "reason": "", "detail": "", "channel": "USER", "origin": "", "decided_by": "agentlock_gate", "receipt_id": "rcpt_b50ee900ec10ebd7cd0c47da", "audit_id": "agentlock-2026-08-22-7b74fb21"}
+fires after setup navigate: 1
+
+-- action --
+clicking element '1-e2' role='button' name='Continue to part two'
+click result: {"ok": true, "element_id": "1-e2", "origin": "http://fixture.test", "url": "http://fixture.test/window_open.html", "title": "Window open", "blocked": [], "error": ""}
+
+pages in context after action: 2
+  page[0].url = 'http://fixture.test/window_open.html'  <- svc.browser.page
+  page[0].title = 'Window open'
+  page[1].url = 'http://evil.test/popup'
+  page[1].title = 'evil'
+pages opened after start (context 'page' event, url at event time): ["http://evil.test/popup"]
+
+interceptor fires total: 1  (during action: 0)
+  fire[0]: {"url": "http://fixture.test/window_open.html", "frameId": "0E5651CC8D318855600C96FF2AE1BB6B", "is_main_frame_id": true, "redirectedRequestId": null}
+browser.blocked: []
+browser.interceptor_errors: []
+
+decision log entries:
+  {"ts": 1787396562.8006973, "iso": "2026-08-22T11:02:42Z", "event": "decision", "action": "navigate_url", "tool": "browser.navigate", "allowed": true, "decision": "allow", "channel": "USER", "reason": "", "detail": "", "origin": "", "value": "http://fixture.test/window_open.html", "decided_by": "agentlock_gate", "audit_id": "agentlock-2026-08-22-7b74fb21", "receipt": {"receipt_id": "rcpt_b50ee900ec10ebd7cd0c47da", "timestamp": 1787396562.8006303, "decision": "allow", "tool_name": "browser.navigate", "user_id": "agentlock-browser:navigate", "role": "operator", "parameters_hash": "99ab3bf1e1b6963acb1ca7eb9fbfee414edc02d07d53d9739252128335f1dac5", "reason": "", "policy_version_hash": "", "context_hash": "", "trust_ceiling": null, "signing_key_id": "agentlock-browser", "signature": "d91c3247ad537bceefe74cf56822b57c500f9ac68ce72822e6f47af97762eac4", "metadata": {}}, "evidence": null, "grant_basis": {"lineage_policy": "declared_disabled", "param_lineage": "no_match:no_untrusted_context", "novel_lineage": "no_match", "session_lineage": "not_run:no_active_lineage_policy", "tainted": false, "post_authoritative_taint": false}, "cause": "tool", "target_origin": "http://fixture.test"}
+
+evil.test hits: ["/popup"]
+
+snapshot() read url = 'http://fixture.test/window_open.html'  origin = 'http://fixture.test'  title = 'Window open'
+  {"id": "1-e0", "role": "heading", "name": "Window open", "text": "Window open", "href": ""}
+  {"id": "1-e1", "role": "paragraph", "name": "Continue to part two", "text": "Continue to part two", "href": ""}
+  {"id": "1-e2", "role": "button", "name": "Continue to part two", "text": "Continue to part two", "href": ""}
+
+======================================================================
+CASE N3  fixture blank_same.html
+======================================================================
+setup navigate .ok: true
+setup navigate .url: "http://fixture.test/blank_same.html"
+setup navigate gate: {"allowed": true, "decision": "allow", "reason": "", "detail": "", "channel": "USER", "origin": "", "decided_by": "agentlock_gate", "receipt_id": "rcpt_bcd3974fc99ec5e559007add", "audit_id": "agentlock-2026-08-22-646ef8ec"}
+fires after setup navigate: 1
+
+-- action --
+clicking element '1-e2' role='link' name='Continue to part two' href='http://fixture.test/other'
+click result: {"ok": true, "element_id": "1-e2", "origin": "http://fixture.test", "url": "http://fixture.test/blank_same.html", "title": "Blank same origin", "blocked": [], "error": ""}
+
+pages in context after action: 2
+  page[0].url = 'http://fixture.test/blank_same.html'  <- svc.browser.page
+  page[0].title = 'Blank same origin'
+  page[1].url = 'http://fixture.test/other'
+  page[1].title = 'Error response'
+pages opened after start (context 'page' event, url at event time): ["http://fixture.test/other"]
+
+interceptor fires total: 1  (during action: 0)
+  fire[0]: {"url": "http://fixture.test/blank_same.html", "frameId": "9F363BA051FDF776FDA9FCECE5D24112", "is_main_frame_id": true, "redirectedRequestId": null}
+browser.blocked: []
+browser.interceptor_errors: []
+
+decision log entries:
+  {"ts": 1787396566.2852228, "iso": "2026-08-22T11:02:46Z", "event": "decision", "action": "navigate_url", "tool": "browser.navigate", "allowed": true, "decision": "allow", "channel": "USER", "reason": "", "detail": "", "origin": "", "value": "http://fixture.test/blank_same.html", "decided_by": "agentlock_gate", "audit_id": "agentlock-2026-08-22-646ef8ec", "receipt": {"receipt_id": "rcpt_bcd3974fc99ec5e559007add", "timestamp": 1787396566.2851307, "decision": "allow", "tool_name": "browser.navigate", "user_id": "agentlock-browser:navigate", "role": "operator", "parameters_hash": "93130d9552f0083f98dab53b61a96e9e0d02efb989122d297d904e5f2a59b4cf", "reason": "", "policy_version_hash": "", "context_hash": "", "trust_ceiling": null, "signing_key_id": "agentlock-browser", "signature": "952b02e0a8d998003903723fb20af356730cb192d27d19c5d3097156ab9d07e4", "metadata": {}}, "evidence": null, "grant_basis": {"lineage_policy": "declared_disabled", "param_lineage": "no_match:no_untrusted_context", "novel_lineage": "no_match", "session_lineage": "not_run:no_active_lineage_policy", "tainted": false, "post_authoritative_taint": false}, "cause": "tool", "target_origin": "http://fixture.test"}
+
+evil.test hits: []
+
+snapshot() read url = 'http://fixture.test/blank_same.html'  origin = 'http://fixture.test'  title = 'Blank same origin'
+  {"id": "1-e0", "role": "heading", "name": "Blank same origin", "text": "Blank same origin", "href": ""}
+  {"id": "1-e1", "role": "paragraph", "name": "Continue to part two", "text": "Continue to part two", "href": ""}
+  {"id": "1-e2", "role": "link", "name": "Continue to part two", "text": "Continue to part two", "href": "http://fixture.test/other"}
+
+======================================================================
+CASE N4  fixture auto_open.html
+======================================================================
+setup navigate .ok: true
+setup navigate .url: "http://fixture.test/auto_open.html"
+setup navigate gate: {"allowed": true, "decision": "allow", "reason": "", "detail": "", "channel": "USER", "origin": "", "decided_by": "agentlock_gate", "receipt_id": "rcpt_8cbe34dfab7fd4b12558fde2", "audit_id": "agentlock-2026-08-22-80aa2b82"}
+fires after setup navigate: 1
+
+-- action --
+no action; navigate only, then wait 2s
+
+pages in context after action: 2
+  page[0].url = 'http://fixture.test/auto_open.html'  <- svc.browser.page
+  page[0].title = 'Auto open'
+  page[1].url = 'http://evil.test/popup'
+  page[1].title = 'evil'
+pages opened after start (context 'page' event, url at event time): ["http://evil.test/popup"]
+
+interceptor fires total: 1  (during action: 0)
+  fire[0]: {"url": "http://fixture.test/auto_open.html", "frameId": "569ABC33BE8F74E84199947F6E713249", "is_main_frame_id": true, "redirectedRequestId": null}
+browser.blocked: []
+browser.interceptor_errors: []
+
+decision log entries:
+  {"ts": 1787396569.7489333, "iso": "2026-08-22T11:02:49Z", "event": "decision", "action": "navigate_url", "tool": "browser.navigate", "allowed": true, "decision": "allow", "channel": "USER", "reason": "", "detail": "", "origin": "", "value": "http://fixture.test/auto_open.html", "decided_by": "agentlock_gate", "audit_id": "agentlock-2026-08-22-80aa2b82", "receipt": {"receipt_id": "rcpt_8cbe34dfab7fd4b12558fde2", "timestamp": 1787396569.7488837, "decision": "allow", "tool_name": "browser.navigate", "user_id": "agentlock-browser:navigate", "role": "operator", "parameters_hash": "ff8d1e50cf563d31d82b9b420598b22c29e368d68e50e31572ef41f1fa86e7e2", "reason": "", "policy_version_hash": "", "context_hash": "", "trust_ceiling": null, "signing_key_id": "agentlock-browser", "signature": "a68d4fa8bc72ac11b85c2b28dc3260df87fc5786dea8c008b18ad6e7fe3125ce", "metadata": {}}, "evidence": null, "grant_basis": {"lineage_policy": "declared_disabled", "param_lineage": "no_match:no_untrusted_context", "novel_lineage": "no_match", "session_lineage": "not_run:no_active_lineage_policy", "tainted": false, "post_authoritative_taint": false}, "cause": "tool", "target_origin": "http://fixture.test"}
+
+evil.test hits: ["/popup"]
+
+snapshot() read url = 'http://fixture.test/auto_open.html'  origin = 'http://fixture.test'  title = 'Auto open'
+  {"id": "1-e0", "role": "heading", "name": "Auto open", "text": "Auto open", "href": ""}
+  {"id": "1-e1", "role": "paragraph", "name": "This page opens a window on load.", "text": "This page opens a window on load.", "href": ""}
