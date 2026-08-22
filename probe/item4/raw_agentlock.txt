@@ -1,0 +1,182 @@
+agentlock version: 1.7.0
+URL under test:    'https://example.com/foo/bar'
+bland value:       'expenses'
+
+==============================================================================
+CASE P1: PAGE write then ALLOWLIST write of the same string
+==============================================================================
+session_id: als_VYv4tW00F9RU8akUkdAnuNH2vis
+context writes, in order:
+  source=web_content        authority=untrusted      provenance_id=cprov_65c78d773a2278e2  content='https://example.com/foo/bar'
+  source=system_prompt      authority=authoritative  provenance_id=cprov_59ac29d0c2861045  content='https://example.com/foo/bar'
+authorize parameters: {'url': 'https://example.com/foo/bar'}
+
+AuthResult:
+  allowed = True
+  decision = <DecisionType.ALLOW: 'allow'>
+  token = "ExecutionToken(tool_name='t', user_id='op-user', role='op', scope={'data_boundary': 'authenticated_user_only', 'max_records': None}, parameters_hash='1d55732a4382dadb2c83c0586b5ecd38fca8cf5efd92d514ba030dda60c861f5', issued_at=1787364973.4970772, expires_at=1787365033.4970772, token_id='atk_Apa3GsojRDNkMicF77q0ILGSy7F9uGsg', status=<TokenStatus.ACTIVE: 'active'>, _ttl_seconds=60)"
+  denial = None
+  audit_id = 'agentlock-2026-08-22-e896256d'
+  hardening = "HardeningDirective(active=False, severity='none', instructions=[], triggered_by=[], session_risk_score=0.0)"
+  modify_output_fn = None
+  transformations_applied = []
+  needs_approval = False
+  approval_channel = ''
+  deferral_id = ''
+  stepup_request_id = ''
+  receipt = None
+  session_gate_shadow = ''
+
+AuditRecord.metadata['lineage_evidence'] = null
+AuditRecord.metadata['grant_basis']       = {"lineage_policy": "declared_disabled", "novel_lineage": "no_match", "param_lineage": "no_match", "post_authoritative_taint": false, "session_lineage": "not_run:no_active_lineage_policy", "tainted": true}
+AuditRecord.metadata['param_lineage']     = null
+AuditRecord.metadata['novel_lineage']     = null
+
+==============================================================================
+CASE P2: ALLOWLIST write then PAGE write of the same string (opposite order)
+==============================================================================
+session_id: als_l4NuYmnAEmrohIpeVAcJYM4aKmk
+context writes, in order:
+  source=system_prompt      authority=authoritative  provenance_id=cprov_775da49c328f4ffe  content='https://example.com/foo/bar'
+  source=web_content        authority=untrusted      provenance_id=cprov_57a465729c96c902  content='https://example.com/foo/bar'
+authorize parameters: {'url': 'https://example.com/foo/bar'}
+
+AuthResult:
+  allowed = True
+  decision = <DecisionType.ALLOW: 'allow'>
+  token = "ExecutionToken(tool_name='t', user_id='op-user', role='op', scope={'data_boundary': 'authenticated_user_only', 'max_records': None}, parameters_hash='1d55732a4382dadb2c83c0586b5ecd38fca8cf5efd92d514ba030dda60c861f5', issued_at=1787364973.497402, expires_at=1787365033.497402, token_id='atk_WC9faabpfDJ2GI-iPbFSxZEciKwpwUJx', status=<TokenStatus.ACTIVE: 'active'>, _ttl_seconds=60)"
+  denial = None
+  audit_id = 'agentlock-2026-08-22-1a0ca8e6'
+  hardening = "HardeningDirective(active=False, severity='none', instructions=[], triggered_by=[], session_risk_score=0.0)"
+  modify_output_fn = None
+  transformations_applied = []
+  needs_approval = False
+  approval_channel = ''
+  deferral_id = ''
+  stepup_request_id = ''
+  receipt = None
+  session_gate_shadow = ''
+
+AuditRecord.metadata['lineage_evidence'] = null
+AuditRecord.metadata['grant_basis']       = {"lineage_policy": "declared_disabled", "novel_lineage": "no_match", "param_lineage": "no_match", "post_authoritative_taint": true, "session_lineage": "not_run:no_active_lineage_policy", "tainted": true}
+AuditRecord.metadata['param_lineage']     = null
+AuditRecord.metadata['novel_lineage']     = null
+
+==============================================================================
+CASE P3: PAGE write only (control)
+==============================================================================
+session_id: als_n9bFgGOcX7j_qdzbNpcp-3x6VSA
+context writes, in order:
+  source=web_content        authority=untrusted      provenance_id=cprov_480157fa2f81eafb  content='https://example.com/foo/bar'
+authorize parameters: {'url': 'https://example.com/foo/bar'}
+
+AuthResult:
+  allowed = False
+  decision = <DecisionType.DENY: 'deny'>
+  token = None
+  denial = {'status': 'denied', 'reason': 'param_lineage', 'detail': "Parameter 'url' carries a value that originated in untrusted context (web_content:cprov_480157fa2f81eafb) and is absent from the authoritative user request. Gated on parameter provenance, not content.", 'required_role': '', 'current_role': 'op', 'suggestion': "The parameter value originated from untrusted context. Re-issue using a value from the user's own request or trusted configuration."}
+  audit_id = 'agentlock-2026-08-22-9a46ed3f'
+  hardening = "HardeningDirective(active=False, severity='none', instructions=[], triggered_by=[], session_risk_score=0.0)"
+  modify_output_fn = None
+  transformations_applied = []
+  needs_approval = False
+  approval_channel = ''
+  deferral_id = ''
+  stepup_request_id = ''
+  receipt = None
+  session_gate_shadow = ''
+
+AuditRecord.metadata['lineage_evidence'] = {"gate": "param_lineage", "matched_kind": "url", "matched_param": "url", "matched_token": "example.com/foo/bar", "untrusted_provenance_id": "cprov_480157fa2f81eafb", "untrusted_source_ref": "web_content:cprov_480157fa2f81eafb"}
+AuditRecord.metadata['grant_basis']       = null
+AuditRecord.metadata['param_lineage']     = null
+AuditRecord.metadata['novel_lineage']     = null
+
+==============================================================================
+CASE P4: ALLOWLIST write only (control)
+==============================================================================
+session_id: als_7v6ANZNjk0zqHGVhwrTz54RC0YY
+context writes, in order:
+  source=system_prompt      authority=authoritative  provenance_id=cprov_97f02e712e43747a  content='https://example.com/foo/bar'
+authorize parameters: {'url': 'https://example.com/foo/bar'}
+
+AuthResult:
+  allowed = True
+  decision = <DecisionType.ALLOW: 'allow'>
+  token = "ExecutionToken(tool_name='t', user_id='op-user', role='op', scope={'data_boundary': 'authenticated_user_only', 'max_records': None}, parameters_hash='1d55732a4382dadb2c83c0586b5ecd38fca8cf5efd92d514ba030dda60c861f5', issued_at=1787364973.497851, expires_at=1787365033.497851, token_id='atk_RixQdYiFtzzu9GiIvK2FaLgc9b60h-Nw', status=<TokenStatus.ACTIVE: 'active'>, _ttl_seconds=60)"
+  denial = None
+  audit_id = 'agentlock-2026-08-22-2977d9f0'
+  hardening = "HardeningDirective(active=False, severity='none', instructions=[], triggered_by=[], session_risk_score=0.0)"
+  modify_output_fn = None
+  transformations_applied = []
+  needs_approval = False
+  approval_channel = ''
+  deferral_id = ''
+  stepup_request_id = ''
+  receipt = None
+  session_gate_shadow = ''
+
+AuditRecord.metadata['lineage_evidence'] = null
+AuditRecord.metadata['grant_basis']       = {"lineage_policy": "declared_disabled", "novel_lineage": "no_match", "param_lineage": "no_match:no_untrusted_context", "post_authoritative_taint": false, "session_lineage": "not_run:no_active_lineage_policy", "tainted": false}
+AuditRecord.metadata['param_lineage']     = null
+AuditRecord.metadata['novel_lineage']     = null
+
+==============================================================================
+CASE P5: USER message containing the url, then PAGE write of the same url
+==============================================================================
+session_id: als_ggdW8GvFywNoS46oNM7c7raoWwo
+context writes, in order:
+  source=user_message       authority=authoritative  provenance_id=cprov_66d9e411eca3847f  content='go to https://example.com/foo/bar'
+  source=web_content        authority=untrusted      provenance_id=cprov_a7308dbd519b730e  content='https://example.com/foo/bar'
+authorize parameters: {'url': 'https://example.com/foo/bar'}
+
+AuthResult:
+  allowed = True
+  decision = <DecisionType.ALLOW: 'allow'>
+  token = "ExecutionToken(tool_name='t', user_id='op-user', role='op', scope={'data_boundary': 'authenticated_user_only', 'max_records': None}, parameters_hash='1d55732a4382dadb2c83c0586b5ecd38fca8cf5efd92d514ba030dda60c861f5', issued_at=1787364973.4980652, expires_at=1787365033.4980652, token_id='atk_S5eOAARhW21E75UbT3_e9QytP7h-ondk', status=<TokenStatus.ACTIVE: 'active'>, _ttl_seconds=60)"
+  denial = None
+  audit_id = 'agentlock-2026-08-22-d2e46262'
+  hardening = "HardeningDirective(active=False, severity='none', instructions=[], triggered_by=[], session_risk_score=0.0)"
+  modify_output_fn = None
+  transformations_applied = []
+  needs_approval = False
+  approval_channel = ''
+  deferral_id = ''
+  stepup_request_id = ''
+  receipt = None
+  session_gate_shadow = ''
+
+AuditRecord.metadata['lineage_evidence'] = null
+AuditRecord.metadata['grant_basis']       = {"lineage_policy": "declared_disabled", "novel_lineage": "no_match", "param_lineage": "no_match", "post_authoritative_taint": true, "session_lineage": "not_run:no_active_lineage_policy", "tainted": true}
+AuditRecord.metadata['param_lineage']     = null
+AuditRecord.metadata['novel_lineage']     = null
+
+==============================================================================
+CASE P6: PAGE then ALLOWLIST write of a bland tokenless value, type-shaped
+==============================================================================
+session_id: als_qQYrkzIBXRt5H5neU7tnx9aBA-A
+context writes, in order:
+  source=web_content        authority=untrusted      provenance_id=cprov_df591a84d7bf27c8  content='expenses'
+  source=system_prompt      authority=authoritative  provenance_id=cprov_2e0ca4c786131287  content='expenses'
+authorize parameters: {'value': 'expenses'}
+
+AuthResult:
+  allowed = True
+  decision = <DecisionType.ALLOW: 'allow'>
+  token = "ExecutionToken(tool_name='t', user_id='op-user', role='op', scope={'data_boundary': 'authenticated_user_only', 'max_records': None}, parameters_hash='0109d1caeea6c6dcd2b88547b9252fa5b877309ea5d4ec5e8d805a4a59fea287', issued_at=1787364973.4982708, expires_at=1787365033.4982708, token_id='atk_k-aWRW1gj33_yh8tXGBo9CN1equoD6eg', status=<TokenStatus.ACTIVE: 'active'>, _ttl_seconds=60)"
+  denial = None
+  audit_id = 'agentlock-2026-08-22-308697d8'
+  hardening = "HardeningDirective(active=False, severity='none', instructions=[], triggered_by=[], session_risk_score=0.0)"
+  modify_output_fn = None
+  transformations_applied = []
+  needs_approval = False
+  approval_channel = ''
+  deferral_id = ''
+  stepup_request_id = ''
+  receipt = None
+  session_gate_shadow = ''
+
+AuditRecord.metadata['lineage_evidence'] = null
+AuditRecord.metadata['grant_basis']       = {"lineage_policy": "declared_disabled", "novel_lineage": "not_classifiable:no_authoritative_baseline", "param_lineage": "no_match:no_tokens", "post_authoritative_taint": false, "session_lineage": "not_run:no_active_lineage_policy", "tainted": true}
+AuditRecord.metadata['param_lineage']     = null
+AuditRecord.metadata['novel_lineage']     = null
+

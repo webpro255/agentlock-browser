@@ -137,6 +137,20 @@ exists.
 **Would remove it:** an origin- or prefix-scoped trusted token: a context entry
 that matches by URL origin rather than by exact token.
 
+**Measured 2026-08-22 (probe/item4/REPORT.md):** the materialized pair is
+order-independent. agentlock 1.7.0 resolves a content-identical pair
+authoritative-first per token by explicit rule (context.py:1123-1125);
+P1 (PAGE then ALLOWLIST) and P2 (ALLOWLIST then PAGE) both allow, P3
+(PAGE only) denies on param_lineage. Among decision-bearing fields
+(allowed, decision, denial, needs_approval, and grant_basis
+lineage_policy, param_lineage, novel_lineage, session_lineage, tainted),
+the sole difference across orders is grant_basis.post_authoritative_taint;
+audit_id, token_id, issued_at, session_id and provenance_id differ by
+construction as fresh identifiers. Correctness of the workaround
+therefore rests on the server's origin comparison before materialization
+(config.py origin_of and is_allowlisted, called once at gate.py:315);
+that comparison is the next probe.
+
 ## 5. No precondition predicate: the link-id freshness rule lives outside the gate
 
 `navigate(link_id)` is allowed only if the id came from the **most recent**
