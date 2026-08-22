@@ -69,14 +69,36 @@ class BrowserService:
 
     # -- interception hook -------------------------------------------------
 
-    def _authorize_intercepted(self, target: str) -> bool:
-        """A click tried to leave the current origin.
+    def _authorize_intercepted(
+        self, target: str, origin: str, redirected_from: str | None = None
+    ) -> bool:
+        """A navigation tried to leave the origin it was authorized for.
 
-        PREDICTIONS.md: treated as navigate(url) with PAGE provenance.  The
-        allowlist is deliberately not consulted -- this value came off a page,
-        not out of the operator's configuration.
+        Reached by a click, a meta refresh, a script assigning location, or an
+        HTTP redirect served by that origin.  PREDICTIONS.md: treated as
+        navigate(url) with PAGE provenance.  The allowlist is deliberately not
+        consulted -- this value came off a page, not out of the operator's
+        configuration.
+
+        The target is recorded as a PAGE(origin) write BEFORE authorize(), so
+        the gate decides against provenance that actually exists.  Without it a
+        target the session never read traces to neither the authoritative nor
+        the untrusted context and is denied as novel, which only holds while
+        the authoritative baseline carries a distinctive token.  Recording it
+        first makes the denial parameter lineage instead, and the receipt then
+        cites the origin the target came from.
+
+        ``redirected_from`` is the CDP request id of the request this one
+        redirected from, when there was one.  It is recorded so a redirect
+        denial can be joined back to the request that caused it.
         """
-        decision = self.gate.authorize_navigate_url(target, cause="intercepted_click")
+        self.gate.record_page_content(origin, target)
+        extra: dict[str, str] = {"caused_by_origin": origin}
+        if redirected_from:
+            extra["redirected_from_request_id"] = redirected_from
+        decision = self.gate.authorize_navigate_url(
+            target, cause="intercepted_click", extra=extra
+        )
         self._intercepted.append(decision)
         return decision.allowed
 
@@ -104,6 +126,7 @@ class BrowserService:
 
         Exactly one of ``url`` or ``link_id``.
         """
+        self._intercepted.clear()
         if (url is None) == (link_id is None):
             decision = Decision(
                 action="navigate",
@@ -146,12 +169,15 @@ class BrowserService:
             )
 
         await self.browser.goto(target)
+        error = self.browser.last_navigation_error
         return NavigateResult(
-            ok=True,
+            ok=not error,
             gate=_as_model(decision),
             origin=self.browser.origin,
             url=self.browser.url,
             title=await self._safe_title(),
+            error=error,
+            blocked=[_as_model(d) for d in self._intercepted if not d.allowed],
         )
 
     async def snapshot(self) -> SnapshotResult:

@@ -300,7 +300,9 @@ class BrowserGate:
 
     # -- the three gated actions ------------------------------------------
 
-    def authorize_navigate_url(self, url: str, *, cause: str = "tool") -> Decision:
+    def authorize_navigate_url(
+        self, url: str, *, cause: str = "tool", extra: dict[str, Any] | None = None
+    ) -> Decision:
         """Authorize ``navigate(url)``.
 
         ``cause="tool"`` is a direct call from the model.  ``cause`` is also
@@ -333,7 +335,7 @@ class BrowserGate:
             action="navigate_url" if cause == "tool" else "intercepted_navigation",
             value=url,
             expected_channel=expected,
-            extra={"cause": cause, "target_origin": origin_of(url)},
+            extra={"cause": cause, "target_origin": origin_of(url), **(extra or {})},
         )
 
     def authorize_navigate_link(

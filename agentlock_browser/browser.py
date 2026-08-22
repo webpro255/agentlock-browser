@@ -17,16 +17,25 @@ What this module guarantees instead:
   server-authored constant; no model input reaches it, and nothing in the MCP
   surface can run JavaScript.
 
+Navigation is intercepted through the CDP ``Fetch`` domain rather than
+Playwright's ``page.route``.  That is not a preference: ``page.route`` never
+offers a redirect hop to a handler, so a 302 to another origin was followed
+before anything could gate it (probe/origin/REPORT.md R1,
+probe/cdp/REPORT.md).  ``Fetch.requestPaused`` does surface the hop, and
+carries ``redirectedRequestId`` pointing back at the request it came from.
+This makes the server chromium-only.
+
 Copyright 2026 David Grice
 SPDX-License-Identifier: AGPL-3.0-or-later
 """
 
 from __future__ import annotations
 
+import asyncio
 from dataclasses import dataclass
 from typing import Any
 
-from playwright.async_api import Playwright, Route, async_playwright
+from playwright.async_api import Playwright, async_playwright
 
 from agentlock_browser.config import BrowserConfig, origin_of
 
@@ -101,6 +110,21 @@ _EXTRACT_JS = """
 """
 
 
+#: Only main-frame document requests are paused.  Subresources are not
+#: navigation and are never gated, so pausing them would cost latency for
+#: nothing.
+_FETCH_PATTERNS = [
+    {"urlPattern": "*", "resourceType": "Document", "requestStage": "Request"}
+]
+
+#: A denied navigation is answered with 204, not failed.  Measured in
+#: probe/cdp/REPORT.md: ``Fetch.failRequest`` leaves the page on
+#: ``chrome-error://chromewebdata/`` even when a document was committed
+#: before, while a 204 leaves it exactly where it was.  "The page stays put"
+#: has to mean the URL it was at before the call.
+_DENY_RESPONSE_CODE = 204
+
+
 @dataclass
 class PageElement:
     id: str
@@ -135,15 +159,26 @@ class BrowserSession:
         self.snapshot_ids: dict[str, str] = {}
         self.snapshot_epoch = -1
 
-        #: Set while an authorized goto is in flight.  The route handler lets
-        #: that navigation (and its redirects) through and gates everything
-        #: else.
+        #: Set while an authorized goto is in flight.  Its origin is the
+        #: origin the navigation was authorized for, which is what a redirect
+        #: hop is compared against.
         self._nav_grant: str | None = None
-        #: Called with (url) when a cross-origin navigation is intercepted.
-        #: Returns True to allow.  Installed by the server.
+        #: Called with (url, origin, redirected_from) when a cross-origin
+        #: navigation is intercepted.  Returns True to allow.  Installed by
+        #: the server.
         self.on_cross_origin: Any = None
-        #: Intercepted-and-aborted targets since the last read, for reporting.
+        #: Intercepted-and-refused targets since the last read, for reporting.
         self.blocked: list[str] = []
+        #: Anything the interceptor itself failed on.  Recorded rather than
+        #: swallowed: the handler fails closed, so a bug here stops browsing
+        #: rather than quietly letting a navigation through.
+        self.interceptor_errors: list[str] = []
+        #: Error text from the last goto, when the navigation was refused.
+        self.last_navigation_error: str = ""
+
+        self._cdp: Any = None
+        self._main_frame_id: str = ""
+        self._loop: Any = None
 
     # -- lifecycle ---------------------------------------------------------
 
@@ -160,7 +195,13 @@ class BrowserSession:
         self._context.set_default_timeout(self.config.action_timeout_ms)
         self.page = await self._context.new_page()
         self.page.on("framenavigated", self._on_frame_navigated)
-        await self.page.route("**/*", self._route)
+
+        self._loop = asyncio.get_running_loop()
+        self._cdp = await self._context.new_cdp_session(self.page)
+        frame_tree = await self._cdp.send("Page.getFrameTree")
+        self._main_frame_id = frame_tree["frameTree"]["frame"]["id"]
+        await self._cdp.send("Fetch.enable", {"patterns": _FETCH_PATTERNS})
+        self._cdp.on("Fetch.requestPaused", self._on_request_paused)
 
     async def close(self) -> None:
         for closer in (self._context, self._browser):
@@ -184,57 +225,102 @@ class BrowserSession:
             self.epoch += 1
             self.snapshot_ids = {}
 
-    async def _route(self, route: Route) -> None:
-        request = route.request
-        page = self.page
-        if page is None:
-            await route.continue_()
-            return
+    def _on_request_paused(self, event: dict[str, Any]) -> None:
+        """CDP hands this to us synchronously; the decision runs as a task.
 
-        is_top_nav = (
-            request.is_navigation_request()
-            and request.resource_type == "document"
-            and request.frame == page.main_frame
-        )
-        if not is_top_nav:
-            await route.continue_()
-            return
+        The request stays paused until the task answers it, so nothing races
+        ahead of the gate.
+        """
+        if self._loop is not None:
+            self._loop.create_task(self._handle_paused(event))
 
-        target = request.url
-        # An authorized goto, or a redirect within one, proceeds.
-        if self._nav_grant is not None and (
-            target == self._nav_grant or request.redirected_from is not None
-        ):
-            await route.continue_()
-            return
+    def _authorized_origin(self) -> str:
+        """The origin this navigation is allowed to be on.
 
-        current = origin_of(page.url)
-        if not current or origin_of(target) == current:
-            # Same-origin navigation is ungated in v0 (PREDICTIONS.md).
-            await route.continue_()
-            return
+        While an authorized goto is in flight that is the origin the gate
+        approved, not the page's current origin: during a redirect chain the
+        page has not moved yet, and comparing against where it still happens
+        to be would let the first hop off the authorized origin through.
+        """
+        if self._nav_grant is not None:
+            return origin_of(self._nav_grant)
+        return origin_of(self.page.url if self.page else "")
 
-        allowed = True
-        if self.on_cross_origin is not None:
-            allowed = bool(self.on_cross_origin(target))
-        if allowed:
-            await route.continue_()
-        else:
-            self.blocked.append(target)
-            # 204 rather than abort().  Aborting a top-level navigation makes
-            # chromium commit an error page, so the agent ends up somewhere
-            # neither the operator nor the page asked for; a 204 answer to a
-            # navigation is defined to leave the browser where it is, which is
-            # what "the page stays put" has to mean.
-            await route.fulfill(status=204, body="")
+    async def _handle_paused(self, event: dict[str, Any]) -> None:
+        request_id = event.get("requestId", "")
+        target = event.get("request", {}).get("url", "")
+        redirected_from = event.get("redirectedRequestId")
+        try:
+            if event.get("frameId") != self._main_frame_id:
+                # A subframe document.  Not navigation of the page the tools
+                # act on, and not gated in v0.
+                await self._continue(request_id)
+                return
+
+            if self._nav_grant is not None and target == self._nav_grant:
+                # The navigation navigate() just authorized.
+                await self._continue(request_id)
+                return
+
+            authorized = self._authorized_origin()
+            if not authorized or origin_of(target) == authorized:
+                # Same-origin navigation is ungated in v0 (PREDICTIONS.md).
+                await self._continue(request_id)
+                return
+
+            if await self._authorized_cross_origin(target, authorized,
+                                                   redirected_from):
+                await self._continue(request_id)
+            else:
+                self.blocked.append(target)
+                await self._refuse(request_id)
+        except Exception as exc:  # noqa: BLE001 - fails closed, and says so
+            self.interceptor_errors.append(
+                f"{type(exc).__name__}: {exc} (request {request_id} for {target})"
+            )
+            try:
+                await self._refuse(request_id)
+            except Exception as inner:  # noqa: BLE001
+                self.interceptor_errors.append(
+                    f"refuse failed: {type(inner).__name__}: {inner}"
+                )
+
+    async def _continue(self, request_id: str) -> None:
+        await self._cdp.send("Fetch.continueRequest", {"requestId": request_id})
+
+    async def _refuse(self, request_id: str) -> None:
+        """Answer a refused navigation with 204, leaving the page where it is."""
+        await self._cdp.send("Fetch.fulfillRequest", {
+            "requestId": request_id,
+            "responseCode": _DENY_RESPONSE_CODE,
+            "responseHeaders": [],
+            "body": "",
+        })
+
+    async def _authorized_cross_origin(
+        self, target: str, origin: str, redirected_from: str | None
+    ) -> bool:
+        """Ask the owner of this session whether the navigation may proceed."""
+        if self.on_cross_origin is None:
+            return True
+        return bool(self.on_cross_origin(target, origin, redirected_from))
 
     # -- actions -----------------------------------------------------------
 
     async def goto(self, url: str) -> None:
-        """Navigate to an already-authorized URL."""
+        """Navigate to an already-authorized URL.
+
+        A navigation the interceptor refuses mid-flight surfaces here as an
+        aborted goto.  That is a decision this server made, not a failure, so
+        it is recorded rather than raised: the page is still on the URL it was
+        on before the call, and the caller reports that.
+        """
+        self.last_navigation_error = ""
         self._nav_grant = url
         try:
             await self.page.goto(url, wait_until="domcontentloaded")
+        except Exception as exc:  # noqa: BLE001 - reported, never swallowed
+            self.last_navigation_error = f"{type(exc).__name__}: {exc}".splitlines()[0]
         finally:
             self._nav_grant = None
 

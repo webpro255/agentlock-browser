@@ -79,6 +79,11 @@ Every tool returns `structuredContent` against a declared `outputSchema`.
 href}]}`; `read_text` returns `{origin, blocks: [{id, text}]}`. Page text never
 comes back as one undifferentiated string.
 
+Navigation is intercepted through the CDP `Fetch` domain, because Playwright's
+`page.route` never offers a redirect hop to a handler, so a cross-origin 302
+was followed before anything could gate it (`probe/origin/REPORT.md`,
+`probe/cdp/REPORT.md`). That makes this server chromium-only.
+
 Element ids are stable for the current page load and regenerate on navigation:
 an id is `<page-load>-e<n>`, and an id minted before a navigation cannot resolve
 after one. A denial is a structured result with a reason, not an error.

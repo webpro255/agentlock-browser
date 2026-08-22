@@ -77,6 +77,12 @@ class NavigateResult(BaseModel):
     origin: str = ""
     url: str = ""
     title: str = ""
+    error: str = ""
+    blocked: list[GateDecision] = Field(
+        default_factory=list,
+        description="Navigations this call triggered that the gate denied and "
+        "the browser refused, such as a cross-origin redirect.",
+    )
 
 
 class ClickResult(BaseModel):
