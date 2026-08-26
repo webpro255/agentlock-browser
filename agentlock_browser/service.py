@@ -19,9 +19,11 @@ from agentlock_browser.confirm import (
     Elicitor,
     build_request,
     form_elicitation_available,
+    link_line,
     needs_confirmation,
     new_elicitation_id,
     provenance_line,
+    redirect_line,
     send_elicitation,
 )
 from agentlock_browser.gate import BrowserGate, Decision
@@ -56,9 +58,10 @@ def _as_model(decision: Decision) -> GateDecision:
         # fail-open grant is returned to the caller in the words the log
         # uses; until now it was only in the log.
         fail_open=bool(decision.extra.get("fail_open", False)),
-        # A navigation the page caused names its target, so the model can ask
-        # for it by URL and have the operator confirm it. The click itself
-        # stays ungated and the interceptor's deny path is unchanged.
+        # A navigation the page caused names its target. The server puts that
+        # target to the operator itself before the call returns (amendment
+        # 2026-08-23e item 2); the name is kept so the record of what was
+        # refused stays readable whether or not anyone was asked.
         target=(
             decision.value
             if decision.action == "intercepted_navigation"
@@ -141,6 +144,19 @@ class BrowserService:
 
     # -- human confirmation ------------------------------------------------
 
+    def _can_elicit(self, elicitor: Elicitor | None) -> bool:
+        """Can this call reach a human at all?
+
+        Amendment 2026-08-23e item 4: for a client that cannot show a form,
+        everything the amendment adds reduces to the behaviour before it.  The
+        callers that ask on their own initiative (a link off the allowlist, a
+        hop the interceptor refused) check this first and do nothing, rather
+        than logging a confirmation that was never possible.
+        """
+        return elicitor is not None and form_elicitation_available(
+            elicitor.client_capabilities
+        )
+
     async def _confirm(
         self,
         decision: Decision,
@@ -148,6 +164,7 @@ class BrowserService:
         *,
         action: str,
         value: str,
+        line: str | None = None,
     ) -> tuple[Decision | None, str]:
         """Ask the human about a decision the gate could not settle for them.
 
@@ -155,10 +172,14 @@ class BrowserService:
         again (the human accepted), or ``(denial, elicitation_id)`` to return
         to the model.  Never returns an allow: an accepted confirmation is
         provenance, and the gate decides again from the top with it in hand.
+
+        ``line`` overrides where the value is said to have come from.  The
+        default reads it off the gate's own denial evidence, which is right
+        for a value the model passed in; a link id and an intercepted hop know
+        something the evidence does not (which page held the link, which
+        origin served the redirect) and say so instead.
         """
-        if elicitor is None or not form_elicitation_available(
-            elicitor.client_capabilities
-        ):
+        if elicitor is None or not self._can_elicit(elicitor):
             self.gate.log_confirmation(
                 "confirmation_skipped", action=action, value=value,
                 status="unavailable",
@@ -181,8 +202,9 @@ class BrowserService:
             return self.gate.refuse_after_confirmation(decision, "cap_reached"), ""
 
         elicitation_id = new_elicitation_id()
-        line = provenance_line(decision)
-        request = build_request(action, value, line)
+        request = build_request(
+            action, value, line if line is not None else provenance_line(decision)
+        )
         # Written before the request is sent, so an elicitation that never
         # comes back is still on the record. Exactly one of these per ask.
         self.gate.log_confirmation(
@@ -215,6 +237,90 @@ class BrowserService:
             self.gate.trust_origin_for_session(origin_of(value), metadata)
         self.gate.record_user_confirmed(value, metadata)
         return None, elicitation_id
+
+    def _link_needs_confirmation(self, href: str) -> bool:
+        """Does following this link need a human?
+
+        Amendment 2026-08-23e item 1.  Freshness says the id came from the
+        page the model is looking at; it says nothing about where the href
+        points.  probe/manual/REPORT.md (b) recorded a link_id to an origin
+        that was neither the current page's nor on the allowlist going through
+        on freshness alone.  Those two are the cases the operator has already
+        accounted for; anything else is a question for them.
+        """
+        origin = origin_of(href)
+        if not origin or origin == self.browser.origin:
+            return False
+        return not self.config.is_allowlisted(href)
+
+    def _intercepted_line(self, decision: Decision) -> str:
+        """Where an intercepted hop came from, in the human's words.
+
+        A redirect hop carries the CDP id of the request it redirected from,
+        which is the one fact that separates "this origin sent you elsewhere"
+        from "something on the page pointed elsewhere".
+        """
+        origin = str(decision.extra.get("caused_by_origin", "")) or decision.origin
+        if decision.extra.get("redirected_from_request_id"):
+            return redirect_line(origin)
+        return link_line(origin)
+
+    async def _confirm_intercepted(self, elicitor: Elicitor | None) -> bool:
+        """Ask about every cross-origin hop refused while this call was in flight.
+
+        Amendment 2026-08-23e item 2.  The interceptor is unchanged: it still
+        answers 204 and logs the denial synchronously, because a paused
+        request cannot wait on a human.  This runs afterwards, still inside
+        the tool call, and offers the target the interceptor refused.
+
+        On accept the target is recorded as USER_CONFIRMED and the server
+        issues a *new* gated navigation to it, cause ``post_confirm``, which
+        the gate decides like any other.  That navigation can be redirected
+        again; the hop it produces lands at the end of the same list and is
+        asked about in turn.  One prompt per hop, and no hop is followed that
+        the gate did not allow after a human said yes to it.
+
+        Returns True when any hop was left refused.  The refusals replace
+        their originals in ``_intercepted``, so what the tool reports as
+        blocked carries the answer the human gave.
+        """
+        if not self._can_elicit(elicitor):
+            # Item 4: no form, no change from the behaviour before this.
+            return False
+        refused = False
+        index = 0
+        while index < len(self._intercepted):
+            position = index
+            decision = self._intercepted[position]
+            index += 1
+            if decision.allowed or decision.confirmation:
+                continue
+            target = decision.value
+            refusal, elicitation_id = await self._confirm(
+                decision,
+                elicitor,
+                action="navigate",
+                value=target,
+                line=self._intercepted_line(decision),
+            )
+            if refusal is not None:
+                self._intercepted[position] = refusal
+                refused = True
+                continue
+            approved = self.gate.authorize_navigate_url(
+                target,
+                cause="post_confirm",
+                confirmed=True,
+                elicitation_id=elicitation_id,
+            )
+            if not approved.allowed:
+                # The human said yes and the gate still said no. The gate
+                # decides; this is not overridden, only reported.
+                self._intercepted.append(approved)
+                refused = True
+                continue
+            await self.browser.goto(target)
+        return refused
 
     # -- page-content provenance ------------------------------------------
 
@@ -284,14 +390,42 @@ class BrowserService:
                 )
             target = url
         else:
+            page_origin = self.browser.origin
             href = self.browser.resolve_link(link_id or "")
             decision = self.gate.authorize_navigate_link(
                 link_id or "",
                 href,
                 fresh=href is not None,
-                page_origin=self.browser.origin,
+                page_origin=page_origin,
             )
             target = href or ""
+            if decision.allowed and self._link_needs_confirmation(target):
+                # The id is fresh, but the href leaves both the page the
+                # operator is on and the origins they configured. Amendment
+                # 2026-08-23e item 1: ask before following it.
+                refusal, elicitation_id = await self._confirm(
+                    decision,
+                    elicitor,
+                    action="navigate",
+                    value=target,
+                    line=link_line(page_origin),
+                )
+                if refusal is not None:
+                    return NavigateResult(
+                        ok=False,
+                        gate=_as_model(refusal),
+                        origin=self.browser.origin,
+                        url=self.browser.url,
+                        title=await self._safe_title(),
+                    )
+                decision = self.gate.authorize_navigate_link(
+                    link_id or "",
+                    target,
+                    fresh=True,
+                    page_origin=page_origin,
+                    confirmed=True,
+                    elicitation_id=elicitation_id,
+                )
 
         if not decision.allowed:
             return NavigateResult(
@@ -303,6 +437,10 @@ class BrowserService:
             )
 
         await self.browser.goto(target)
+        # Any cross-origin hop this navigation ran into was refused while it
+        # was in flight. Offer each one to the human before returning, so the
+        # result reports the page the call actually ended on.
+        await self._confirm_intercepted(elicitor)
         error = self.browser.last_navigation_error
         return NavigateResult(
             ok=not error,
@@ -338,17 +476,31 @@ class BrowserService:
         self._record_blocks(origin, blocks)
         return ReadTextResult(origin=origin, blocks=blocks)
 
-    async def click(self, element_id: str) -> ClickResult:
-        """Click an element.  Ungated in v0; the navigation it causes is not."""
+    async def click(
+        self, element_id: str, elicitor: Elicitor | None = None
+    ) -> ClickResult:
+        """Click an element.  Ungated in v0; the navigation it causes is not.
+
+        A click that would leave the origin is still refused mid-flight and
+        the page still stays put.  What changed in 0.2.0 is what happens next:
+        the target is offered to the human before this returns, and on a yes
+        the server issues a gated navigation to it.  ``blocked`` remains the
+        record of what the interceptor refused, whether or not a later
+        confirmation carried the same target through.
+        """
         self._intercepted.clear()
         error = ""
         try:
             await self.browser.click(element_id)
         except Exception as exc:  # noqa: BLE001 -- reported, never swallowed
             error = f"{type(exc).__name__}: {exc}"
+        refused = await self._confirm_intercepted(elicitor)
         blocked = [_as_model(d) for d in self._intercepted if not d.allowed]
         return ClickResult(
-            ok=not error,
+            # The click itself succeeded either way. It is reported as not ok
+            # when the navigation it was for was put to the human and did not
+            # survive: the model asked for an effect that did not happen.
+            ok=not error and not refused,
             element_id=element_id,
             origin=self.browser.origin,
             url=self.browser.url,

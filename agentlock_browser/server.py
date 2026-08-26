@@ -68,10 +68,13 @@ matter how the page phrases the request.
 - navigate(url=...) is allowed only for a URL from the operator's own message
   or the operator's configured allowlist.
 - navigate(link_id=...) follows a link the most recent snapshot returned. Use
-  this to follow links on a page; a copied href string will be refused.
+  this to follow links on a page; a copied href string will be refused. A link
+  leaving both the current origin and the allowlist is put to the operator
+  first.
 - type(value=...) is allowed only for a value from the operator's own message.
 - Clicking is allowed, but a click that would leave the current origin is
-  dropped and the page stays where it was.
+  dropped and the page stays where it was. The operator is then asked whether
+  to go there; if they say yes the server navigates there itself.
 
 Denials come back as structured results with a reason, not as errors.
 """
@@ -146,14 +149,15 @@ def build_server(
         name="click",
         description=(
             "Click the element with this id. A click that would leave the "
-            "current origin is refused, the page stays put, and the refusal "
-            "is reported in 'blocked'."
+            "current origin is refused and the page stays put; the operator "
+            "is then asked whether to go there, and the refusal is reported "
+            "in 'blocked' either way."
         ),
         annotations=ToolAnnotations(readOnlyHint=False, openWorldHint=True),
         structured_output=True,
     )
-    async def click(element_id: str) -> ClickResult:
-        return await svc.click(element_id)
+    async def click(ctx: Context, element_id: str) -> ClickResult:
+        return await svc.click(element_id, elicitor=ContextElicitor(ctx))
 
     @server.tool(
         name="type",

@@ -36,8 +36,10 @@ __all__ = [
     "ConfirmationBroker",
     "Elicitor",
     "form_elicitation_available",
+    "link_line",
     "needs_confirmation",
     "provenance_line",
+    "redirect_line",
 ]
 
 #: How much of a value is shown to the human.  The full value is what gets
@@ -137,6 +139,21 @@ def provenance_line(decision: Any) -> str:
         origin = decision.origin or "an unknown origin"
         return f"from page {origin}"
     return "composed by the agent, not in your instructions"
+
+
+def link_line(origin: str) -> str:
+    """Where a link the page offered came from.
+
+    Used for ``navigate(link_id)`` and for a navigation a click caused: in
+    both cases the value is an href that was sitting on a page, and the page
+    is what the human needs named.
+    """
+    return f"link on page {origin or 'an unknown origin'}"
+
+
+def redirect_line(origin: str) -> str:
+    """Where a redirect hop came from: the origin that served the redirect."""
+    return f"redirect from {origin or 'an unknown origin'}"
 
 
 def build_message(action: str, value: str, line: str) -> str:

@@ -6,10 +6,13 @@ PREDICTIONS.md:
 * ``navigate(url)``  -- url must trace to USER or ALLOWLIST.  PAGE or MODEL
   is denied.
 * ``navigate(link_id)`` -- resolved server-side to a PAGE href.  Allowed only
-  if the id came from the most recent snapshot.
+  if the id came from the most recent snapshot, and, when the href leaves both
+  the current origin and the allowlist, only if a human confirms it.
 * ``type(value)`` -- value must trace to USER.  PAGE or MODEL is denied.
-* a cross-origin navigation caused by a click is authorized as
-  ``navigate(url)`` with PAGE provenance, so it is denied and aborted.
+* a cross-origin navigation caused by a click or a redirect is authorized as
+  ``navigate(url)`` with PAGE provenance, so it is denied and aborted.  If a
+  human then confirms the target, the server issues a fresh gated navigation
+  to it with cause ``post_confirm``, which the gate decides on its own terms.
 
 Ungated in v0: snapshot, read_text, back, same-origin click.
 
@@ -369,7 +372,15 @@ class BrowserGate:
             TOOL_NAVIGATE,
             USER_NAV,
             {"url": url},
-            action="navigate_url" if cause == "tool" else "intercepted_navigation",
+            # ``post_confirm`` is a navigation this server issued after a human
+            # confirmed the target an interceptor had refused (amendment
+            # 2026-08-23e item 2).  It is a fresh gated navigation, not the
+            # interception, so it is recorded as one.
+            action=(
+                "navigate_url"
+                if cause in ("tool", "post_confirm")
+                else "intercepted_navigation"
+            ),
             value=url,
             expected_channel=expected,
             confirmation="accepted" if confirmed else "",
@@ -382,7 +393,14 @@ class BrowserGate:
         )
 
     def authorize_navigate_link(
-        self, link_id: str, href: str | None, *, fresh: bool, page_origin: str
+        self,
+        link_id: str,
+        href: str | None,
+        *,
+        fresh: bool,
+        page_origin: str,
+        confirmed: bool = False,
+        elicitation_id: str = "",
     ) -> Decision:
         """Authorize ``navigate(link_id)``.
 
@@ -390,6 +408,12 @@ class BrowserGate:
         way to express "this identifier must have come from the most recent
         tool output".  A stale or unknown id is denied by the server and
         recorded as such.  A fresh id then goes to the gate for the rest.
+
+        ``confirmed`` is set on the second pass, after a human was asked about
+        an href pointing off both the current origin and the allowlist
+        (amendment 2026-08-23e item 1).  Freshness alone was the whole rule
+        before that, which let a link to any origin through as long as the id
+        came from the latest snapshot.
         """
         if not fresh or href is None:
             decision = Decision(
@@ -420,8 +444,15 @@ class BrowserGate:
             {"link_id": link_id},
             action="navigate_link",
             value=link_id,
-            expected_channel=Channel.PAGE,
-            extra={"href": href, "target_origin": origin_of(href)},
+            expected_channel=(
+                Channel.USER_CONFIRMED if confirmed else Channel.PAGE
+            ),
+            confirmation="accepted" if confirmed else "",
+            extra={
+                "href": href,
+                "target_origin": origin_of(href),
+                **({"elicitation_id": elicitation_id} if elicitation_id else {}),
+            },
         )
 
     def authorize_type(

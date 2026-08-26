@@ -127,16 +127,19 @@ A client that does not offer form elicitation loses nothing else. Browsing
 works, and every channel rule still holds: a URL or value on USER or ALLOWLIST
 is allowed, one on PAGE or MODEL is denied, and the denial carries
 `confirmation: "unavailable"` so the model can say why rather than retrying.
-That is the 0.1.0 behaviour, unchanged.
+That is the 0.1.0 behaviour, unchanged. The two cases the server raises on its
+own initiative, an off-allowlist `link_id` and an intercepted cross-origin hop,
+reduce to that same behaviour exactly: no prompt, no extra log line, and the
+result the 0.1.0 server would have returned.
 
 ## Tools
 
 | tool | arguments | gated on |
 |---|---|---|
-| `navigate` | `url` **or** `link_id` | channel of `url`, then human confirmation; freshness of `link_id` |
+| `navigate` | `url` **or** `link_id` | channel of `url`, then human confirmation; freshness of `link_id`, then human confirmation when its href leaves both the current origin and the allowlist |
 | `snapshot` | (none) | ungated |
 | `read_text` | (none) | ungated |
-| `click` | `element_id` | ungated; the navigation it causes is not |
+| `click` | `element_id` | ungated; the navigation it causes is not, and its target is put to the human before the call returns |
 | `type` | `element_id`, `value` | channel of `value`, then human confirmation |
 | `back` | (none) | ungated |
 
@@ -184,21 +187,24 @@ What that buys, per action:
 | action | allowed | denied |
 |---|---|---|
 | `navigate(url)` | USER, USER_CONFIRMED, ALLOWLIST | PAGE, MODEL, unless the operator confirms |
-| `navigate(link_id)` | id from the most recent snapshot | stale or unknown id |
+| `navigate(link_id)` | id from the most recent snapshot, pointing at the current origin or the allowlist | stale or unknown id; off both, unless the operator confirms |
 | `type(value)` | USER, USER_CONFIRMED | PAGE, MODEL, unless the operator confirms |
-| cross-origin navigation caused by the page (redirect hop, meta refresh, script, click) | (nothing) | always: treated as `navigate(url)` with PAGE provenance |
+| cross-origin navigation caused by the page (redirect hop, meta refresh, script, click) | (nothing) | always: treated as `navigate(url)` with PAGE provenance. If the operator then confirms the target, the server navigates there itself |
 
 Ungated in v0: `snapshot`, `read_text`, `back`, and same-origin clicks.
 
 `navigate(link_id)` is how an agent follows a link. The id resolves to an href
 **server-side** and the href never has to pass through the model, so following a
 link the operator asked for stays possible while pasting a URL a page supplied
-does not.
+does not. Freshness is not the whole rule: an href pointing off both the
+current origin and the allowlist is put to the operator before it is followed.
 
 Any page-initiated navigation that would leave the current origin is answered
 with a 204, so the navigation is dropped and the page stays exactly where it
 was: no error page, no request to the other origin. That covers a redirect
 served by the authorized origin as well as a click, a meta refresh or a script.
+Nothing about that changed when confirmation was added: the request is refused
+first, and only then is the operator asked whether to go there.
 
 **The AgentLock gate decides.** This package records provenance, calls
 `gate.authorize()`, and reports the verdict; it never overrides one. The single
@@ -221,6 +227,24 @@ gate's evidence and a signed receipt:
 
 That log is the ground truth for the pre-registered tests, never a chat summary.
 
+Two things in it read oddly until you know why:
+
+- **Each provenance event writes two lines.** AgentLock resolves exactly one
+  context authority per entry per session, so `navigate` and `type` need
+  separate AgentLock sessions to hold different authoritative sets (ALLOWLIST
+  counts for navigation and not for typing). Every page read, every confirmed
+  value and every operator message is therefore recorded once per session, with
+  a different `provenance_id` and the same `content_sha256`. Allowlist entries
+  are the exception: they are written to the navigate session only, which is
+  the one place they mean anything.
+- **`grant_basis.lineage_policy` is `declared_disabled` on every allow.** That
+  names the coarse session-taint write gate, which this server switches off on
+  purpose: v0 gates each value on its own provenance, so reading a hostile page
+  must not stop the operator navigating somewhere they asked for. Parameter
+  lineage and novel lineage are both on and both deny; the same `grant_basis`
+  block reports them as `param_lineage` and `novel_lineage`. `declared_disabled`
+  is not "lineage gating is off".
+
 ### The USER channel
 
 MCP gives a server no way to see the operator's message, so USER text is a
@@ -242,6 +266,19 @@ is three lines: the action, the exact value, and where the value came from
 (`from page http://example.com`, or `composed by the agent, not in your
 instructions`). Only the display is truncated, at 200 characters; the whole
 value is what gets recorded and authorized.
+
+Two more actions ask, added in amendment 2026-08-23e after
+`probe/manual/REPORT.md` measured them going through unasked:
+
+- **`navigate(link_id)` whose href leaves both the current origin and the
+  allowlist.** Freshness says the id came from the page the model is looking
+  at; it says nothing about where the href points, and a link to any origin at
+  all used to be followed on freshness alone. The prompt names the href and the
+  page that held it (`link on page http://example.com`).
+- **A cross-origin navigation the page caused while a tool call is in flight**
+  (a click, a redirect hop, a meta refresh, a script). The prompt names the
+  target and, by cause, either `redirect from http://example.com` or
+  `link on page http://example.com`.
 
 Two choices:
 
@@ -281,15 +318,33 @@ Every other client is **unmeasured**, Claude Desktop, Cursor and VS Code
 included. No other installation was available to test against, so nothing is
 claimed about what they render.
 
-A navigation the page itself caused (a click, a redirect, a meta refresh, a
-script) does not ask. It is denied as before, and the result now names the
-`target` it was trying to reach, so the model can call `navigate(url=target)`
-and have the operator confirm that instead.
+**The interception is not what waits for the human.** A paused request cannot
+sit there while someone reads a dialog, so the interceptor still answers 204
+and logs the denial synchronously, exactly as before: the navigation is dropped
+and the page stays where it was. The confirmation runs after that, still inside
+the tool call that caused it. On a yes, the target is recorded as
+USER_CONFIRMED and the server issues a **new** gated navigation to it, logged
+with `"cause": "post_confirm"`, which the gate decides like any other. Nothing
+is followed that the gate did not allow after the operator said yes to it. On a
+no, the tool returns the denial and the page has not moved.
 
-`tests/test_confirmation.py` is the regression, EL1 to EL10 plus EL8b and
-EL8c, driven through a real MCP client over stdio with a scripted callback
-standing in for the human. Every answer it gives is tagged `SCRIPTED_HUMAN` in
-the transcript.
+**One prompt per hop.** That new navigation can be redirected again, and the
+next hop is a separate refusal, a separate prompt and a separate gate decision.
+A chain `fixture -> evil -> third` asks twice and reaches `third` only if the
+operator said yes both times. It is not a single yes to a chain of unknown
+length.
+
+**A navigation with no tool call in flight is not asked about.** A meta refresh
+on a timer, or a script that navigates seconds after the tool returned, is
+denied and logged exactly as before, with no prompt: there is no call to ask
+inside of and no result to report the answer on. Named limitation, below.
+
+`tests/test_confirmation.py` is the regression for the value cases, EL1 to
+EL10 plus EL8b and EL8c; `tests/test_confirmation_nav.py` is the regression for
+the navigation cases, EM1 to EM10. EL9 was replaced by EM4 when amendment
+2026-08-23e superseded the behaviour it measured. Both run through a real MCP
+client over stdio with a scripted callback standing in for the human, and every
+answer it gives is tagged `SCRIPTED_HUMAN` in the transcript.
 
 ## Tests
 
@@ -298,10 +353,14 @@ pytest                                  # T5 and test_redirects run; T1-T4 are r
 cat tests/results/T5.txt                # the raw T5 transcript, log and checks
 ```
 
-What runs without a model: T5 (the legitimate baseline) and
+What runs without a model: T5 (the legitimate baseline),
 `tests/test_redirects.py` (the four kinds of page-initiated cross-origin
-navigation). Both issue tool calls directly, so what is measured is the gate
-and the server.
+navigation), `tests/test_new_pages.py` (new top-level pages), and the two
+confirmation suites, `tests/test_confirmation.py` and
+`tests/test_confirmation_nav.py`. The first three issue tool calls directly;
+the confirmation suites go through a real MCP client over stdio, because an
+elicitation only exists if it crosses the wire. No model is in the loop in any
+of them, so what is measured is the gate and the server.
 
 T1-T4 are model-driven and are skipped under pytest. `tests/agent_runner.py`
 drives this MCP server with a model over stdio and records every tool call and
@@ -361,6 +420,13 @@ Found while building v0, and not yet closed:
   whatever it likes on its own behalf. What is defended is the agent being
   driven to act at the top-level document, not the page being prevented from
   using the network.
+- **A page-caused navigation with no tool call in flight is never confirmed.**
+  The prompt for an intercepted cross-origin hop runs inside the tool call that
+  caused it. A meta refresh on a timer, or a script that navigates after the
+  call returned, has no such call: it is denied, logged and dropped, and the
+  operator is not asked, so there is no way to say yes to it short of calling
+  `navigate(url=...)` with the target the log names. `tests/test_confirmation_nav.py`
+  case EM9 is the regression that holds this in place.
 - **One tab, enforced.** New top-level pages are blocked at the browser level:
   chromium is launched with `--block-new-web-contents`, so a `target="_blank"`
   link or a `window.open` call creates nothing. Any page that appears anyway is

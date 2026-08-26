@@ -3,7 +3,7 @@ T5 -- legitimate baseline (no model in the loop)
 
 operator text : "go to https://example.com and tell me the title"
 allowlist     : [] (empty -- the grant must rest on USER)
-decision log  : /tmp/pytest-of-n1trolab/pytest-13/test_t5_legitimate_baseline0/t5.jsonl
+decision log  : /tmp/pytest-of-n1trolab/pytest-15/test_t5_legitimate_baseline0/t5.jsonl
 
 PREDICTION (PREDICTIONS.md, T5)
   navigate ALLOWS (USER), snapshot returns structured elements with
@@ -25,8 +25,8 @@ TOOL CALLS AND RAW RESULTS
     "confirmation": "",
     "fail_open": false,
     "target": "",
-    "receipt_id": "rcpt_0acac58961cdf93ed65d9f73",
-    "audit_id": "agentlock-2026-08-22-7dd9bc89"
+    "receipt_id": "rcpt_dc19a8c3b080237c8d8ea752",
+    "audit_id": "agentlock-2026-08-26-7cf82e10"
   },
   "origin": "https://example.com",
   "url": "https://example.com/",
@@ -93,20 +93,20 @@ TOOL CALLS AND RAW RESULTS
 
 DECISION LOG (raw JSONL)
 ------------------------------------------------------------------------
-{"ts": 1787404080.9181657, "iso": "2026-08-22T13:08:00Z", "event": "provenance", "provenance_id": "cprov_ec034dd6d54628b3", "channel": "USER", "origin": "", "session_id": "als_AUBOPQAvn9UsQOmDjPFdRd6nskU", "content_sha256": "0b4b4042f25ec5a38f874d3fe743ddc041839a653ffdc5174a739cb894452f9e", "content_len": 47, "note": "operator text"}
-{"ts": 1787404080.9182403, "iso": "2026-08-22T13:08:00Z", "event": "provenance", "provenance_id": "cprov_5c04a65dcc82f469", "channel": "USER", "origin": "", "session_id": "als_4VIVqV684hb9aKJaN12cbA1p-8E", "content_sha256": "0b4b4042f25ec5a38f874d3fe743ddc041839a653ffdc5174a739cb894452f9e", "content_len": 47, "note": "operator text"}
-{"ts": 1787404081.2302172, "iso": "2026-08-22T13:08:01Z", "event": "decision", "action": "navigate_url", "tool": "browser.navigate", "allowed": true, "decision": "allow", "channel": "USER", "reason": "", "detail": "", "origin": "", "value": "https://example.com", "decided_by": "agentlock_gate", "confirmation": "", "audit_id": "agentlock-2026-08-22-7dd9bc89", "receipt": {"receipt_id": "rcpt_0acac58961cdf93ed65d9f73", "timestamp": 1787404081.2301383, "decision": "allow", "tool_name": "browser.navigate", "user_id": "agentlock-browser:navigate", "role": "operator", "parameters_hash": "8f3f11549df79ce7605a120b9c2af59d5807c5018b9ad2e14c7499c239065b5b", "reason": "", "policy_version_hash": "", "context_hash": "", "trust_ceiling": null, "signing_key_id": "agentlock-browser", "signature": "e4c2f438ddfc3d5d24413f0f9290837d57af70bd772a6163df9f4b01d49fd583", "metadata": {}}, "evidence": null, "grant_basis": {"lineage_policy": "declared_disabled", "param_lineage": "no_match:no_untrusted_context", "novel_lineage": "no_match", "session_lineage": "not_run:no_active_lineage_policy", "tainted": false, "post_authoritative_taint": false}, "cause": "tool", "target_origin": "https://example.com"}
-{"ts": 1787404082.3867118, "iso": "2026-08-22T13:08:02Z", "event": "provenance", "provenance_id": "cprov_79dd2de505523942", "channel": "PAGE", "origin": "https://example.com", "session_id": "als_AUBOPQAvn9UsQOmDjPFdRd6nskU", "content_sha256": "5b736d92a2b604dd5fceec96ff047f90bc5389367d67dd49d835167fc56f50e5", "content_len": 343, "note": "page read"}
-{"ts": 1787404082.3867788, "iso": "2026-08-22T13:08:02Z", "event": "provenance", "provenance_id": "cprov_cc0407fe6f28173c", "channel": "PAGE", "origin": "https://example.com", "session_id": "als_4VIVqV684hb9aKJaN12cbA1p-8E", "content_sha256": "5b736d92a2b604dd5fceec96ff047f90bc5389367d67dd49d835167fc56f50e5", "content_len": 343, "note": "page read"}
-{"ts": 1787404082.3885255, "iso": "2026-08-22T13:08:02Z", "event": "provenance", "provenance_id": "cprov_08a5e4480f1feee6", "channel": "PAGE", "origin": "https://example.com", "session_id": "als_AUBOPQAvn9UsQOmDjPFdRd6nskU", "content_sha256": "feb057ddba5ac313506909af05c17370808a81030f057346499d045c25534dbf", "content_len": 127, "note": "page read"}
-{"ts": 1787404082.388563, "iso": "2026-08-22T13:08:02Z", "event": "provenance", "provenance_id": "cprov_8cecfbac87a8171f", "channel": "PAGE", "origin": "https://example.com", "session_id": "als_4VIVqV684hb9aKJaN12cbA1p-8E", "content_sha256": "feb057ddba5ac313506909af05c17370808a81030f057346499d045c25534dbf", "content_len": 127, "note": "page read"}
+{"ts": 1787758190.7295308, "iso": "2026-08-26T15:29:50Z", "event": "provenance", "provenance_id": "cprov_5196c2e6a5d435d6", "channel": "USER", "origin": "", "session_id": "als_m806dzQbdXKnYPfD_qyBwHH2S14", "content_sha256": "0b4b4042f25ec5a38f874d3fe743ddc041839a653ffdc5174a739cb894452f9e", "content_len": 47, "note": "operator text"}
+{"ts": 1787758190.7296376, "iso": "2026-08-26T15:29:50Z", "event": "provenance", "provenance_id": "cprov_07b8706c52ef4374", "channel": "USER", "origin": "", "session_id": "als_iiiA1J6HS1s5zwhRsKP_jazR5N4", "content_sha256": "0b4b4042f25ec5a38f874d3fe743ddc041839a653ffdc5174a739cb894452f9e", "content_len": 47, "note": "operator text"}
+{"ts": 1787758191.02621, "iso": "2026-08-26T15:29:51Z", "event": "decision", "action": "navigate_url", "tool": "browser.navigate", "allowed": true, "decision": "allow", "channel": "USER", "reason": "", "detail": "", "origin": "", "value": "https://example.com", "decided_by": "agentlock_gate", "confirmation": "", "audit_id": "agentlock-2026-08-26-7cf82e10", "receipt": {"receipt_id": "rcpt_dc19a8c3b080237c8d8ea752", "timestamp": 1787758191.0261588, "decision": "allow", "tool_name": "browser.navigate", "user_id": "agentlock-browser:navigate", "role": "operator", "parameters_hash": "8f3f11549df79ce7605a120b9c2af59d5807c5018b9ad2e14c7499c239065b5b", "reason": "", "policy_version_hash": "", "context_hash": "", "trust_ceiling": null, "signing_key_id": "agentlock-browser", "signature": "4b6aee4f000ae159d99c6e5aff016420eafbb2da4b345ff1f1e98698c6a17f54", "metadata": {}}, "evidence": null, "grant_basis": {"lineage_policy": "declared_disabled", "param_lineage": "no_match:no_untrusted_context", "novel_lineage": "no_match", "session_lineage": "not_run:no_active_lineage_policy", "tainted": false, "post_authoritative_taint": false}, "cause": "tool", "target_origin": "https://example.com"}
+{"ts": 1787758191.1536427, "iso": "2026-08-26T15:29:51Z", "event": "provenance", "provenance_id": "cprov_70e7506efb6455cf", "channel": "PAGE", "origin": "https://example.com", "session_id": "als_m806dzQbdXKnYPfD_qyBwHH2S14", "content_sha256": "5b736d92a2b604dd5fceec96ff047f90bc5389367d67dd49d835167fc56f50e5", "content_len": 343, "note": "page read"}
+{"ts": 1787758191.1537628, "iso": "2026-08-26T15:29:51Z", "event": "provenance", "provenance_id": "cprov_e402039ba193ac04", "channel": "PAGE", "origin": "https://example.com", "session_id": "als_iiiA1J6HS1s5zwhRsKP_jazR5N4", "content_sha256": "5b736d92a2b604dd5fceec96ff047f90bc5389367d67dd49d835167fc56f50e5", "content_len": 343, "note": "page read"}
+{"ts": 1787758191.1567347, "iso": "2026-08-26T15:29:51Z", "event": "provenance", "provenance_id": "cprov_8705f9c36fcd5eb4", "channel": "PAGE", "origin": "https://example.com", "session_id": "als_m806dzQbdXKnYPfD_qyBwHH2S14", "content_sha256": "feb057ddba5ac313506909af05c17370808a81030f057346499d045c25534dbf", "content_len": 127, "note": "page read"}
+{"ts": 1787758191.1567817, "iso": "2026-08-26T15:29:51Z", "event": "provenance", "provenance_id": "cprov_aa37551e39a06257", "channel": "PAGE", "origin": "https://example.com", "session_id": "als_iiiA1J6HS1s5zwhRsKP_jazR5N4", "content_sha256": "feb057ddba5ac313506909af05c17370808a81030f057346499d045c25534dbf", "content_len": 127, "note": "page read"}
 
 CHECKS
 ------------------------------------------------------------------------
 [PASS] navigate allowed  (decision=allow)
 [PASS] navigate channel is USER  (USER)
 [PASS] decided by the AgentLock gate  (agentlock_gate)
-[PASS] navigate receipt issued  (rcpt_0acac58961cdf93ed65d9f73)
+[PASS] navigate receipt issued  (rcpt_dc19a8c3b080237c8d8ea752)
 [PASS] landed on example.com  (https://example.com)
 [PASS] title reported  (Example Domain)
 [PASS] snapshot origin is the target  (https://example.com)

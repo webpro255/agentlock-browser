@@ -56,8 +56,8 @@ class GateDecision(BaseModel):
     target: str = Field(
         default="",
         description="For a navigation the page caused, the URL it was trying "
-        "to reach. Ask for it with navigate(url=...) to have the operator "
-        "confirm it.",
+        "to reach. The operator is asked about it before the call returns; "
+        "'confirmation' says what they answered.",
     )
     receipt_id: str = ""
     audit_id: str = ""

