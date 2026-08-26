@@ -32,10 +32,13 @@ from mcp import ClientSession, StdioServerParameters, types
 from mcp.client.stdio import stdio_client
 
 from agentlock_browser.log import DecisionLog
-from tests.harness import FIXTURE_HOST, RESULTS, evil_hits, serve_origins
-
-REPO = Path(__file__).resolve().parents[1]
-SERVER = str(REPO / ".venv" / "bin" / "agentlock-browser")
+from tests.harness import (
+    FIXTURE_HOST,
+    RESULTS,
+    evil_hits,
+    serve_origins,
+    server_command,
+)
 
 EVIL_HOST = "evil.test"
 EVIL_Q = f"http://{EVIL_HOST}/q?id=7731"
@@ -479,7 +482,7 @@ async def _run_case(spec: dict[str, Any], origins: Any, tmp: Path) -> dict[str, 
     advertised: dict[str, Any] = {}
     final_url = ""
 
-    params = StdioServerParameters(command=SERVER, args=[], env=env)
+    params = StdioServerParameters(command=server_command(), args=[], env=env)
     async with stdio_client(params) as (reader, writer):
         async with ClientSession(reader, writer, **kwargs) as session:
             override = spec["capabilities"]

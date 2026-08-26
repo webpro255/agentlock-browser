@@ -42,12 +42,10 @@ from tests.harness import (
     THIRD_HOST,
     evil_hits,
     serve_origins,
+    server_command,
     third_hits,
 )
 from tests.test_confirmation import SCRIPTED_HUMAN, ScriptedHuman
-
-REPO = Path(__file__).resolve().parents[1]
-SERVER = str(REPO / ".venv" / "bin" / "agentlock-browser")
 
 FIXTURE = f"http://{FIXTURE_HOST}"
 EVIL_NEXT = f"http://{EVIL_HOST}/next"
@@ -338,7 +336,7 @@ async def _run_case(spec: dict[str, Any], origins: Any, tmp: Path) -> dict[str, 
     transcript: list[dict[str, Any]] = []
     final_url = ""
 
-    params = StdioServerParameters(command=SERVER, args=[], env=env)
+    params = StdioServerParameters(command=server_command(), args=[], env=env)
     async with stdio_client(params) as (reader, writer):
         async with ClientSession(
             reader, writer, elicitation_callback=human

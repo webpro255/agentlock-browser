@@ -16,6 +16,9 @@ SPDX-License-Identifier: AGPL-3.0-or-later
 from __future__ import annotations
 
 import contextlib
+import os
+import shutil
+import sys
 import threading
 from dataclasses import dataclass
 from functools import partial
@@ -34,6 +37,52 @@ EVIL_HOST = "evil.test"
 #: A third origin, so a redirect chain can leave the second one and the two
 #: hops can be told apart by which server recorded the request.
 THIRD_HOST = "third.test"
+
+
+#: The console script pyproject declares.  The suites that drive this server
+#: over stdio spawn it by name, not by module, so what they exercise is the
+#: same entry point an operator's MCP client would launch.
+SERVER_ENTRY_POINT = "agentlock-browser"
+
+
+def server_command() -> str:
+    """The ``agentlock-browser`` executable to spawn, resolved per environment.
+
+    A hardcoded ``.venv/bin/agentlock-browser`` only exists on a machine whose
+    virtualenv happens to sit in the repo, which is not true of a CI runner
+    that installs the package into whatever environment it was given.
+
+    Resolution order:
+
+    1. ``shutil.which``, so the installed entry point of the *active*
+       environment wins.  That is the thing under test: if the package is on
+       PATH, that is the executable a client would launch.
+    2. The directory holding the running interpreter, which is where a
+       virtualenv or venv puts its console scripts when it is not activated
+       and so not on PATH.  This is the local-development case.
+
+    Raises rather than returning a path that does not exist: a stdio client
+    handed a missing command fails deep inside the transport, and the error it
+    produces says nothing about what is actually wrong.
+    """
+    found = shutil.which(SERVER_ENTRY_POINT)
+    if found:
+        return found
+
+    beside_interpreter = os.path.join(
+        os.path.dirname(sys.executable), SERVER_ENTRY_POINT
+    )
+    if os.path.exists(beside_interpreter):
+        return beside_interpreter
+
+    raise RuntimeError(
+        f"cannot find the {SERVER_ENTRY_POINT!r} console script. It is not on "
+        f"PATH, and it is not next to the running interpreter "
+        f"({sys.executable!r}). These suites spawn the server over stdio by "
+        f"name, so the package has to be installed in the environment running "
+        f"the tests: `pip install -e .` (or `pip install .`) and run pytest "
+        f"from that same environment."
+    )
 
 
 class _QuietHandler(SimpleHTTPRequestHandler):
