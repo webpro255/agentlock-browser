@@ -211,6 +211,49 @@ channel changes what "the operator asked for this link" can mean.
 
 ---
 
+## 9. Open question: what a redirect chain costs the operator
+
+Not a gap in AgentLock. A note on this server's own confirmation surface,
+measured, not predicted.
+
+`probe/manual/REPORT.md` run 2, against `aedf096`, opened one link on an
+ordinary site and it cost four confirmations. The link was one; the site's own
+redirect chain was the other three:
+
+```
+https://www.iana.org/domains/example        canonical host, iana.org -> www.iana.org
+http://www.iana.org/help/example-domains    https to http, a scheme downgrade
+https://www.iana.org/help/example-domains   http back to https, the re-upgrade
+```
+
+Each is a different origin under the rule as frozen, because an origin is
+scheme plus host plus port. One prompt per hop is what amendment 2026-08-23e
+states and what the server did. Four prompts to follow one link is a cost, and
+it is recorded here as one.
+
+The obvious loosenings all exist: treat `example.com` and `www.example.com` as
+one origin, treat an http to https upgrade on the same host as one origin, or
+carry a single confirmation across a whole chain that ends where the human said
+yes. **Every one of them is a boundary change, not a usability tweak.** The
+boundary this server defends is cross-origin navigation. Any rule that makes
+two origins count as one moves that boundary, so it needs its own dated
+PREDICTIONS freeze, its own pre-registered cases and its own measured run
+before any code is written. It does not get made as an ergonomics fix.
+
+**The downgrade hop must never be silent under any future rule.** Hop 3 of run
+2 was `https://www.iana.org` redirecting to `http://www.iana.org`: the same
+host, dropping TLS. A "same host, different scheme is the same origin" rule
+would swallow exactly that hop, and a chain that downgrades to http is the one
+hop in this run an operator most needs to see, because it is where a network
+attacker gets the page. Whatever else a future rule collapses, an https to http
+transition has to remain a thing the human is shown by value. Anything that
+would make it disappear is disqualified on that ground alone.
+
+Open. No proposal, no amendment, and no mechanism change was made when this was
+recorded.
+
+---
+
 ## Reproducing
 
 `agentlock` 1.7.0 only; no browser, no MCP.

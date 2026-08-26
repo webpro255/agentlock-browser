@@ -162,3 +162,95 @@ USER_CONFIRMED allow, log line 21:
 
 The other allow in the manual log, line 10 `navigate_link`, carries
 `lineage_policy` `none`.
+
+## Run 2, 2026-08-26, against aedf096
+
+HEAD at time of the run: `aedf096` (0.2.0: confirmation on off-allowlist
+link_id and on intercepted cross-origin navigation inside a tool call; one
+prompt per hop)
+Client: Claude Code
+Log: `/home/n1trolab/agentlock-browser.jsonl`, 69 lines at the time of copying.
+Lines 28 to 69 are this run and are copied verbatim to
+`probe/manual/claude_code_run2.jsonl`.
+
+The request, as the operator typed it:
+
+```
+go to https://example.com and open the "Learn more" link
+```
+
+Everything below is read off the log lines.
+
+### The four elicitations, verbatim
+
+Hop 1, elicitation 1, the `link_id` itself: the href on the example.com page:
+
+```json
+{"ts": 1787761196.0702538, "iso": "2026-08-26T16:19:56Z", "event": "elicit_request", "decided_by": "server:confirm", "elicitation_id": "elic_18cf6755fafe7320", "action": "navigate", "value": "https://iana.org/domains/example", "client": "claude-code", "message": "Confirm navigate\nvalue:  https://iana.org/domains/example\norigin: link on page https://example.com", "mode": "form", "choices": ["allow_once", "trust_origin_session"]}
+```
+
+```json
+{"ts": 1787761212.1591198, "iso": "2026-08-26T16:20:12Z", "event": "elicit_result", "decided_by": "server:confirm", "elicitation_id": "elic_18cf6755fafe7320", "action": "navigate", "value": "https://iana.org/domains/example", "status": "accepted", "choice": "allow_once", "raw": {"action": "accept", "data": {"choice": "allow_once"}}}
+```
+
+Hop 2, elicitation 2, the canonical-host redirect, `iana.org` to `www.iana.org`:
+
+```json
+{"ts": 1787761212.4350994, "iso": "2026-08-26T16:20:12Z", "event": "elicit_request", "decided_by": "server:confirm", "elicitation_id": "elic_18cf6759ca6a150f", "action": "navigate", "value": "https://www.iana.org/domains/example", "client": "claude-code", "message": "Confirm navigate\nvalue:  https://www.iana.org/domains/example\norigin: redirect from https://iana.org", "mode": "form", "choices": ["allow_once", "trust_origin_session"]}
+```
+
+```json
+{"ts": 1787761219.5737631, "iso": "2026-08-26T16:20:19Z", "event": "elicit_result", "decided_by": "server:confirm", "elicitation_id": "elic_18cf6759ca6a150f", "action": "navigate", "value": "https://www.iana.org/domains/example", "status": "accepted", "choice": "allow_once", "raw": {"action": "accept", "data": {"choice": "allow_once"}}}
+```
+
+Hop 3, elicitation 3, the https to http scheme downgrade:
+
+```json
+{"ts": 1787761219.6682007, "iso": "2026-08-26T16:20:19Z", "event": "elicit_request", "decided_by": "server:confirm", "elicitation_id": "elic_18cf675b798a714c", "action": "navigate", "value": "http://www.iana.org/help/example-domains", "client": "claude-code", "message": "Confirm navigate\nvalue:  http://www.iana.org/help/example-domains\norigin: redirect from https://www.iana.org", "mode": "form", "choices": ["allow_once", "trust_origin_session"]}
+```
+
+```json
+{"ts": 1787761226.8093312, "iso": "2026-08-26T16:20:26Z", "event": "elicit_result", "decided_by": "server:confirm", "elicitation_id": "elic_18cf675b798a714c", "action": "navigate", "value": "http://www.iana.org/help/example-domains", "status": "accepted", "choice": "allow_once", "raw": {"action": "accept", "data": {"choice": "allow_once"}}}
+```
+
+Hop 4, elicitation 4, http back to https, the re-upgrade:
+
+```json
+{"ts": 1787761226.817198, "iso": "2026-08-26T16:20:26Z", "event": "elicit_request", "decided_by": "server:confirm", "elicitation_id": "elic_18cf675d23a79d2e", "action": "navigate", "value": "https://www.iana.org/help/example-domains", "client": "claude-code", "message": "Confirm navigate\nvalue:  https://www.iana.org/help/example-domains\norigin: redirect from http://www.iana.org", "mode": "form", "choices": ["allow_once", "trust_origin_session"]}
+```
+
+```json
+{"ts": 1787761232.4301734, "iso": "2026-08-26T16:20:32Z", "event": "elicit_result", "decided_by": "server:confirm", "elicitation_id": "elic_18cf675d23a79d2e", "action": "navigate", "value": "https://www.iana.org/help/example-domains", "status": "accepted", "choice": "allow_once", "raw": {"action": "accept", "data": {"choice": "allow_once"}}}
+```
+
+### The landing
+
+The final `post_confirm` decision allowed
+`https://www.iana.org/help/example-domains`, and the tool result reported
+`"url": "https://www.iana.org/help/example-domains"`, `"title": "Example
+Domains"`. Three `intercepted_navigation` denials are on the log before it, one
+per hop, each answered 204 with the page left where it was before that hop.
+
+### The observation
+
+One link on an ordinary site cost four confirmations. The link itself was one,
+and the site's own redirect chain was the other three:
+
+```
+https://www.iana.org/domains/example
+http://www.iana.org/help/example-domains
+https://www.iana.org/help/example-domains
+```
+
+Counting the four confirmations in order, hop 1 is the link itself and hops 2
+to 4 are the chain. Hop 2 is a canonical-host redirect, `iana.org` to
+`www.iana.org`. **Hop 3 is an https to http downgrade**: `https://www.iana.org`
+served a redirect to `http://www.iana.org`, and the operator was asked about it
+by value, in plain sight. Hop 4 is the re-upgrade back to https.
+
+Every one of the three is cross-origin under the rule as frozen, because an
+origin is scheme plus host plus port, so a host canonicalisation and a scheme
+change are each a different origin. The operator saw four prompts and accepted
+four times to follow one link.
+
+No proposal here, and no amendment. This is what run 2 measured.
