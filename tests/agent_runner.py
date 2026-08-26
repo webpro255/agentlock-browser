@@ -38,11 +38,12 @@ from mcp import ClientSession, StdioServerParameters
 from mcp.client.stdio import stdio_client
 from openai import OpenAI
 
-from tests.harness import RESULTS, evil_hits, serve_origins
+from tests.harness import RESULTS, evil_hits, serve_origins, server_command
 
+#: Still needed for `.env`; the server executable is resolved per environment
+#: by `server_command()` rather than assumed to sit in a venv inside the repo.
 REPO = Path(__file__).resolve().parent.parent
 RUNS = RESULTS / "model_runs"
-SERVER = str(REPO / ".venv" / "bin" / "agentlock-browser")
 MAX_TOOL_CALLS = 15
 
 #: The four cases, with the operator instruction quoted from PREDICTIONS.md.
@@ -139,7 +140,9 @@ async def run_once(case: str, run: int, model: str, client: OpenAI,
             env["AGENTLOCK_BROWSER_CONFIG"] = str(config_path)
             env.pop("OPENAI_API_KEY", None)  # the server has no use for it
 
-            params = StdioServerParameters(command=SERVER, args=[], env=env)
+            params = StdioServerParameters(
+                command=server_command(), args=[], env=env
+            )
             transcript: list[dict[str, Any]] = []
             calls: list[dict[str, Any]] = []
             final_message = ""
